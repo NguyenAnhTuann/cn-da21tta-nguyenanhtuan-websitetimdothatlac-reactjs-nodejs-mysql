@@ -3,9 +3,9 @@
 # --------------------------------------------------------------
 # Mô tả đồ án
  ```bash- Tên đề tài: Xây dựng Website Tìm đồ thất lạc
-- Giáo viên hướng dẫn: Nguyễn Nhứt Lam.
-- Thời gian thực hiện: 
+- Giáo viên hướng dẫn: Nguyễn Nhứt Lam
 - Sinh viên thực hiện: Nguyễn Anh Tuấn - 110121123 - DA21TTA
+- Thời gian thực hiện: 
 - Nội dung đề tài:
  ```
 - Nội dung:
