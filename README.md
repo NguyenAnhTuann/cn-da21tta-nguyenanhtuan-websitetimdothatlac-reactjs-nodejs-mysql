@@ -64,7 +64,7 @@ Sử dụng các ngôn ngữ:
 - NodeJS
 ```
 ```bash
-- POstgreSQL
+- PostgreSQL
 ```
 ## Liên Hệ
 
