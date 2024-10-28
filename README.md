@@ -5,10 +5,9 @@
  ```bash- Tên đề tài: Xây dựng Website Tìm đồ thất lạc
 - Giáo viên hướng dẫn: Nguyễn Nhứt Lam
 - Sinh viên thực hiện: Nguyễn Anh Tuấn - 110121123 - DA21TTA
-- Thời gian thực hiện: 
-- Nội dung đề tài:
+- Thời gian thực hiện: Từ ngày 06/11/2024 đến 31/12/2024
  ```
-- Nội dung:
+- Nội dung đề tài:
 ```bash
 - Cung cấp nền tảng để người dùng đăng thông tin về đồ thất lạc và đồ nhặt được giúp 2 bên giữa người nhặt được và người bị thất lạc những đồ dùng cá nhân kết nối với nhau dễ dàng.
 
