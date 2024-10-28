@@ -55,7 +55,7 @@
 - Từ ngày 18/12/2024 đến 24/12/2024: Triển khai Website lên host, nền tảng aws, docker,…
 - Từ ngày 25/12/2024 đến 31/12/2024: Kiểm thử toàn bộ dự án, hoàn thành Website, quyển báo cáo, slide thuyết trình, commit lên GitHub(commit mỗi tuần như tiến trình).
 
-## Cài đặt yêu cầu:
+1. Cài đặt yêu cầu:
     ```bash
     - Cài đặt NodeJS
     ```
