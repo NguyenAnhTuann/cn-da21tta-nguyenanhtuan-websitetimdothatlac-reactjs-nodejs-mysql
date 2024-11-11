@@ -1,4 +1,4 @@
-import * as reduxPersist from 'redux-persist';
+//import * as reduxPersist from 'redux-persist';
 
 import authReducer from "./authReducer";
 import userReducer from "./userReducer";
