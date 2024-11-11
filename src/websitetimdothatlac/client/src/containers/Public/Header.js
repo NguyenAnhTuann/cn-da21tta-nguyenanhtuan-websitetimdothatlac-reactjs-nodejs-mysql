@@ -11,7 +11,7 @@ const Header = () => {
     const navigate = useNavigate()
     const goLogin = useCallback(() => {
         navigate(path.LOGIN)
-    }, [])
+    }, [navigate])
 
     return (
         <div className='w-1100'>
