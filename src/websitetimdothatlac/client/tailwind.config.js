@@ -8,7 +8,7 @@ module.exports = {
       width: {
         '1100': '1100px'
       },
-      backgroudColor: {
+      backgroundColor: {
         primary: '#F5F5F5',
         secondary1: '#1266dd',
         secondary2: '#73859'
