@@ -4,10 +4,11 @@ import { path } from './ultils/constant'
 
 function App() {
   return (
-    <div className="h-screen w-screen bg-primary">
+    <div className="bg-primary">
       <Routes>
         <Route path={path.HOME} element={<Home />}>
           <Route path='*' element={<Homepage />} />
+          <Route path={path.HOME__PAGE} element={<Homepage />} />
           <Route path={path.LOGIN} element={<Login />} />
           <Route path={path.DO_NHAT_DUOC} element={<FoundItems />} />
           <Route path={path.DO_THAT_LAC} element={<LostItems />} />

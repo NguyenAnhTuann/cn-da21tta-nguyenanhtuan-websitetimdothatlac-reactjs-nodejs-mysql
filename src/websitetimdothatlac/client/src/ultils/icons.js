@@ -1,5 +1,5 @@
 import { FiPlusCircle } from "react-icons/fi";
-import { GrNext } from "react-icons/gr";
+import { GrNext, GrLinkNext, GrLinkPrevious } from "react-icons/gr";
 import { BsChevronRight } from "react-icons/bs";
 import { CiCalendarDate } from "react-icons/ci";
 import { HiOutlineLocationMarker } from "react-icons/hi";
@@ -14,7 +14,9 @@ const icons = {
     CiCalendarDate,
     HiOutlineLocationMarker,
     IoIosApps,
-    FiSearch
+    FiSearch,
+    GrLinkNext,
+    GrLinkPrevious
 }
 
 export default icons

@@ -11,8 +11,9 @@ module.exports = {
       title: {
         type: Sequelize.STRING
       },
-      label: {
-        type: Sequelize.STRING
+      created: {
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
       },
       address: {
         type: Sequelize.STRING
@@ -24,9 +25,6 @@ module.exports = {
         type: Sequelize.TEXT
       },
       userId: {
-        type: Sequelize.STRING
-      },
-      authorId: {
         type: Sequelize.STRING
       },
       imagesId: {
