@@ -1,10 +1,16 @@
 import React, { memo } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { formatVietnameseToString } from '../ultils/Common/formatVietnameseToString'
 
-const Item = ({images, user, title, created, description, address}) => {
+const Item = ({images, user, title, created, description, address, id}) => {
+    const navigate = useNavigate()
     return (
         <div className='w-full flex border-t border-black py-4'>
-            <div className='w-2/5 flex gap-[2px] items-center relative cursor-pointer'>
-                <img src={images[0]} alt="preview" className='w-[190px] h-[170px] object-cover' />
+            <Link
+            to={`chi-tiet/${formatVietnameseToString(title)}/${id}`}
+            className='w-2/5 flex gap-[2px] items-center relative cursor-pointer'
+            >
+                <img src={images[0]} alt="preview" className='w-[250px] h-[250px] object-cover' />
                 {/* <img src={images[1]} alt="preview" className='w-[140px] h-[120px] object-cover' />
                 <img src={images[2]} alt="preview" className='w-[140px] h-[120px] object-cover' />
                 <img src={images[3]} alt="preview" className='w-[140px] h-[120px] object-cover' /> */}
@@ -14,7 +20,7 @@ const Item = ({images, user, title, created, description, address}) => {
                         <img key={index} src={i} alt="preview" className='w-[140px] h-[120px] object-cover' />
                     )
                 })} khi nào cần thì dùng vì nó dùng hiển thị nhiều ảnh + const indexs = [0] */}
-            </div>
+            </Link>
             <div className='w-3/5'>
                 <div>
                     <div className='text-red-600 font-medium '>
@@ -33,11 +39,11 @@ const Item = ({images, user, title, created, description, address}) => {
                     {description}
                 </p>
                 <div className='flex items-center my-5 justify-between'>
-                    <div className='flex items-center'>
+                    <div className='flex items-center gap-3'>
                     <img src="https://static.vecteezy.com/system/resources/thumbnails/001/840/618/small/picture-profile-icon-male-icon-human-or-people-sign-and-symbol-free-vector.jpg" alt="avatar" className='w-[30px] h-[30px] object-cover rounded-full' />
                     <p>{user.name}</p>
                     </div>
-                    <div className='flex items-center gap-1'>
+                    <div className='flex items-center gap-3'>
                         <button
                         type='button'
                         className='bg-blue-700 text-white p-1 rounded-md'

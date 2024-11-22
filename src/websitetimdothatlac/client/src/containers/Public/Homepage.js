@@ -16,16 +16,16 @@ const Homepage = () => {
             </div>
             <Province />
             <div className='w-full flex gap-4'>
-                <div className='w-[70%]'>
-                    <List />
-                    <Pagination number={params.get('page')} />
+                <div className='w-[100%]'>
+                    <List page={params.get('page')} />
+                    <Pagination page={params.get('page')} />
                     <div className='h-[500px]'>
 
                     </div>
                     </div>
-                <div className='w-[30%] border border-green-500'> 
+                {/* <div className='w-[30%] border border-green-500'> 
                     Sidebar
-                </div>
+                </div> */}
             </div>
         </div>
     )

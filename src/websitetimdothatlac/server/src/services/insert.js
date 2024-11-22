@@ -5,7 +5,7 @@ import donhatduoc from '../../data/donhatduoc.json'
 import dothatlac from '../../data/dothatlac.json'
 import generateCode from '../../ultis/generateCode'
 require('dotenv').config()
-const dataBody = donhatduoc.body
+const dataBody = dothatlac.body
 
 
 const hashPassword = password => bcrypt.hashSync(password, bcrypt.genSaltSync(12))

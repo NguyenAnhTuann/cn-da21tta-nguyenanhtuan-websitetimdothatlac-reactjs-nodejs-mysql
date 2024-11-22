@@ -4,12 +4,15 @@ import { getPosts, getPostsLimit } from '../../store/actions/post'
 import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment';
 
-const List = () => {
+const List = ({ page }) => {
     const dispatch = useDispatch()
-    const { posts, count } = useSelector(state => state.posts)
+    const { posts } = useSelector(state => state.posts)
     useEffect(() => {
-        dispatch(getPostsLimit(0))
-    }, [])
+        let offset = page ? +page - 1 : 0
+        dispatch(getPostsLimit(offset))
+        
+    }, [page])
+
     return (
         <div className='w-full p-2 bg-white shadow-md rounded-md px-6'>
             <div className='flex items-center justify-between my-3'>
@@ -32,11 +35,12 @@ const List = () => {
                             images={JSON.parse(item?.images?.image)}
                             title={item?.title}
                             user={item?.user}
+                            id={item?.id}
                         />
                     )
                 })}
             </div>
-            
+
         </div>
     )
 }

@@ -1,24 +1,29 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import logo from '../../assets/logo.png';
 import { Button } from "../../components";
 import * as actions from '../../store/actions';
 import { path } from "../../ultils/constant";
 import icons from "../../ultils/icons";
 
+
 const { FiPlusCircle } = icons
 
 const Header = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [searchParams] = useSearchParams()
+    const headerRef = useRef()
     const { isLoggedIn } = useSelector(state => state.auth)
     const goLogin = useCallback((flag) => {
         navigate(path.LOGIN, { state: { flag } })
     }, [navigate])
-
+    useEffect(() => {
+        headerRef.current.scrollIntoView({ behavior: 'smooth', block: 'start'})
+    }, [searchParams.get('page')])
     return (
-        <div className='w-3/5'>
+        <div ref={headerRef} className='w-3/5'>
             <div className='w-full flex items-center justify-between'>
                 <Link to={'/'}>
                     <img

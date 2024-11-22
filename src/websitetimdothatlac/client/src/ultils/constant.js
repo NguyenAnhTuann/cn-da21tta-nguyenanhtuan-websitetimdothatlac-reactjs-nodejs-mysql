@@ -3,7 +3,8 @@ export const path = {
     HOME__PAGE: ':page',
     LOGIN: 'login',
     DO_NHAT_DUOC: 'do-nhat-duoc',
-    DO_THAT_LAC: 'do-that-lac'
+    DO_THAT_LAC: 'do-that-lac',
+    DETAIL_POST__TITLE__POST: 'chi-tiet/:title/:postId'
 }
 
 export const text = {
