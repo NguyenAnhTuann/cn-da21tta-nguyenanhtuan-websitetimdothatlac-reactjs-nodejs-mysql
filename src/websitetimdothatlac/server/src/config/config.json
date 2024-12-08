@@ -5,7 +5,9 @@
     "database": "timdothatlac",
     "host": "127.0.0.1",
     "dialect": "mysql",
-    "logging": false
+    "logging": false,
+     "charset": "utf8mb4",
+  "collation": "utf8mb4_general_ci"
   },
   "test": {
     "username": "root",

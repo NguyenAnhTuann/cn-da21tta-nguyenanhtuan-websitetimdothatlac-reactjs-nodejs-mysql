@@ -10,7 +10,8 @@
             ],
             "header": {
                 "title": "Kính mát Gentle Monster",
-                "address": "Địa chỉ: 101 Lý Tự Trọng, Phường Bến Nghé, Quận 1, Thành phố Hồ Chí Minh"
+                "address": "Địa chỉ: 101 Lý Tự Trọng, Phường Bến Nghé, Quận 1, Thành phố Hồ Chí Minh",
+                "category": "ĐỒ THẤT LẠC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -44,7 +45,8 @@
             ],
             "header": {
                 "title": "Điện thoại iPhone 12",
-                "address": "Địa chỉ: 50 Hoàng Diệu, Phường Nam Ngạn, Thành phố Thanh Hóa, Tỉnh Thanh Hóa"
+                "address": "Địa chỉ: 50 Hoàng Diệu, Phường Nam Ngạn, Thành phố Thanh Hóa, Tỉnh Thanh Hóa",
+                "category": "ĐỒ THẤT LẠC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -79,7 +81,8 @@
             ],
             "header": {
                 "title": "Tai nghe AirPods Pro",
-                "address": "Địa chỉ: 25 Nguyễn Trãi, Phường Bà Triệu, Thành phố Huế, Tỉnh Thừa Thiên Huế"
+                "address": "Địa chỉ: 25 Nguyễn Trãi, Phường Bà Triệu, Thành phố Huế, Tỉnh Thừa Thiên Huế",
+                "category": "ĐỒ THẤT LẠC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -113,7 +116,8 @@
             ],
             "header": {
                 "title": "Balo laptop Kingstyle",
-                "address": "Địa chỉ: 88 Phạm Văn Đồng, Phường Mỹ Đình, Quận Nam Từ Liêm, Thành phố Hà Nội"
+                "address": "Địa chỉ: 88 Phạm Văn Đồng, Phường Mỹ Đình, Quận Nam Từ Liêm, Thành phố Hà Nội",
+                "category": "ĐỒ THẤT LẠC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -147,7 +151,8 @@
             ],
             "header": {
                 "title": "Đồng hồ Casio",
-                "address": "Địa chỉ: 12 Trần Quang Diệu, Phường Hải Cảng, Thành phố Quy Nhơn, Tỉnh Bình Định"
+                "address": "Địa chỉ: 12 Trần Quang Diệu, Phường Hải Cảng, Thành phố Quy Nhơn, Tỉnh Bình Định",
+                "category": "ĐỒ THẤT LẠC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",

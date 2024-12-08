@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import { Navigation, Search } from './index'
+import { useDispatch } from "react-redux";
+import * as actions from "../../store/actions";
 
 const Home = () => {
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(actions.getProvinces())
+    }, [])
     return (
         <div className='w-full flex flex-col items-center h-full'>
             <Header />

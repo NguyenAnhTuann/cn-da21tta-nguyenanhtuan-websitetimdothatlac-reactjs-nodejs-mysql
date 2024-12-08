@@ -10,7 +10,8 @@
             ],
             "header": {
                 "title": "VÍ MÀU ĐEN",
-                "address": "Địa chỉ: 67 Hùng Vương, Phường 5, Huyện Châu Thành, Tỉnh Trà Vinh"
+                "address": "Địa chỉ: 67 Hùng Vương, Phường 5, Huyện Châu Thành, Tỉnh Trà Vinh",
+                "category": "ĐỒ NHẶT ĐƯỢC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -46,7 +47,8 @@
             ],
             "header": {
                 "title": "TÚI XÁCH MÀU ĐEN",
-                "address": "Địa chỉ: 15 Nguyễn Huệ, Phường Lê Lợi, Thành phố Quy Nhơn, Tỉnh Bình Định"
+                "address": "Địa chỉ: 15 Nguyễn Huệ, Phường Lê Lợi, Thành phố Quy Nhơn, Tỉnh Bình Định",
+                "category": "ĐỒ NHẶT ĐƯỢC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -79,7 +81,8 @@
             ],
             "header": {
                 "title": "ĐIỆN THOẠI SAMSUNG MÀU XANH",
-                "address": "Địa chỉ: 60 Lê Lợi, Phường 4, Thành phố Đà Lạt, Tỉnh Lâm Đồng"
+                "address": "Địa chỉ: 60 Lê Lợi, Phường 4, Thành phố Đà Lạt, Tỉnh Lâm Đồng",
+                "category": "ĐỒ NHẶT ĐƯỢC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -113,7 +116,8 @@
             ],
             "header": {
                 "title": "BALO LAPTOP MÀU XÁM",
-                "address": "Địa chỉ: 21 Trần Hưng Đạo, Phường An Hải Bắc, Quận Sơn Trà, Thành phố Đà Nẵng"
+                "address": "Địa chỉ: 21 Trần Hưng Đạo, Phường An Hải Bắc, Quận Sơn Trà, Thành phố Đà Nẵng",
+                "category": "ĐỒ NHẶT ĐƯỢC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -146,7 +150,8 @@
             ],
             "header": {
                 "title": "BỘ SÁCH HARRY POTTER",
-                "address": "Địa chỉ: Số 5, Trần Phú, Phường Lộc Thọ, Thành phố Nha Trang, Tỉnh Khánh Hòa"
+                "address": "Địa chỉ: Số 5, Trần Phú, Phường Lộc Thọ, Thành phố Nha Trang, Tỉnh Khánh Hòa",
+                "category": "ĐỒ NHẶT ĐƯỢC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -180,7 +185,8 @@
             ],
             "header": {
                 "title": "ÁO KHOÁC JEAN MÀU XANH",
-                "address": "Địa chỉ: 12 Trần Quốc Toản, Phường 8, Quận 3, Thành phố Hồ Chí Minh"
+                "address": "Địa chỉ: 12 Trần Quốc Toản, Phường 8, Quận 3, Thành phố Hồ Chí Minh",
+                "category": "ĐỒ NHẶT ĐƯỢC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -214,7 +220,8 @@
             ],
             "header": {
                 "title": "ĐÔI GIÀY NIKE MÀU TRẮNG",
-                "address": "Địa chỉ: 45 Lý Thường Kiệt, Phường Minh Khai, Thành phố Hưng Yên, Tỉnh Hưng Yên"
+                "address": "Địa chỉ: 45 Lý Thường Kiệt, Phường Minh Khai, Thành phố Hưng Yên, Tỉnh Hưng Yên",
+                "category": "ĐỒ NHẶT ĐƯỢC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -248,7 +255,8 @@
             ],
             "header": {
                 "title": "MẮT KÍNH RAYBAN",
-                "address": "Địa chỉ: 78 Nguyễn Văn Cừ, Phường Ngọc Hà, Thành phố Hà Nội"
+                "address": "Địa chỉ: 78 Nguyễn Văn Cừ, Phường Ngọc Hà, Thành phố Hà Nội",
+                "category": "ĐỒ NHẶT ĐƯỢC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -282,7 +290,8 @@
             ],
             "header": {
                 "title": "ĐỒNG HỒ CASIO MÀU ĐEN",
-                "address": "Địa chỉ: 23 Lê Lợi, Phường 1, Thành phố Vũng Tàu, Tỉnh Bà Rịa - Vũng Tàu"
+                "address": "Địa chỉ: 23 Lê Lợi, Phường 1, Thành phố Vũng Tàu, Tỉnh Bà Rịa - Vũng Tàu",
+                "category": "ĐỒ NHẶT ĐƯỢC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -316,7 +325,8 @@
             ],
             "header": {
                 "title": "DÂY CHUYỀN VÀNG",
-                "address": "Địa chỉ: 101 Lý Tự Trọng, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh"
+                "address": "Địa chỉ: 101 Lý Tự Trọng, Phường Bến Thành, Quận 1, Thành phố Hồ Chí Minh",
+                "category": "ĐỒ NHẶT ĐƯỢC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -350,7 +360,8 @@
             ],
             "header": {
                 "title": "TÚI XÁCH DA MÀU NÂU",
-                "address": "Địa chỉ: 28 Nguyễn Tất Thành, Thành phố Huế, Tỉnh Thừa Thiên Huế"
+                "address": "Địa chỉ: 28 Nguyễn Tất Thành, Thành phố Huế, Tỉnh Thừa Thiên Huế",
+                "category": "ĐỒ NHẶT ĐƯỢC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -383,7 +394,8 @@
             ],
             "header": {
                 "title": "MẮT KÍNH PRADA",
-                "address": "Địa chỉ: 34 Phan Bội Châu, Thành phố Hội An, Tỉnh Quảng Nam"
+                "address": "Địa chỉ: 34 Phan Bội Châu, Thành phố Hội An, Tỉnh Quảng Nam",
+                "category": "ĐỒ NHẶT ĐƯỢC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -416,7 +428,8 @@
             ],
             "header": {
                 "title": "ĐIỆN THOẠI IPHONE 13",
-                "address": "Địa chỉ: 25 Trần Phú, Thành phố Ninh Bình, Tỉnh Ninh Bình"
+                "address": "Địa chỉ: 25 Trần Phú, Thành phố Ninh Bình, Tỉnh Ninh Bình",
+                "category": "ĐỒ NHẶT ĐƯỢC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -449,7 +462,8 @@
             ],
             "header": {
                 "title": "ÁO THUN LOGO ADIDAS",
-                "address": "Địa chỉ: 10 Nguyễn Thái Học, Thành phố Sài Gòn, Tỉnh Hồ Chí Minh"
+                "address": "Địa chỉ: 10 Nguyễn Thái Học, Thành phố Sài Gòn, Tỉnh Hồ Chí Minh",
+                "category": "ĐỒ NHẶT ĐƯỢC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -482,7 +496,8 @@
             ],
             "header": {
                 "title": "CHÌA KHÓA XE MÁY HONDA",
-                "address": "Địa chỉ: 50 Lê Lai, Thành phố Cần Thơ, Tỉnh Cần Thơ"
+                "address": "Địa chỉ: 50 Lê Lai, Thành phố Cần Thơ, Tỉnh Cần Thơ",
+                "category": "ĐỒ NHẶT ĐƯỢC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -515,7 +530,8 @@
             ],
             "header": {
                 "title": "ĐIỆN THOẠI OPPO",
-                "address": "Địa chỉ: 44 Lý Tự Trọng, Thành phố Vũng Tàu, Tỉnh Bà Rịa - Vũng Tàu"
+                "address": "Địa chỉ: 44 Lý Tự Trọng, Thành phố Vũng Tàu, Tỉnh Bà Rịa - Vũng Tàu",
+                "category": "ĐỒ NHẶT ĐƯỢC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -548,7 +564,8 @@
             ],
             "header": {
                 "title": "BALO KÉO",
-                "address": "Địa chỉ: 11 Nguyễn Văn Cừ, Thành phố Nam Định, Tỉnh Nam Định"
+                "address": "Địa chỉ: 11 Nguyễn Văn Cừ, Thành phố Nam Định, Tỉnh Nam Định",
+                "category": "ĐỒ NHẶT ĐƯỢC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -581,7 +598,8 @@
             ],
             "header": {
                 "title": "GIÀY THỂ THAO NIKE",
-                "address": "Địa chỉ: 16 Trần Quốc Toản, Quận Bình Thạnh, Thành phố Hồ Chí Minh"
+                "address": "Địa chỉ: 16 Trần Quốc Toản, Quận Bình Thạnh, Thành phố Hồ Chí Minh",
+                "category": "ĐỒ NHẶT ĐƯỢC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -614,7 +632,8 @@
             ],
             "header": {
                 "title": "LAPTOP HP",
-                "address": "Địa chỉ: 20 Nguyễn Thái Bình, Thành phố Phan Thiết, Tỉnh Bình Thuận"
+                "address": "Địa chỉ: 20 Nguyễn Thái Bình, Thành phố Phan Thiết, Tỉnh Bình Thuận",
+                "category": "ĐỒ NHẶT ĐƯỢC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",
@@ -647,7 +666,8 @@
             ],
             "header": {
                 "title": "ÁO KHOÁC LEN",
-                "address": "Địa chỉ: 33 Hùng Vương, Thành phố Đà Lạt, Tỉnh Lâm Đồng"
+                "address": "Địa chỉ: 33 Hùng Vương, Thành phố Đà Lạt, Tỉnh Lâm Đồng",
+                "category": "ĐỒ NHẶT ĐƯỢC"
             },
             "mainContent": {
                 "header": "Thông tin mô tả",

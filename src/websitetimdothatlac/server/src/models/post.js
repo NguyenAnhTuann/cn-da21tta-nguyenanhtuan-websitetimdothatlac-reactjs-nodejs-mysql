@@ -17,12 +17,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   Post.init({
     title: DataTypes.STRING,
+    category: DataTypes.STRING,
     created: {
       type: DataTypes.DATE,
       defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
     },
     address: DataTypes.STRING,
-    category: DataTypes.STRING,
+    provinceCode: DataTypes.STRING,
     description: DataTypes.TEXT,
     userId: DataTypes.STRING,
     imagesId: DataTypes.STRING,

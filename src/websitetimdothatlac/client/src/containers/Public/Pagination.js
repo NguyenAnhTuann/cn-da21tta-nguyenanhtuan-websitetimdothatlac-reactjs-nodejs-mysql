@@ -6,8 +6,9 @@ import icons from '../../ultils/icons';
 const { GrLinkNext, GrLinkPrevious } = icons
 
 const Pagination = ({ page }) => {
-    const { count, posts} = useSelector(state => state.post || {});
-    const postsPerPage = 5;
+    const { count} = useSelector(state => state.post || {});
+    // const postsPerPage = 5;
+    const postsPerPage = process.env.REACT_APP_LIMIT_POSTS || 5; // Sử dụng limit bài đăng từ env hoặc mặc định
     const [arrPage, setArrPage] = useState([])
     const [currentPage, setCurrentPage] = useState(+page || 1)
     const [isHideEnd, setIsHideEnd] = useState(false)
@@ -23,7 +24,7 @@ const Pagination = ({ page }) => {
         currentPage >= (maxPage - 1) ? setIsHideEnd(true) : setIsHideEnd(false)
         currentPage <= 2 ? setIsHideStart(true) : setIsHideStart(false)
 
-    }, [count, posts, currentPage])
+    }, [count, postsPerPage, currentPage])
 
     return (
         <div className='flex items-center justify-center gap-2 py-5'>

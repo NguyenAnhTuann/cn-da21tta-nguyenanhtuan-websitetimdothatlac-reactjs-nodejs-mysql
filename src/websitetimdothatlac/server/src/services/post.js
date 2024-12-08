@@ -7,9 +7,9 @@ export const getPostsService = () => new Promise(async(resolve, reject) => {
             nest: true,
             include: [
                 {model: db.Image, as: 'images', attributes: ['image']},
-                {model: db.User, as: 'user', attributes: ['name', 'phone', 'zalo']}
+                {model: db.User, as: 'user', attributes: ['name', 'phone', 'zalo']},
             ],
-            attributes: ['id', 'title', 'created', 'address', 'description' ]
+            attributes: ['id', 'title', 'category', 'created', 'address', 'description']
         })
         resolve({
             err: response ? 0 : 1,
@@ -29,11 +29,12 @@ export const getPostsLimitService = (offset) => new Promise(async(resolve, rejec
             nest: true,
             offset: offset * (+process.env.LIMIT) || 0,
             limit: +process.env.LIMIT,
+            // where: category ? { category } : {},
             include: [
                 {model: db.Image, as: 'images', attributes: ['image']},
-                {model: db.User, as: 'user', attributes: ['name', 'phone', 'zalo']}
+                {model: db.User, as: 'user', attributes: ['name', 'phone', 'zalo']},
             ],
-            attributes: ['id', 'title', 'created', 'address', 'description' ]
+            attributes: ['id', 'title', 'category', 'created', 'address', 'description' ]
         })
         resolve({
             err: response ? 0 : 1,

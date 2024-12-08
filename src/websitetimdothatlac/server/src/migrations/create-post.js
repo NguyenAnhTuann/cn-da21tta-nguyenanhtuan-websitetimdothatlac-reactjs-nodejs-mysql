@@ -11,6 +11,9 @@ module.exports = {
       title: {
         type: Sequelize.STRING
       },
+      category: {
+        type: Sequelize.STRING
+      },
       created: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW,
@@ -18,7 +21,7 @@ module.exports = {
       address: {
         type: Sequelize.STRING
       },
-      category: {
+      provinceCode: {
         type: Sequelize.STRING
       },
       description: {

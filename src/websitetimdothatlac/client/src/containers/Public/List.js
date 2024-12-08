@@ -1,17 +1,19 @@
-import React, { useEffect } from 'react'
-import { Button, Item } from '../../components'
-import { getPosts, getPostsLimit } from '../../store/actions/post'
-import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button, Item } from '../../components';
+import { getPostsLimit } from '../../store/actions/post';
 
-const List = ({ page }) => {
+const List = ({ page, category }) => {
     const dispatch = useDispatch()
     const { posts } = useSelector(state => state.posts)
+
     useEffect(() => {
         let offset = page ? +page - 1 : 0
-        dispatch(getPostsLimit(offset))
+        dispatch(getPostsLimit(offset, category))
         
-    }, [page])
+        
+    }, [page, category])
 
     return (
         <div className='w-full p-2 bg-white shadow-md rounded-md px-6'>
@@ -29,6 +31,7 @@ const List = ({ page }) => {
                     return (
                         <Item
                             key={item?.id}
+                            category={item?.category}
                             created={item?.created ? moment(item.created).format('DD/MM/YYYY HH:mm') : 'N/A'}
                             address={item?.address}
                             description={JSON.parse(item?.description)}
