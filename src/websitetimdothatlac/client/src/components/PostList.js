@@ -208,6 +208,14 @@ const PostList = () => {
               }}
             ></p>
 
+            {/* Mô tả */}
+            <p
+              className="text-gray-600"
+              dangerouslySetInnerHTML={{
+                __html: `<strong>Mô tả:</strong> ${highlightMatch(post.description || 'Không có mô tả', searchTerm)}`,
+              }}
+            ></p>
+
             {/* Thông tin người đăng */}
             <p className="text-gray-600">
               <strong>Người đăng:</strong> {post.name}

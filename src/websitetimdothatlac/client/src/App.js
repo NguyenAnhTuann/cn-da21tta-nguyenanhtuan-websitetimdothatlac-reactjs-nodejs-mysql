@@ -2,7 +2,7 @@ import React from 'react';
 import Header from './components/Header';
 import PostList from './components/PostList';
 import Footer from './components/Footer';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import EditProfile from './components/EditProfile';
@@ -12,36 +12,51 @@ import EditMyPosts from './components/EditMyPosts';
 import PostDetails from './components/PostDetails';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
+import AdminDashboard from './components/AdminDashboard';
+import UserManagement from './components/UserManagement';
+import PostManagement from './components/PostManagement';
 
 import "leaflet/dist/leaflet.css";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
 
+// Component Layout để kiểm tra đường dẫn hiện tại
+const Layout = ({ children }) => {
+  const location = useLocation(); // Lấy đường dẫn hiện tại
+  const isAdminPage = location.pathname.startsWith('/admin'); // Kiểm tra nếu đường dẫn bắt đầu với '/admin'
 
-
+  return (
+    <>
+      {/* Không hiển thị Header và Footer trên các trang Admin */}
+      {!isAdminPage && <Header />}
+      {children}
+      {!isAdminPage && <Footer />}
+    </>
+  );
+};
 
 const App = () => {
   return (
     <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={
-          <div className="main-content">
-            <PostList />
-          </div>
-        } />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/edit-profile" element={<EditProfile />} />
-        <Route path="/new-post" element={<NewPost />} />
-        <Route path="/my-posts" element={<EditMyPosts />} />
-        <Route path="/edit-my-post/:id" element={<EditPost />} />
-        <Route path="/posts/:id" element={<PostDetails />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+      <Layout>
+        <Routes>
+          {/* Các Route dành cho người dùng */}
+          <Route path="/" element={<PostList />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/new-post" element={<NewPost />} />
+          <Route path="/my-posts" element={<EditMyPosts />} />
+          <Route path="/edit-my-post/:id" element={<EditPost />} />
+          <Route path="/posts/:id" element={<PostDetails />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
-
-      </Routes>
-      <Footer />
+          {/* Các Route dành cho Admin */}
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/users" element={<UserManagement />} />
+          <Route path="/admin/posts" element={<PostManagement />} />
+        </Routes>
+      </Layout>
     </Router>
   );
 };

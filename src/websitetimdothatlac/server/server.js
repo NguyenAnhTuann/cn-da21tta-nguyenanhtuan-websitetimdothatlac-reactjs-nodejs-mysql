@@ -5,6 +5,8 @@ const postRoutes = require('./routes/postRoutes');
 const cors = require('cors');
 const path = require('path');
 const morgan = require('morgan');
+const adminRoutes = require('./routes/adminRoutes');
+
 require('dotenv').config();
 
 
@@ -18,6 +20,7 @@ app.use(morgan('dev'));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Serve static files securely
 app.use('/uploads', (req, res, next) => {

@@ -18,22 +18,27 @@ const Login = () => {
         email,
         password,
       });
-
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('userName', response.data.name);
-
+    
+      const { token, role, name } = response.data;
+    
+      localStorage.setItem('token', token);
+      localStorage.setItem('userName', name);
+      localStorage.setItem('role', role);
+    
       setSuccessMessage(true);
-
+    
       setTimeout(() => {
-        window.location.href = '/';
+        if (role === 'admin') {
+          window.location.href = '/admin';
+        } else {
+          window.location.href = '/';
+        }
       }, 1500);
     } catch (error) {
       setErrorMessage('❌ Sai email hoặc mật khẩu. Vui lòng thử lại!');
       console.error('Đăng nhập lỗi:', error);
-    } finally {
-      setIsLoading(false);
     }
-  };
+  };    
 
   return (
     <div className="relative min-h-screen flex justify-center items-center bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 p-6">

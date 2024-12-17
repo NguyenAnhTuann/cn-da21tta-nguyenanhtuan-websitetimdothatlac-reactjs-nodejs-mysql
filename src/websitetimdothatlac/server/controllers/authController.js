@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const db = require('../config/db');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const moment = require('moment-timezone');
+
 
 // Đăng ký người dùng
 const registerUser = (req, res) => {
@@ -31,20 +33,85 @@ const registerUser = (req, res) => {
 const loginUser = (req, res) => {
   const { email, password } = req.body;
 
-  db.query('SELECT * FROM Users WHERE email = ?', [email], (err, result) => {
+  // Kiểm tra bảng Admins trước
+  db.query('SELECT * FROM Admins WHERE email = ?', [email], (err, result) => {
     if (err) return res.status(500).json({ message: 'Lỗi server' });
-    if (result.length === 0) return res.status(400).json({ message: 'Người dùng không tồn tại' });
 
-    const user = result[0];
-    bcrypt.compare(password, user.password, (err, isMatch) => {
-      if (err) return res.status(500).json({ message: 'Lỗi kiểm tra mật khẩu' });
-      if (!isMatch) return res.status(400).json({ message: 'Mật khẩu không đúng' });
+    if (result.length > 0) {
+      const admin = result[0];
+      bcrypt.compare(password, admin.password, (err, isMatch) => {
+        if (err) return res.status(500).json({ message: 'Lỗi kiểm tra mật khẩu' });
+        if (!isMatch) return res.status(400).json({ message: 'Mật khẩu không đúng' });
 
-      const token = jwt.sign({ userId: user.user_id }, 'secretkey', { expiresIn: '1h' });
-      res.status(200).json({ message: 'Đăng nhập thành công', token, name: user.name });
+        const token = jwt.sign({ adminId: admin.admin_id, role: 'admin' }, 'secretkey', { expiresIn: '1h' });
+        return res.status(200).json({ message: 'Đăng nhập Admin thành công', token, role: 'admin', name: admin.name });
+      });
+    } else {
+      // Nếu không phải admin, kiểm tra bảng Users
+      db.query('SELECT * FROM Users WHERE email = ?', [email], (err, result) => {
+        if (err) return res.status(500).json({ message: 'Lỗi server' });
+        if (result.length === 0) return res.status(400).json({ message: 'Người dùng không tồn tại' });
+
+        const user = result[0];
+        bcrypt.compare(password, user.password, (err, isMatch) => {
+          if (err) return res.status(500).json({ message: 'Lỗi kiểm tra mật khẩu' });
+          if (!isMatch) return res.status(400).json({ message: 'Mật khẩu không đúng' });
+
+          const token = jwt.sign({ userId: user.user_id, role: 'user' }, 'secretkey', { expiresIn: '1h' });
+          res.status(200).json({ message: 'Đăng nhập thành công', token, role: 'user', name: user.name });
+        });
+      });
+    }
+  });
+};
+
+// Tạo tài khoản admin mặc định
+const createAdminAccount = () => {
+  const adminId = 1; // ID cố định vì admin_id không tự tăng
+  const adminEmail = 'websitetimdothatlac@gmail.com';
+  const adminPassword = 'admin2024(@)';
+  const adminName = 'Admin Website Tìm Đồ Thất Lạc';
+  const adminPhone = '0869094929';
+
+  // Kiểm tra xem admin đã tồn tại chưa
+  db.query('SELECT * FROM Admins WHERE email = ?', [adminEmail], (err, result) => {
+    if (err) {
+      console.error('Lỗi server khi kiểm tra admin:', err);
+      return;
+    }
+    if (result.length > 0) {
+      console.log('Tài khoản admin đã tồn tại.');
+      return;
+    }
+
+    // Mã hóa mật khẩu
+    bcrypt.hash(adminPassword, 10, (err, hashedPassword) => {
+      if (err) {
+        console.error('Lỗi khi mã hóa mật khẩu admin:', err);
+        return;
+      }
+
+      // Thêm tài khoản admin vào database
+      db.query(
+        'INSERT INTO Admins (admin_id, name, email, password, phone) VALUES (?, ?, ?, ?, ?)',
+        [adminId, adminName, adminEmail, hashedPassword, adminPhone],
+        (err) => {
+          if (err) {
+            console.error('Lỗi khi thêm tài khoản admin vào database:', err);
+          } else {
+            console.log('Tạo tài khoản admin mặc định thành công.');
+          }
+        }
+      );
     });
   });
 };
+
+
+// Gọi hàm tạo tài khoản admin khi file này được load
+createAdminAccount();
+
+
 
 // Gửi mã OTP đến email
 const sendOtpToEmail = (req, res) => {
@@ -56,7 +123,7 @@ const sendOtpToEmail = (req, res) => {
 
     const otp = crypto.randomInt(100000, 999999);
     // const expiry = Date.now() +  5 * 60 * 1000;
-    const expiry = new Date(Date.now() + 5 * 60 * 1000).toISOString().slice(0, 19).replace('T', ' ');
+    const expiry = moment().tz("Asia/Ho_Chi_Minh").add(5, 'minutes').format('YYYY-MM-DD HH:mm:ss'); // Thêm 5 phút
 
     db.query('UPDATE Users SET otp = ?, otp_expiry = ? WHERE email = ?', [otp, expiry, email], async (err) => {
       if (err) return res.status(500).json({ message: 'Lỗi khi lưu OTP vào database.' });
@@ -90,7 +157,7 @@ const sendOtpToEmail = (req, res) => {
             </div>
             
             <!-- Body -->
-            <div style="padding: 20px; line-height: 1.6; color: #333;">
+            <div style="padding: 20px; line-height: 1.6; color: #888;">
               <p style="font-size: 16px;">
                 Xin chào, <strong>${email}</strong>,
               </p>

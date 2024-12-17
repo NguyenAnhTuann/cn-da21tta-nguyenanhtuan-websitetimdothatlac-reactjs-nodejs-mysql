@@ -178,6 +178,18 @@ router.delete('/delete/:id', authenticateToken, (req, res) => {
     });
 });
 
+//API: người quản trị xóa bài đăng
+router.delete('/admin/posts/:id', authenticateToken, (req, res) => {
+    const postId = req.params.id;
+
+    db.query('DELETE FROM Posts WHERE post_id = ?', [postId], (err, result) => {
+        if (err) {
+            console.error('Lỗi khi xóa bài đăng:', err);
+            return res.status(500).json({ message: 'Lỗi server khi xóa bài đăng.' });
+        }
+        res.status(200).json({ message: 'Xóa bài đăng thành công.' });
+    });
+});
 
 
 module.exports = router;
