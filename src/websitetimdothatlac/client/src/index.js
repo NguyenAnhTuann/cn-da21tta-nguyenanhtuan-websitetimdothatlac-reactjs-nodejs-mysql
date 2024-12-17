@@ -1,23 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import React from "react";
+import "./styles.css";
+import { createRoot } from 'react-dom/client';
 import App from './App';
-import { PersistGate } from 'redux-persist/integration/react'
-import { Provider } from 'react-redux';
-import reduxStore from './redux';
-import { BrowserRouter } from 'react-router-dom'
+import "leaflet/dist/leaflet.css";
+import "leaflet-control-geocoder/dist/Control.Geocoder.css";
 
 
-const { store, persistor} = reduxStore()
+const container = document.getElementById('root');
+const root = createRoot(container);
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-<Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-    <BrowserRouter>
-    <App/>
-    </BrowserRouter>
-    </PersistGate>
-</Provider>
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
 );
+
 

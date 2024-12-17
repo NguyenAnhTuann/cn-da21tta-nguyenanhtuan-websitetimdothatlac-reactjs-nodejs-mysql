@@ -1,21 +1,52 @@
-import cors from 'cors'
-import express from 'express'
-import initRouters from './src/routes'
-require('dotenv').config()
-import connectDatabase from './src/config/connectDatabase'
+const express = require('express');
+const bodyParser = require('body-parser');
+const authRoutes = require('./routes/authRoutes');
+const postRoutes = require('./routes/postRoutes');
+const cors = require('cors');
+const path = require('path');
+const morgan = require('morgan');
+require('dotenv').config();
 
-const app = express()
-app.use(cors({
-    origin: process.env.CLIENT_URL,
-    methods: ["POST", "GET", "PUT", "DELETE"]
-}))
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
 
-initRouters(app)
-connectDatabase()
+const app = express();
 
-const port = process.env.PORT || 8888
-const listener = app.listen(port, () => {
-    console.log(`Server is running on the port ${listener.address().port}`)
-})
+// Middleware
+app.use(cors({ origin: 'http://localhost:3000', methods: ['GET', 'POST', 'PUT', 'DELETE'], credentials: true }));
+app.use(bodyParser.json());
+app.use(morgan('dev'));
+
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/posts', postRoutes);
+
+// Serve static files securely
+app.use('/uploads', (req, res, next) => {
+  const fileExt = path.extname(req.url).toLowerCase();
+  if (['.png', '.jpg', '.jpeg', '.gif'].includes(fileExt)) {
+    express.static('uploads')(req, res, next);
+  } else {
+    res.status(403).json({ message: 'Không được phép truy cập file này.' });
+  }
+});
+
+// Handle 404 errors
+app.use((req, res, next) => {
+  res.status(404).json({ message: 'Route không tồn tại.' });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Đã xảy ra lỗi từ server. Vui lòng thử lại sau.' });
+});
+
+// Start the server
+app.listen(5000, () => {
+  console.log('Server đang chạy tại http://localhost:5000');
+});
+
+// Middleware để tắt cache
+app.use((req, res, next) => {
+  res.set('Cache-Control', 'no-store');
+  next();
+});

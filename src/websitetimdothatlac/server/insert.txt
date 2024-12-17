@@ -1,2 +1,0 @@
-INSERT INTO categories (code, value, header, subheader, createdAt, updatedAt) VALUES ("DND", "Đồ nhặt được","TỔNG HỢP TẤT CẢ NHỮNG MÓN ĐỒ NHẶT ĐƯỢC", "Có mô tả đầy đủ của món đồ nhặt được giúp người đánh rơi tìm lại dễ dàng.", current_timestamp, current_timestamp);
-INSERT INTO categories (code, value, header, subheader, createdAt, updatedAt) VALUES ("DTL", "Đồ thất lạc","TỔNG HỢP TẤT CẢ NHỮNG MÓN ĐỒ THẤT LẠC", "Có mô tả đầy đủ của món đồ thất lạc giúp người đánh rơi tìm lại dễ dàng.", current_timestamp, current_timestamp);
