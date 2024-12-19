@@ -5,26 +5,41 @@ const authenticateToken = require('../middlewares/authenticateToken');
 const db = require('../config/db');
 const nodemailer = require('nodemailer');
 const sendEmailNotification = require('../emailService');
+const cloudinary = require('../config/cloudinaryConfig');
 
 
 
 // Cấu hình lưu trữ file ảnh
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/'); // Thư mục lưu ảnh
+        cb(null, 'uploads/');
     },
     filename: (req, file, cb) => {
-        cb(null, `${Date.now()}-${file.originalname}`); // Đặt tên file
+        cb(null, `${Date.now()}-${file.originalname}`);
     },
 });
 
 const upload = multer({ storage });
 
 // API: Tạo bài viết mới
-router.post('/', authenticateToken, upload.single('image'), (req, res) => {
+router.post('/', authenticateToken, upload.single('image'), async (req, res) => {
     const { title, description, category, address, created } = req.body;
     const userId = req.userId;
-    const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+
+    let imageUrl = null;
+
+    // Upload ảnh lên Cloudinary
+    if (req.file) {
+        try {
+            const result = await cloudinary.uploader.upload(req.file.path, {
+                folder: 'timdothatlac',
+            });
+            imageUrl = result.secure_url; // Lấy URL ảnh từ Cloudinary
+        } catch (err) {
+            console.error('Lỗi upload ảnh lên Cloudinary:', err);
+            return res.status(500).json({ message: 'Lỗi khi tải ảnh lên server.' });
+        }
+    }
 
     const userQuery = `SELECT name, phone, zalo, fbUrl FROM Users WHERE user_id = ?`;
 
@@ -56,7 +71,7 @@ router.post('/', authenticateToken, upload.single('image'), (req, res) => {
                     category,
                     address,
                     created,
-                    // image_url: imageUrl,
+                    image_url: imageUrl, // Thêm URL ảnh
                     name,
                     phone,
                     zalo,
@@ -73,12 +88,11 @@ router.post('/', authenticateToken, upload.single('image'), (req, res) => {
                         message: 'Bài viết đã được tạo thành công nhưng không thể gửi email thông báo.',
                     });
                 }
-                
-                
             });
         });
     });
 });
+
 
 // API: Lấy danh sách bài viết
 router.get('/', (req, res) => {
@@ -174,19 +188,6 @@ router.delete('/delete/:id', authenticateToken, (req, res) => {
             return res.status(404).json({ message: 'Bài đăng không tồn tại hoặc bạn không có quyền xóa.' });
         }
 
-        res.status(200).json({ message: 'Xóa bài đăng thành công.' });
-    });
-});
-
-//API: người quản trị xóa bài đăng
-router.delete('/admin/posts/:id', authenticateToken, (req, res) => {
-    const postId = req.params.id;
-
-    db.query('DELETE FROM Posts WHERE post_id = ?', [postId], (err, result) => {
-        if (err) {
-            console.error('Lỗi khi xóa bài đăng:', err);
-            return res.status(500).json({ message: 'Lỗi server khi xóa bài đăng.' });
-        }
         res.status(200).json({ message: 'Xóa bài đăng thành công.' });
     });
 });

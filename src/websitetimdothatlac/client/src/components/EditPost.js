@@ -21,6 +21,9 @@ const EditPost = () => {
   const [position, setPosition] = useState({ lat: 10.762622, lng: 106.660172 });
   const [address, setAddress] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [notification, setNotification] = useState({ message: "", type: "" });
+
 
   useEffect(() => {
     const fetchPostDetails = async () => {
@@ -47,33 +50,40 @@ const EditPost = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:5000/api/posts/update/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          ...post,
-          address,
-          lat: position.lat,
-          lng: position.lng,
-        }),
-      });
-      if (!response.ok) throw new Error("Không thể cập nhật bài đăng.");
+    setLoading(true);
+    setTimeout(async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(`http://localhost:5000/api/posts/update/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            ...post,
+            address,
+            lat: position.lat,
+            lng: position.lng,
+          }),
+        });
 
-      alert("Cập nhật bài đăng thành công!");
-      navigate("/my-posts");
-    } catch (error) {
-      setErrorMessage(error.message);
-    }
+        if (!response.ok) throw new Error("Không thể cập nhật bài đăng.");
+        setNotification({ message: "🎉 Cập nhật bài đăng thành công!", type: "success" });
+        setTimeout(() => navigate("/my-posts"), 2000);
+      } catch (error) {
+        setNotification({ message: `❌ ${error.message}`, type: "error" });
+      } finally {
+        setLoading(false); // Kết thúc loading
+      }
+    }, 2000); // Loading 2 giây
   };
 
+
+  
   const handleDelete = async () => {
     if (!window.confirm("Bạn có chắc chắn muốn xóa bài đăng này không?")) return;
-
+    setLoading(true); // Bắt đầu loading
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(`http://localhost:5000/api/posts/delete/${id}`, {
@@ -82,12 +92,15 @@ const EditPost = () => {
       });
 
       if (!response.ok) throw new Error("Không thể xóa bài đăng.");
-      alert("Xóa bài đăng thành công!");
-      navigate("/my-posts");
+      setNotification({ message: "🗑 Xóa bài đăng thành công!", type: "success" });
+      setTimeout(() => navigate("/my-posts"), 2000);
     } catch (error) {
-      setErrorMessage(error.message);
+      setNotification({ message: `❌ ${error.message}`, type: "error" });
+    } finally {
+      setLoading(false); // Kết thúc loading
     }
   };
+
 
   const MapClickHandler = () => {
     useMapEvents({
@@ -122,9 +135,50 @@ const EditPost = () => {
 
   return (
     <div className="relative min-h-screen flex justify-center items-center bg-gradient-to-r from-gray-100 to-gray-200 p-6">
+      {/* Loading overlay */}
+      {loading && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex flex-col items-center justify-center z-50">
+          <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-white mb-6"></div>
+          <p className="text-white text-2xl font-bold">Đang xử lý, vui lòng đợi...</p>
+        </div>
+      )}
+
+      {/* Thông báo */}
+      {notification.message && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-2xl text-center max-w-md relative">
+            {/* Dấu check màu xanh */}
+            {notification.type === "success" && (
+              <div className="flex justify-center mb-4">
+                <div className="bg-green-500 text-white rounded-full h-12 w-12 flex items-center justify-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    className="h-6 w-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                </div>
+              </div>
+            )}
+
+            {/* Nội dung thông báo */}
+            <p className="text-lg font-semibold text-gray-800 mb-4">
+              {notification.message}
+            </p>
+          </div>
+        </div>
+      )}
+
       <div className="relative bg-white shadow-2xl rounded-2xl px-8 py-10 w-full max-w-3xl z-10">
         <h2 className="text-3xl font-bold text-center text-gray-700 mb-6">Chỉnh Sửa Bài Đăng</h2>
-
         {errorMessage && (
           <div className="mb-4 text-center text-red-500 font-semibold animate-pulse">
             {errorMessage}

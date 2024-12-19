@@ -13,20 +13,30 @@ const Login = () => {
     setIsLoading(true);
     setErrorMessage('');
 
+    const isEmail = /\S+@\S+\.\S+/.test(email); // Kiểm tra email
+    const isPhone = /^[0-9]{10,11}$/.test(email); // Kiểm tra số điện thoại
+
+    if (!isEmail && !isPhone) {
+      setErrorMessage('❌ Vui lòng nhập đúng email hoặc số điện thoại!');
+      setIsLoading(false);
+      return;
+    }
+
     try {
+      console.log('Dữ liệu gửi đến backend:', { identifier: email, password });
       const response = await axios.post('http://localhost:5000/api/auth/login', {
-        email,
+        identifier: email, // Truyền đúng field này
         password,
       });
-    
+
       const { token, role, name } = response.data;
-    
+
       localStorage.setItem('token', token);
       localStorage.setItem('userName', name);
       localStorage.setItem('role', role);
-    
+
       setSuccessMessage(true);
-    
+
       setTimeout(() => {
         if (role === 'admin') {
           window.location.href = '/admin';
@@ -35,10 +45,15 @@ const Login = () => {
         }
       }, 1500);
     } catch (error) {
-      setErrorMessage('❌ Sai email hoặc mật khẩu. Vui lòng thử lại!');
-      console.error('Đăng nhập lỗi:', error);
+      console.error('Lỗi từ backend:', error.response?.data || error.message);
+      setErrorMessage('❌ Sai email/số điện thoại hoặc mật khẩu. Vui lòng thử lại!');
+    } finally {
+      setIsLoading(false);
     }
-  };    
+
+  };
+
+
 
   return (
     <div className="relative min-h-screen flex justify-center items-center bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 p-6">
@@ -82,13 +97,14 @@ const Login = () => {
           {/* Email */}
           <div className="relative">
             <input
-              type="email"
-              placeholder="Nhập email"
+              type="text"
+              placeholder="Nhập email hoặc số điện thoại"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
               required
             />
+
             <span className="absolute left-4 top-3 text-gray-400">
               📧
             </span>

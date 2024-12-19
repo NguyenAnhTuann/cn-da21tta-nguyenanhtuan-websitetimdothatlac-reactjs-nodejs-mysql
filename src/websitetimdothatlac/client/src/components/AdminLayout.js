@@ -10,10 +10,7 @@ const AdminLayout = ({ children, handleLogout }) => {
           {/* Logo và Tiêu đề */}
           <div className="flex items-center gap-4">
             <div className="w-20 h-20 bg-white rounded-full flex justify-center items-center">
-              <img
-                src={logo}
-                alt="Logo"
-              />
+              <img src={logo} alt="Logo" />
             </div>
             <h1 className="text-3xl font-bold tracking-wider drop-shadow-md">
               Trang Quản Trị - Website Tìm Đồ Thất Lạc
@@ -30,6 +27,7 @@ const AdminLayout = ({ children, handleLogout }) => {
         </div>
       </header>
 
+
       {/* Main Content */}
       <main className="flex-1 container mx-auto p-6 bg-white shadow-md rounded-lg mt-6">
         {children}
@@ -45,11 +43,7 @@ const AdminLayout = ({ children, handleLogout }) => {
 
           {/* Logo */}
           <div>
-            <img
-              src={logo}
-              alt="Logo"
-              className="w-20 h-20 object-contain"
-            />
+            <img src={logo} alt="Logo" className="w-20 h-20 object-contain" />
           </div>
         </div>
       </footer>

@@ -31,39 +31,56 @@ const registerUser = (req, res) => {
 
 // Đăng nhập người dùng
 const loginUser = (req, res) => {
-  const { email, password } = req.body;
+  const { identifier, password } = req.body;
 
-  // Kiểm tra bảng Admins trước
-  db.query('SELECT * FROM Admins WHERE email = ?', [email], (err, result) => {
-    if (err) return res.status(500).json({ message: 'Lỗi server' });
+  const isPhone = /^[0-9]{10,11}$/.test(identifier); // Kiểm tra nếu là số điện thoại
+  const queryField = isPhone ? 'phone' : 'email';
+
+  console.log('Đang kiểm tra:', { queryField, identifier }); // Log cột và giá trị
+
+  // Kiểm tra bảng Users trước
+  db.query(`SELECT * FROM Users WHERE ${queryField} = ?`, [identifier], (err, result) => {
+    if (err) return res.status(500).json({ message: 'Lỗi server khi kiểm tra User.' });
 
     if (result.length > 0) {
-      const admin = result[0];
-      bcrypt.compare(password, admin.password, (err, isMatch) => {
-        if (err) return res.status(500).json({ message: 'Lỗi kiểm tra mật khẩu' });
-        if (!isMatch) return res.status(400).json({ message: 'Mật khẩu không đúng' });
+      const user = result[0];
+      bcrypt.compare(password, user.password, (err, isMatch) => {
+        if (err) return res.status(500).json({ message: 'Lỗi kiểm tra mật khẩu.' });
+        if (!isMatch) return res.status(400).json({ message: 'Mật khẩu không đúng.' });
 
-        const token = jwt.sign({ adminId: admin.admin_id, role: 'admin' }, 'secretkey', { expiresIn: '1h' });
-        return res.status(200).json({ message: 'Đăng nhập Admin thành công', token, role: 'admin', name: admin.name });
+        const token = jwt.sign({ userId: user.user_id, role: 'user' }, 'secretkey', { expiresIn: '1h' });
+        return res.status(200).json({
+          message: 'Đăng nhập thành công.',
+          token,
+          role: 'user',
+          name: user.name,
+        });
       });
     } else {
-      // Nếu không phải admin, kiểm tra bảng Users
-      db.query('SELECT * FROM Users WHERE email = ?', [email], (err, result) => {
-        if (err) return res.status(500).json({ message: 'Lỗi server' });
-        if (result.length === 0) return res.status(400).json({ message: 'Người dùng không tồn tại' });
+      // Nếu không tìm thấy trong bảng Users, kiểm tra bảng Admins
+      db.query(`SELECT * FROM Admins WHERE ${queryField} = ?`, [identifier], (err, result) => {
+        if (err) return res.status(500).json({ message: 'Lỗi server khi kiểm tra Admin.' });
+        if (result.length === 0) return res.status(400).json({ message: 'Người dùng không tồn tại.' });
 
-        const user = result[0];
-        bcrypt.compare(password, user.password, (err, isMatch) => {
-          if (err) return res.status(500).json({ message: 'Lỗi kiểm tra mật khẩu' });
-          if (!isMatch) return res.status(400).json({ message: 'Mật khẩu không đúng' });
+        const admin = result[0];
+        bcrypt.compare(password, admin.password, (err, isMatch) => {
+          if (err) return res.status(500).json({ message: 'Lỗi kiểm tra mật khẩu.' });
+          if (!isMatch) return res.status(400).json({ message: 'Mật khẩu không đúng.' });
 
-          const token = jwt.sign({ userId: user.user_id, role: 'user' }, 'secretkey', { expiresIn: '1h' });
-          res.status(200).json({ message: 'Đăng nhập thành công', token, role: 'user', name: user.name });
+          const token = jwt.sign({ adminId: admin.admin_id, role: 'admin' }, 'secretkey', { expiresIn: '1h' });
+          return res.status(200).json({
+            message: 'Đăng nhập Admin thành công.',
+            token,
+            role: 'admin',
+            name: admin.name,
+          });
         });
       });
     }
   });
 };
+
+
 
 // Tạo tài khoản admin mặc định
 const createAdminAccount = () => {

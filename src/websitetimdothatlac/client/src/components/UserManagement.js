@@ -7,17 +7,27 @@ const UserManagement = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalUsers, setTotalUsers] = useState(0);
+    const usersPerPage = 10;
     const navigate = useNavigate();
 
-    // Lấy danh sách người dùng
+    const handlePageChange = (newPage) => {
+        if (newPage < 1 || newPage > Math.ceil(totalUsers / usersPerPage)) return;
+        setCurrentPage(newPage);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+
     useEffect(() => {
         const fetchUsers = async () => {
             const token = localStorage.getItem('token');
             try {
-                const res = await axios.get('http://localhost:5000/api/admin/users', {
+                const res = await axios.get(`http://localhost:5000/api/admin/users?page=${currentPage}&limit=${usersPerPage}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                setUsers(res.data);
+                setUsers(res.data.users);
+                setTotalUsers(res.data.totalUsers);
                 setLoading(false);
             } catch (error) {
                 console.error('Lỗi khi tải người dùng:', error);
@@ -26,7 +36,8 @@ const UserManagement = () => {
             }
         };
         fetchUsers();
-    }, []);
+    }, [currentPage]);
+
 
     // Tính thời gian OTP
     const calculateRemainingTime = (expiry) => {
@@ -95,6 +106,9 @@ const UserManagement = () => {
                 </div>
 
                 <h2 className="text-2xl font-bold mb-4">Danh sách người dùng</h2>
+                {/* Hiển thị tổng số người dùng */}
+                <p className="mb-4">Tổng số người dùng trong hệ thống: {totalUsers}</p>
+
                 {loading ? (
                     <p className="text-center text-gray-500 animate-pulse">Đang tải dữ liệu...</p>
                 ) : error ? (
@@ -128,12 +142,18 @@ const UserManagement = () => {
                                             <td className="p-2 border text-center">
                                                 {user.otp ? user.otp : 'Không có OTP'}
                                             </td>
-                                            <td
-                                                className={`p-2 border text-center font-semibold ${user.remainingTime?.expired ? 'bg-red-500 text-white' : 'text-green-600'
-                                                    }`}
-                                            >
-                                                {user.remainingTime ? user.remainingTime.time : 'Không có OTP'}
+                                            <td className="p-2 border text-center">
+                                                {user.remainingTime ? (
+                                                    <span
+                                                        className={`px-2 py-1 rounded ${user.remainingTime.expired ? 'bg-red-500 text-white' : 'text-red-600 font-medium'}`}
+                                                    >
+                                                        {user.remainingTime.time}
+                                                    </span>
+                                                ) : (
+                                                    'Không có OTP'
+                                                )}
                                             </td>
+
                                             <td className="p-2 border text-center">
                                                 <button
                                                     onClick={() => handleDeleteUser(user.user_id)}
@@ -155,6 +175,34 @@ const UserManagement = () => {
                         </table>
                     </div>
                 )}
+
+                {/* Phân trang */}
+                <div className="flex justify-center mt-4 gap-2">
+                    <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        className={`px-4 py-2 rounded ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+                        disabled={currentPage === 1}
+                    >
+                        Trước
+                    </button>
+                    {[...Array(Math.ceil(totalUsers / usersPerPage))].map((_, index) => (
+                        <button
+                            key={index + 1}
+                            onClick={() => handlePageChange(index + 1)}
+                            className={`px-4 py-2 rounded ${currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+                        >
+                            {index + 1}
+                        </button>
+                    ))}
+                    <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        className={`px-4 py-2 rounded ${currentPage === Math.ceil(totalUsers / usersPerPage) ? 'bg-gray-300' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+                        disabled={currentPage === Math.ceil(totalUsers / usersPerPage)}
+                    >
+                        Sau
+                    </button>
+                </div>
+
             </div>
         </AdminLayout>
     );

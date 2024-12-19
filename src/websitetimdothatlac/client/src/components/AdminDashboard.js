@@ -6,7 +6,6 @@ import logo from '../assets/image/logotvu.png';
 const AdminDashboard = () => {
   const navigate = useNavigate();
 
-  // Hàm đăng xuất
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');

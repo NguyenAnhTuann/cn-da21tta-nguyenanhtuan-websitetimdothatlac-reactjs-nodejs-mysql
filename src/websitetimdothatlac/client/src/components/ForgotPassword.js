@@ -7,6 +7,7 @@ const ForgotPassword = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  
   const navigate = useNavigate();
 
   const handleSendOtp = async (e) => {

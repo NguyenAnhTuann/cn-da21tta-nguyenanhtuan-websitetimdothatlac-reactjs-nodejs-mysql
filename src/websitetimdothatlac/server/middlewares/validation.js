@@ -10,7 +10,10 @@ const validateRegister = [
 
 
 const validateLogin = [
-  body('email').isEmail().withMessage('Email không hợp lệ'),
+  body('email')
+    .notEmpty().withMessage('Email hoặc số điện thoại không được để trống.')
+    .matches(/^[0-9]{10,11}$|^\S+@\S+\.\S+$/)
+    .withMessage('Vui lòng nhập đúng định dạng email hoặc số điện thoại.'),
   body('password').notEmpty().withMessage('Mật khẩu không được bỏ trống'),
 ];
 

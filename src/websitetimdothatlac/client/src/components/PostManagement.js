@@ -5,7 +5,20 @@ import { useNavigate } from 'react-router-dom';
 
 const PostManagement = () => {
     const [posts, setPosts] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPosts, setTotalPosts] = useState(0);
+    const postsPerPage = 10;
+    const [categoryFilter, setCategoryFilter] = useState('Đồ thất lạc');
+
     const navigate = useNavigate();
+
+
+    // Thêm hàm chuyển trang
+    const handlePageChange = (newPage) => {
+        if (newPage < 1 || newPage > Math.ceil(totalPosts / postsPerPage)) return;
+        setCurrentPage(newPage);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     // Hàm chuyển đổi định dạng ngày "YYYY-MM-DD" thành "DD/MM/YYYY"
     const formatDate = (dateString) => {
@@ -16,20 +29,24 @@ const PostManagement = () => {
         return `${day}/${month}/${year}`;
     };
 
+    // Cập nhật API để gọi dữ liệu phân trang
     useEffect(() => {
         const fetchPosts = async () => {
             const token = localStorage.getItem('token');
             try {
-                const res = await axios.get('http://localhost:5000/api/admin/posts', {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
-                setPosts(res.data);
+                const res = await axios.get(
+                    `http://localhost:5000/api/admin/posts?page=${currentPage}&limit=${postsPerPage}&category=${categoryFilter}`,
+                    { headers: { Authorization: `Bearer ${token}` } }
+                );
+                setPosts(res.data.posts);
+                setTotalPosts(res.data.totalPosts);
             } catch (error) {
                 console.error('Lỗi khi tải bài đăng:', error);
             }
         };
         fetchPosts();
-    }, []);
+    }, [currentPage, categoryFilter]);
+
 
     // Hàm xóa bài đăng
     const handleDeletePost = async (postId) => {
@@ -39,7 +56,7 @@ const PostManagement = () => {
                 await axios.delete(`http://localhost:5000/api/admin/posts/${postId}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
-                setPosts(posts.filter((post) => post.post_id !== postId)); // Cập nhật lại danh sách
+                setPosts(posts.filter((post) => post.post_id !== postId));
                 alert('Xóa bài đăng thành công!');
             } catch (error) {
                 console.error('Lỗi khi xóa bài đăng:', error);
@@ -68,7 +85,32 @@ const PostManagement = () => {
             </div>
 
             {/* Tiêu đề */}
-            <h2 className="text-2xl font-bold mb-4">Danh sách bài đăng</h2>
+            <h2 className="text-2xl font-bold mb-4">Danh sách bài đăng về {categoryFilter}</h2>
+
+            <div className="flex justify-center mb-6">
+                <button
+                    className={`px-6 py-3 font-medium transition border ${categoryFilter === 'Đồ thất lạc'
+                        ? 'bg-red-600 text-white'
+                        : 'bg-white text-black hover:bg-gray-100 border-black'
+                        } rounded-l-md`}
+                    onClick={() => setCategoryFilter('Đồ thất lạc')}
+                >
+                    Đồ Thất Lạc
+                </button>
+                <button
+                    className={`px-6 py-3 font-medium transition border ${categoryFilter === 'Đồ nhặt được'
+                        ? 'bg-green-600 text-white'
+                        : 'bg-white text-black hover:bg-gray-100 border-black'
+                        } rounded-r-md`}
+                    onClick={() => setCategoryFilter('Đồ nhặt được')}
+                >
+                    Đồ Nhặt Được
+                </button>
+            </div>
+
+
+            <p className="mb-4">Tổng số bài đăng có trong hệ thống: {totalPosts}</p>
+
 
             {/* Bảng Quản Lý Bài Đăng */}
             <div className="overflow-x-auto">
@@ -99,9 +141,13 @@ const PostManagement = () => {
                                 {/* Hình ảnh */}
                                 <td className="p-2 border">
                                     <img
-                                        src={`http://localhost:5000${post.image_url}`}
+                                        src={post.image_url}
                                         alt={post.title}
-                                        className="w-30 h-30 object-cover rounded-lg mx-auto"
+                                        className="w-full md:w-96 h-auto object-cover rounded-lg shadow-md border border-gray-300"
+                                        onError={(e) => {
+                                            e.target.src = "https://via.placeholder.com/150"; // Hình ảnh mặc định nếu xảy ra lỗi
+                                            e.target.alt = "Hình ảnh không tồn tại";
+                                        }}
                                     />
                                 </td>
 
@@ -128,8 +174,8 @@ const PostManagement = () => {
                                 </td>
 
                                 {/* Địa chỉ */}
-                                <td className="p-2 border">{post.address}</td>
-                                {/* <td className="p-2 border align-top w-1/3 min-w-[300px]">{post.address}</td> */}
+                                {/* <td className="p-2 border">{post.address}</td> */}
+                                <td className="p-2 border text-left align-top w-1/3 min-w-[300px]">{post.address}</td>
 
                                 {/* Ngày tạo */}
                                 <td className="p-2 border">{formatDate(post.created)}</td>
@@ -172,6 +218,33 @@ const PostManagement = () => {
                     </tbody>
                 </table>
             </div>
+            {/* Phân trang */}
+            <div className="flex justify-center mt-4 gap-2">
+                <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    className={`px-4 py-2 rounded ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+                    disabled={currentPage === 1}
+                >
+                    Trước
+                </button>
+                {[...Array(Math.ceil(totalPosts / postsPerPage))].map((_, index) => (
+                    <button
+                        key={index + 1}
+                        onClick={() => handlePageChange(index + 1)}
+                        className={`px-4 py-2 rounded ${currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
+                <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    className={`px-4 py-2 rounded ${currentPage === Math.ceil(totalPosts / postsPerPage) ? 'bg-gray-300' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+                    disabled={currentPage === Math.ceil(totalPosts / postsPerPage)}
+                >
+                    Sau
+                </button>
+            </div>
+
         </AdminLayout>
     );
 };

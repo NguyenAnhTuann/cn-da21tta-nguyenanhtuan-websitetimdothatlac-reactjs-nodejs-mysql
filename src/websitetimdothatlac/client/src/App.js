@@ -15,24 +15,36 @@ import ResetPassword from './components/ResetPassword';
 import AdminDashboard from './components/AdminDashboard';
 import UserManagement from './components/UserManagement';
 import PostManagement from './components/PostManagement';
+import LostItems from './components/LostItems';
+import FoundItems from './components/FoundItems';
+import NavigationBar from './components/NavigationBar';
 
 import "leaflet/dist/leaflet.css";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
 
-// Component Layout để kiểm tra đường dẫn hiện tại
 const Layout = ({ children }) => {
   const location = useLocation(); // Lấy đường dẫn hiện tại
-  const isAdminPage = location.pathname.startsWith('/admin'); // Kiểm tra nếu đường dẫn bắt đầu với '/admin'
+  const isAdminPage = location.pathname.startsWith('/admin');
+  const isLoginOrRegisterPage = location.pathname === '/login' || location.pathname === '/register'; // Kiểm tra nếu là trang login hoặc register
 
   return (
     <>
-      {/* Không hiển thị Header và Footer trên các trang Admin */}
+      {/* Luôn hiển thị Header */}
       {!isAdminPage && <Header />}
+
+      {/* Chỉ hiển thị NavigationBar nếu không phải là trang admin hoặc trang login/register */}
+      {!isAdminPage && !isLoginOrRegisterPage && <NavigationBar />}
+
+      {/* Nội dung chính */}
       {children}
+
+      {/* Hiển thị Footer nếu không phải là trang admin */}
       {!isAdminPage && <Footer />}
     </>
   );
 };
+
+
 
 const App = () => {
   return (
@@ -41,6 +53,8 @@ const App = () => {
         <Routes>
           {/* Các Route dành cho người dùng */}
           <Route path="/" element={<PostList />} />
+          <Route path="/lost-items" element={<LostItems />} />
+          <Route path="/found-items" element={<FoundItems />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/edit-profile" element={<EditProfile />} />

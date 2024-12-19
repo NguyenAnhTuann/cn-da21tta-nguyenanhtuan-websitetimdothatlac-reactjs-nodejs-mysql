@@ -69,56 +69,72 @@ const PostDetails = () => {
       </div>
 
       {/* Thông tin chi tiết bài đăng */}
-      <div className="flex flex-col md:flex-row gap-6">
-        <div className="flex-shrink-0">
-          <img
-            src={`http://localhost:5000${post.image_url}`}
-            alt={post.title}
-            className="w-full md:w-96 h-auto object-cover rounded-lg shadow-md border-2"
-          />
-        </div>
-        <div className="flex-1">
-          <h2 className="text-3xl font-bold mb-4 text-gray-800 break-words line-clamp-2">
-            {post.title}
-          </h2>
-          <p className={`inline-block ${getCategoryStyle(post.category)}`}>
-            {post.category}
-          </p>
-          <p className="mt-4 text-gray-600">
-            <strong>Ngày:</strong> {formatDate(post.created)}
-          </p>
-          <p className="text-gray-600">
-            <strong>Địa chỉ:</strong> {post.address}
-          </p>
-          <p className="text-gray-600">
-            <strong>Mô tả:</strong> {post.description}
-          </p>
-          <p className="text-gray-600">
-            <strong>Người đăng:</strong> {post.name}
-          </p>
-          <p className="text-gray-600">
-            <strong>Điện thoại:</strong> {post.phone}
-          </p>
-          <p className="text-gray-600">
-            <strong>Zalo:</strong> {post.zalo}
-          </p>
-          <p className="text-gray-600">
-            <strong>Facebook:</strong>{" "}
-            {post.fbUrl ? (
-              <a
-                href={post.fbUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 underline"
-              >
-                {post.fbUrl}
-              </a>
-            ) : (
-              "Không có"
-            )}
-          </p>
+      <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
+        <div className="flex flex-col md:flex-row gap-8">
+          {/* Hình ảnh bài đăng */}
+          <div className="flex-shrink-0">
+            <img
+              src={post.image_url}
+              alt={post.title}
+              className="w-full md:w-96 h-auto object-cover rounded-lg shadow-md border border-gray-300"
+              onError={(e) => {
+                e.target.src = "https://via.placeholder.com/150"; // Hình ảnh mặc định nếu xảy ra lỗi
+                e.target.alt = "Hình ảnh không tồn tại";
+              }}
+            />
+          </div>
+          {/* Nội dung chi tiết */}
+          <div className="flex-1">
+            {/* Tiêu đề */}
+            <h2 className="text-3xl font-bold mb-4 text-gray-800">
+              {post.title}
+            </h2>
+
+            {/* Loại bài đăng */}
+            <p className={`inline-block ${getCategoryStyle(post.category)} px-3 py-1 rounded-full text-sm font-medium`}>
+              {post.category}
+            </p>
+
+            {/* Thông tin bài đăng */}
+            <div className="mt-6 space-y-4">
+              <p className="text-gray-600">
+                <strong className="text-gray-800">📅 Ngày:</strong> {formatDate(post.created)}
+              </p>
+              <p className="text-gray-600">
+                <strong className="text-gray-800">📍 Địa chỉ:</strong> {post.address}
+              </p>
+              <p className="text-gray-600">
+                <strong className="text-gray-800">📝 Mô tả:</strong> {post.description}
+              </p>
+              <p className="text-gray-600">
+                <strong className="text-gray-800">👤 Người đăng:</strong> {post.name}
+              </p>
+              <p className="text-gray-600">
+                <strong className="text-gray-800">📞 Điện thoại:</strong> {post.phone}
+              </p>
+              <p className="text-gray-600">
+                <strong className="text-gray-800">📱 Zalo:</strong> {post.zalo}
+              </p>
+              <p className="text-gray-600">
+                <strong className="text-gray-800">🔗 Facebook:</strong>{" "}
+                {post.fbUrl ? (
+                  <a
+                    href={post.fbUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 underline"
+                  >
+                    {post.fbUrl}
+                  </a>
+                ) : (
+                  "Không có"
+                )}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
+
 
       {/* Bản đồ */}
       {position && (

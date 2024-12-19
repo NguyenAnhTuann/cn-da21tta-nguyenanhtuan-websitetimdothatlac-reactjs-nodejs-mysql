@@ -96,7 +96,10 @@ const PostList = () => {
       : 'text-red-600 bg-red-100 px-2 py-1 rounded';
 
   return (
+    
     <div className="p-6">
+      
+      <h1 className="text-2xl font-bold mb-4 bg-gray-200 text-gray-800 py-4 rounded-md text-center">DANH SÁCH TẤT CẢ BÀI ĐĂNG CÓ TRÊN HỆ THỐNG</h1>
       {/* Ô tìm kiếm */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 bg-slate-300 shadow-lg rounded-lg p-6 border-2">
         {/* Tìm kiếm theo tên */}
@@ -172,11 +175,15 @@ const PostList = () => {
               className="flex justify-center items-center mb-4 cursor-pointer"
               onClick={() => navigate(`/posts/${post.post_id}`)}
             >
-              <img
-                src={`http://localhost:5000${post.image_url}`}
-                alt={post.title}
-                className="w-80 h-80 object-cover rounded-lg"
-              />
+            <img
+              src={post.image_url}
+              alt={post.title}
+              className="w-full md:w-96 h-auto object-cover rounded-lg shadow-md border border-gray-300"
+              onError={(e) => {
+                e.target.src = "https://via.placeholder.com/150"; // Hình ảnh mặc định nếu xảy ra lỗi
+                e.target.alt = "Hình ảnh không tồn tại";
+              }}
+            />
             </div>
 
             {/* Tiêu đề */}
@@ -208,35 +215,6 @@ const PostList = () => {
               }}
             ></p>
 
-            {/* Mô tả */}
-            <p
-              className="text-gray-600"
-              dangerouslySetInnerHTML={{
-                __html: `<strong>Mô tả:</strong> ${highlightMatch(post.description || 'Không có mô tả', searchTerm)}`,
-              }}
-            ></p>
-
-            {/* Thông tin người đăng */}
-            <p className="text-gray-600">
-              <strong>Người đăng:</strong> {post.name}
-            </p>
-            <p className="text-gray-600">
-              <strong>Điện thoại:</strong> {post.phone}
-            </p>
-            <p className="text-gray-600">
-              <strong>Zalo:</strong> {post.zalo}
-            </p>
-            <p className="text-gray-600">
-              <strong>Facebook:</strong>{' '}
-              <a
-                href={post.fbUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:underline"
-              >
-                {post.fbUrl}
-              </a>
-            </p>
           </div>
         ))}
       </div>

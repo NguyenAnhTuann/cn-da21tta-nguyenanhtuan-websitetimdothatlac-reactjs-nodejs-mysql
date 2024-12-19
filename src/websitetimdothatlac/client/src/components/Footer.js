@@ -8,8 +8,8 @@ const Footer = () => {
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
         {/* Thông tin liên hệ và mạng xã hội - Bên trái */}
         <div className="flex-1">
-          <h2 className="text-3xl font-extrabold text-blue-600 mb-4">
-            LIÊN HỆ ADMIN HỖ TRỢ ĐĂNG BÀI
+          <h2 className="text-3xl font-extrabold text-blue-400 mb-4 whitespace-nowrap">
+            LIÊN HỆ ADMIN HỖ TRỢ ĐĂNG TIN VỀ ĐỒ THẤT LẠC
           </h2>
           <div className="flex flex-col space-y-2 mb-6">
             <a
@@ -24,7 +24,7 @@ const Footer = () => {
             >
               Phone/Zalo: 0869094929
             </a>
-            <p className="text-sm text-gray-400 mt-2">
+            <p className="text-lg text-gray-400 mt-2">
               Copyright &copy; 2024 Website Tìm Đồ Thất Lạc - Nguyễn Anh Tuấn - 110121123 - DA21TTA - TVU
             </p>
           </div>
