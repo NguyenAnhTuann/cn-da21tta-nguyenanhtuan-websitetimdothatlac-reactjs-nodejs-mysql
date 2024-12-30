@@ -230,10 +230,6 @@ const resetPasswordWithOtp = (req, res) => {
     if (results.length === 0) return res.status(404).json({ message: 'Email không tồn tại.' });
 
     const { otp: storedOtp, otp_expiry } = results[0];
-
-    // if (Date.now() > otp_expiry) {
-    //   return res.status(400).json({ message: 'Mã OTP đã hết hạn.' });
-    // }
     const expiryTimestamp = new Date(otp_expiry).getTime();
     if (Date.now() > expiryTimestamp) {
       return res.status(400).json({ message: 'Mã OTP đã hết hạn.' });

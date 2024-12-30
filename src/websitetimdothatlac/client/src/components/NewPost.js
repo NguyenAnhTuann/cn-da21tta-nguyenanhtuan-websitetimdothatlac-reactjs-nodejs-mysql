@@ -89,12 +89,12 @@ const NewPost = () => {
   };
 
   return (
-    <div className="relative max-w-4xl mx-auto p-6 bg-white shadow-2xl rounded-lg mt-8">
+    <div className="p-6 max-w-4xl mx-auto bg-white shadow-lg rounded-lg border-2 my-10">
       {/* Nút quay về trang chủ */}
       <div className="mb-6">
         <button
           onClick={() => navigate("/")}
-          className="absolute top-5 left-5 text-black py-2 px-4 rounded-lg bg-gray-300 hover:bg-gray-400 transition flex items-center"
+          className="bg-gray-400 text-white py-2 px-4 rounded-lg hover:bg-gray-500 transition flex items-center"
         >
           <FaHome className="mr-2" />
           Quay về trang chủ

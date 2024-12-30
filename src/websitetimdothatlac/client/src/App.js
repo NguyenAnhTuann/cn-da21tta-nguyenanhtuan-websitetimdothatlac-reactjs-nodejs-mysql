@@ -18,14 +18,18 @@ import PostManagement from './components/PostManagement';
 import LostItems from './components/LostItems';
 import FoundItems from './components/FoundItems';
 import NavigationBar from './components/NavigationBar';
+import OwnedItems from "./components/OwnedItems";
+import OwnedPosts from "./components/OwnedPosts"
+
+
 
 import "leaflet/dist/leaflet.css";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
 
 const Layout = ({ children }) => {
-  const location = useLocation(); // Lấy đường dẫn hiện tại
+  const location = useLocation();
   const isAdminPage = location.pathname.startsWith('/admin');
-  const isLoginOrRegisterPage = location.pathname === '/login' || location.pathname === '/register'; // Kiểm tra nếu là trang login hoặc register
+  const isLoginOrRegisterPage = location.pathname === '/login' || location.pathname === '/register';
 
   return (
     <>
@@ -64,11 +68,13 @@ const App = () => {
           <Route path="/posts/:id" element={<PostDetails />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/owned-items" element={<OwnedItems />} />
 
           {/* Các Route dành cho Admin */}
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/users" element={<UserManagement />} />
           <Route path="/admin/posts" element={<PostManagement />} />
+          <Route path="/admin/owned-posts" element={<OwnedPosts />} />
         </Routes>
       </Layout>
     </Router>

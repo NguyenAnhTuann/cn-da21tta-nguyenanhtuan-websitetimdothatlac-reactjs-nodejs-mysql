@@ -14,6 +14,8 @@ const EditMyPosts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 6;
   const [categoryFilter, setCategoryFilter] = useState('Đồ thất lạc');
+  const [statusFilter, setStatusFilter] = useState('Chưa sở hữu');
+
 
   const navigate = useNavigate();
 
@@ -27,17 +29,57 @@ const EditMyPosts = () => {
           },
         });
         if (!response.ok) throw new Error('Không thể tải danh sách bài đăng.');
+
         const data = await response.json();
         setPosts(data);
-        setFilteredPosts(data.filter((post) => post.category === categoryFilter));
+        setFilteredPosts(
+          data.filter(
+            (post) =>
+              post.category === categoryFilter &&
+              (statusFilter === '' || post.status === statusFilter)
+          )
+        );
       } catch (error) {
-        setErrorMessage(error.message);
+        setErrorMessage(error.message || 'Lỗi không xác định.');
       }
     };
 
     fetchMyPosts();
-  }, [categoryFilter]);
+  }, [categoryFilter, statusFilter]);
 
+
+
+  const handleToggleStatus = async (postId, currentStatus) => {
+    const newStatus = currentStatus === 'Chưa sở hữu' ? 'Đã sở hữu' : 'Chưa sở hữu';
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`http://localhost:5000/api/posts/mark-as-owned/${postId}`, {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      if (!response.ok) throw new Error('Không thể cập nhật trạng thái bài đăng.');
+
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.post_id === postId ? { ...post, status: newStatus } : post
+        )
+      );
+      setSuccessMessage(
+        newStatus === 'Đã sở hữu'
+          ? 'Đã đánh dấu bài đăng là "Đã sở hữu".'
+          : 'Đã thay đổi trạng thái bài đăng thành "Chưa sở hữu".'
+      );
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (error) {
+      setErrorMessage(error.message);
+    }
+  };
 
 
   const handleDelete = async (postId) => {
@@ -80,12 +122,25 @@ const EditMyPosts = () => {
       const dateMatch = searchDateInput
         ? formatDate(post.created).includes(searchDateInput)
         : true;
-      return post.category === categoryFilter && titleMatch && addressMatch && dateMatch;
+
+      // Lọc theo trạng thái và loại
+      const categoryMatch =
+        categoryFilter && statusFilter === ''
+          ? post.category === categoryFilter && post.status !== 'Đã sở hữu'
+          : true;
+
+      const statusMatch = statusFilter ? post.status === statusFilter : true;
+
+      return titleMatch && addressMatch && dateMatch && categoryMatch && statusMatch;
     });
 
     setFilteredPosts(results);
-    setCurrentPage(1);
-  }, [searchTerm, searchDate, searchAddress, posts, categoryFilter]);
+    setCurrentPage(1); // Reset về trang đầu tiên
+  }, [searchTerm, searchDate, searchAddress, posts, categoryFilter, statusFilter]);
+
+
+
+
 
 
   // Reset Filters
@@ -126,6 +181,7 @@ const EditMyPosts = () => {
       ? 'text-green-600 bg-green-100 px-2 py-1 rounded'
       : 'text-red-600 bg-red-100 px-2 py-1 rounded';
   };
+
 
   return (
     <div className="p-6">
@@ -196,101 +252,129 @@ const EditMyPosts = () => {
 
       </div>
 
+      {/* Button trên thanh điều hướng */}
       <div className="flex justify-center mb-6">
         <button
-          className={`px-6 py-3 font-medium transition border ${categoryFilter === 'Đồ thất lạc'
-            ? 'bg-red-600 text-white'
-            : 'bg-white text-black hover:bg-gray-100 border-gray-300'
-            } rounded-l-md`}
-          onClick={() => setCategoryFilter('Đồ thất lạc')}
+          className={`px-6 py-3 font-medium transition border ${categoryFilter === 'Đồ thất lạc' && statusFilter === '' ? 'bg-red-600 text-white' : 'bg-white text-black hover:bg-gray-100 border-gray-300'
+            }`}
+          onClick={() => {
+            setCategoryFilter('Đồ thất lạc');
+            setStatusFilter(''); // Xóa trạng thái lọc để loại bỏ bài đăng "Đã sở hữu"
+          }}
         >
           ĐỒ THẤT LẠC
         </button>
         <button
-          className={`px-6 py-3 font-medium transition border ${categoryFilter === 'Đồ nhặt được'
-            ? 'bg-green-600 text-white'
-            : 'bg-white text-black hover:bg-gray-100 border-gray-300'
-            } rounded-r-md`}
-          onClick={() => setCategoryFilter('Đồ nhặt được')}
+          className={`px-6 py-3 font-medium transition border ${categoryFilter === 'Đồ nhặt được' && statusFilter === '' ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-gray-100 border-gray-300'
+            }`}
+          onClick={() => {
+            setCategoryFilter('Đồ nhặt được');
+            setStatusFilter(''); // Xóa trạng thái lọc để loại bỏ bài đăng "Đã sở hữu"
+          }}
         >
           ĐỒ NHẶT ĐƯỢC
+        </button>
+        <button
+          className={`px-6 py-3 font-medium transition border ${statusFilter === 'Đã sở hữu' ? 'bg-blue-600 text-white' : 'bg-white text-black hover:bg-gray-100 border-gray-300'
+            }`}
+          onClick={() => {
+            setCategoryFilter(''); // Bỏ lọc theo loại
+            setStatusFilter('Đã sở hữu');
+          }}
+        >
+          ĐỒ VẬT ĐÃ CÓ CHỦ SỞ HỮU
         </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-20 my-20">
-        {currentPosts.map((post) => (
-          <div
-            key={post.post_id}
-            className="bg-white border-2 p-4 rounded-lg shadow-lg hover:shadow-transparent transition-shadow duration-300"
-          >
-            <div className="flex justify-center items-center mb-4">
-              <img
-                src={post.image_url}
-                alt={post.title}
-                className="w-full md:w-96 h-auto object-cover rounded-lg shadow-md border border-gray-300"
-                onError={(e) => {
-                  e.target.src = "https://via.placeholder.com/150"; // Hình ảnh mặc định nếu xảy ra lỗi
-                  e.target.alt = "Hình ảnh không tồn tại";
-                }}
-              />
-            </div>
-            <h2
-              className="text-3xl font-bold mb-4 text-gray-800 break-words line-clamp-2"
-              dangerouslySetInnerHTML={{
-                __html: highlightMatch(post.title, searchTerm),
-              }}
-            ></h2>
+  {currentPosts.map((post) => (
+    <div
+      key={post.post_id}
+      className="bg-white border-2 p-6 rounded-lg shadow-lg hover:shadow-transparent transition-shadow duration-300 flex flex-col"
+    >
+      {/* Hình ảnh bài đăng */}
+      <div
+        className="flex justify-center items-center mb-4 cursor-pointer"
+        onClick={() => navigate(`/posts/${post.post_id}`)}
+      >
+        <img
+          src={post.image_url}
+          alt={post.title}
+          className="w-64 h-48 object-cover rounded-lg shadow-md border border-gray-300"
+          onError={(e) => {
+            e.target.src = "https://via.placeholder.com/150"; // Hình ảnh mặc định nếu xảy ra lỗi
+            e.target.alt = "Hình ảnh không tồn tại";
+          }}
+        />
+      </div>
 
-            <p className={`inline-block font-medium ${getCategoryStyle(post.category)}`}>
-              {post.category}
-            </p>
-            <p
-              className="text-gray-600"
-              dangerouslySetInnerHTML={{
-                __html: `<strong>Ngày:</strong> ${highlightMatch(formatDate(post.created), searchDate)}`,
-              }}
-            ></p>
+      {/* Tiêu đề */}
+      <div>
+      <h2
+        className="text-3xl font-bold mb-4 text-gray-800 break-words line-clamp-2"
+        dangerouslySetInnerHTML={{
+          __html: highlightMatch(post.title, searchTerm),
+        }}
+      ></h2>
 
-            <p
-              className="text-gray-600"
-              dangerouslySetInnerHTML={{
-                __html: `<strong>Địa chỉ:</strong> ${highlightMatch(post.address, searchAddress)}`,
-              }}
-            ></p>
+      {/* Loại bài đăng */}
+      <p
+        className={`inline-block ${getCategoryStyle(post.category)} px-3 py-1 rounded-full text-lg font-bold uppercase`}
+      >
+        {post.category}
+      </p>
+      </div>
 
-            <p className="text-gray-600">
-              <strong>Mô tả:</strong> {post.description}
-            </p>
-            <p className="text-gray-600">
-              <strong>Người đăng:</strong> {post.name}
-            </p>
-            <p className="text-gray-600">
-              <strong>Điện thoại:</strong> {post.phone}
-            </p>
-            <p className="text-gray-600">
-              <strong>Zalo:</strong> {post.zalo}
-            </p>
-            <p className="text-gray-600">
-              <strong>Facebook:</strong>{' '}
-              {post.fbUrl ? (
-                <a
-                  href={post.fbUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 underline"
-                >
-                  {post.fbUrl}
-                </a>
-              ) : (
-                'Không có'
-              )}
-            </p>
+      {/* Thông tin bài đăng */}
+      <div className="mt-4 space-y-2">
+        <p className="text-gray-600 flex items-center">
+          <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📅 Ngày:</span>
+          <span>{highlightMatch(formatDate(post.created), searchDate)}</span>
+        </p>
+        <p className="text-gray-600 flex items-start">
+          <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📍 Địa chỉ:</span>
+          <span className="break-words">{highlightMatch(post.address, searchAddress)}</span>
+        </p>
+        <p className="text-gray-600 flex items-start">
+          <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📝 Mô tả:</span>
+          <span className="break-words">{post.description || "Không có mô tả"}</span>
+        </p>
+        <p className="text-gray-600 flex items-center">
+          <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">👤 Người đăng:</span>
+          <span className="break-words">{post.name || "Không rõ"}</span>
+        </p>
+        <p className="text-gray-600 flex items-center">
+          <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📞 Điện thoại:</span>
+          <span >{post.phone || "Không có"}</span>
+        </p>
+        <p className="text-gray-600 flex items-center">
+          <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📱 Zalo:</span>
+          <span>{post.zalo || "Không có"}</span>
+        </p>
+        <p className="text-gray-600 flex items-center">
+          <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">🔗 Facebook:</span>
+          {post.fbUrl ? (
+            <a
+              href={post.fbUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 underline"
+            >
+              {post.fbUrl}
+            </a>
+          ) : (
+            <span>Không có</span>
+          )}
+        </p>
+      </div>
+
+
             <div className="flex items-center gap-3 mt-4">
               <button
                 className="flex items-center gap-1 text-black bg-gray-200 hover:bg-gray-400 rounded-xl px-3 py-2 transition-all duration-300"
                 onClick={() => {
                   navigate(`/edit-my-post/${post.post_id}`);
-                  window.scrollTo({ top: 0, behavior: "smooth" }); // Cuộn lên đầu trang
+                  window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
               >
                 <FaEdit className="mr-0" />
@@ -305,6 +389,15 @@ const EditMyPosts = () => {
                 <FaTrash className="mr-0" />
                 Xóa
               </button>
+
+              <button
+                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                onClick={() => handleToggleStatus(post.post_id, post.status)}
+              >
+                {post.status === 'Chưa sở hữu' ? '❌ Chưa sở hữu' : '✅ Đã sở hữu'}
+              </button>
+
+
             </div>
           </div>
         ))}

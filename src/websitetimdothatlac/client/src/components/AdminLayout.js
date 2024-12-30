@@ -1,5 +1,7 @@
 import React from 'react';
 import logo from '../assets/image/logotvu.png';
+import { FaSignOutAlt } from 'react-icons/fa';
+
 
 const AdminLayout = ({ children, handleLogout }) => {
   return (
@@ -20,8 +22,9 @@ const AdminLayout = ({ children, handleLogout }) => {
           {/* Nút Đăng Xuất */}
           <button
             onClick={handleLogout}
-            className="bg-red-500 hover:bg-red-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+            className="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
           >
+            <FaSignOutAlt size={20} />
             Đăng Xuất
           </button>
         </div>

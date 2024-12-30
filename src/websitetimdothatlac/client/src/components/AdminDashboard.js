@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/image/logotvu.png';
-
+import { FaSignOutAlt } from 'react-icons/fa';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -34,8 +34,9 @@ const AdminDashboard = () => {
           {/* Nút Đăng Xuất */}
           <button
             onClick={handleLogout}
-            className="bg-red-500 hover:bg-red-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+            className="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white font-semibold px-5 py-2 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
           >
+            <FaSignOutAlt size={20} />
             Đăng Xuất
           </button>
         </div>
@@ -45,29 +46,43 @@ const AdminDashboard = () => {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 p-6">
         {/* User Management Section */}
         <div className="bg-white shadow-lg rounded-lg p-6 text-center">
-          <h2 className="text-2xl font-semibold mb-4">Quản lý Người Dùng</h2>
+          <h2 className="text-2xl font-semibold mb-4">QUẢN LÝ NGƯỜI DÙNG</h2>
           <p className="text-gray-600 mb-4">
             Xem và quản lý tất cả thông tin người dùng trong hệ thống.
           </p>
           <button
             onClick={() => navigate('/admin/users')}
-            className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition"
+            className="bg-gray-100 text-black px-6 py-2 border-2 rounded-2xl hover:bg-gray-400 transition"
           >
-            📋 Xem danh sách người dùng
+            👤 Xem danh sách người dùng
           </button>
         </div>
 
         {/* Post Management Section */}
         <div className="bg-white shadow-lg rounded-lg p-6 text-center">
-          <h2 className="text-2xl font-semibold mb-4">Quản lý Bài Đăng</h2>
+          <h2 className="text-2xl font-semibold mb-4">QUẢN LÝ BÀI ĐĂNG</h2>
           <p className="text-gray-600 mb-4">
             Xem và quản lý tất cả bài đăng được tạo bởi người dùng.
           </p>
           <button
             onClick={() => navigate('/admin/posts')}
-            className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 transition"
+            className="bg-gray-100 text-black px-6 py-2 border-2 rounded-2xl hover:bg-gray-400 transition"
           >
             📝 Xem danh sách bài đăng
+          </button>
+        </div>
+
+        {/* Post Management Section */}
+        <div className="bg-white shadow-lg rounded-lg p-6 text-center">
+          <h2 className="text-2xl font-semibold mb-4">QUẢN LÝ BÀI ĐĂNG ĐÃ CÓ CHỦ SỞ HỮU</h2>
+          <p className="text-gray-600 mb-4">
+            Xem và quản lý tất cả bài đăng đã có chủ sở hữu.
+          </p>
+          <button
+            onClick={() => navigate('/admin/owned-posts')}
+            className="bg-gray-100 text-black px-6 py-2 border-2 rounded-2xl hover:bg-gray-400 transition"
+          >
+             📋🔑 Xem danh sách bài đăng
           </button>
         </div>
       </div>
@@ -90,7 +105,7 @@ const AdminDashboard = () => {
           </div>
         </div>
       </footer>
-    </div>
+    </div >
   );
 };
 

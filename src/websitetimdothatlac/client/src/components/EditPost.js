@@ -15,7 +15,6 @@ L.Icon.Default.mergeOptions({
 
 const EditPost = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const [post, setPost] = useState({});
   const [position, setPosition] = useState({ lat: 10.762622, lng: 106.660172 });
@@ -23,6 +22,7 @@ const EditPost = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [notification, setNotification] = useState({ message: "", type: "" });
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -32,8 +32,11 @@ const EditPost = () => {
         const response = await fetch(`http://localhost:5000/api/posts/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
+
         if (!response.ok) throw new Error("Không thể tải chi tiết bài đăng.");
         const data = await response.json();
+
+        // Gán dữ liệu bài đăng mà không thay đổi giá trị `created`
         setPost(data);
         setAddress(data.address);
 
@@ -45,45 +48,53 @@ const EditPost = () => {
       }
     };
 
+
     fetchPostDetails();
   }, [id]);
+
 
   const handleUpdate = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await fetch(`http://localhost:5000/api/posts/update/${id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            ...post,
-            address,
-            lat: position.lat,
-            lng: position.lng,
-          }),
-        });
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`http://localhost:5000/api/posts/update/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          ...post,
+          address,
+          lat: position.lat,
+          lng: position.lng,
+          created: post.created, // Không thay đổi giá trị `created`
+        }),
+      });
 
-        if (!response.ok) throw new Error("Không thể cập nhật bài đăng.");
-        setNotification({ message: "🎉 Cập nhật bài đăng thành công!", type: "success" });
-        setTimeout(() => navigate("/my-posts"), 2000);
-      } catch (error) {
-        setNotification({ message: `❌ ${error.message}`, type: "error" });
-      } finally {
-        setLoading(false); // Kết thúc loading
-      }
-    }, 2000); // Loading 2 giây
+      if (!response.ok) throw new Error("Không thể cập nhật bài đăng.");
+      setNotification({ message: "🎉 Cập nhật bài đăng thành công!", type: "success" });
+    } catch (error) {
+      setNotification({ message: `❌ ${error.message}`, type: "error" });
+    } finally {
+      setLoading(false);
+    }
   };
 
 
-  
-  const handleDelete = async () => {
-    if (!window.confirm("Bạn có chắc chắn muốn xóa bài đăng này không?")) return;
-    setLoading(true); // Bắt đầu loading
+
+
+  const handleDelete = () => {
+    setNotification({
+      message: "Bạn có chắc chắn muốn xóa bài đăng này không?",
+      type: "confirm",
+      action: "delete",
+    });
+  };
+
+  const handleDeleteConfirmed = async () => {
+    setLoading(true);
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(`http://localhost:5000/api/posts/delete/${id}`, {
@@ -93,13 +104,14 @@ const EditPost = () => {
 
       if (!response.ok) throw new Error("Không thể xóa bài đăng.");
       setNotification({ message: "🗑 Xóa bài đăng thành công!", type: "success" });
-      setTimeout(() => navigate("/my-posts"), 2000);
     } catch (error) {
       setNotification({ message: `❌ ${error.message}`, type: "error" });
     } finally {
-      setLoading(false); // Kết thúc loading
+      setLoading(false);
     }
   };
+
+
 
 
   const MapClickHandler = () => {
@@ -143,11 +155,11 @@ const EditPost = () => {
         </div>
       )}
 
-      {/* Thông báo */}
+      {/* Thông báo chung */}
       {notification.message && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-2xl text-center max-w-md relative">
-            {/* Dấu check màu xanh */}
+            {/* Icon cho từng loại thông báo */}
             {notification.type === "success" && (
               <div className="flex justify-center mb-4">
                 <div className="bg-green-500 text-white rounded-full h-12 w-12 flex items-center justify-center">
@@ -159,23 +171,82 @@ const EditPost = () => {
                     stroke="currentColor"
                     className="h-6 w-6"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M5 13l4 4L19 7"
-                    />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+              </div>
+            )}
+            {notification.type === "error" && (
+              <div className="flex justify-center mb-4">
+                <div className="bg-red-500 text-white rounded-full h-12 w-12 flex items-center justify-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    className="h-6 w-6"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </div>
+              </div>
+            )}
+            {notification.type === "confirm" && (
+              <div className="flex justify-center mb-4">
+                <div className="bg-yellow-500 text-white rounded-full h-12 w-12 flex items-center justify-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    className="h-6 w-6"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </div>
               </div>
             )}
 
             {/* Nội dung thông báo */}
-            <p className="text-lg font-semibold text-gray-800 mb-4">
-              {notification.message}
-            </p>
+            <p className="text-lg font-semibold text-gray-800 mb-6">{notification.message}</p>
+
+            {/* Nút hành động */}
+            {notification.type === "confirm" ? (
+              <div className="flex justify-center gap-4">
+                <button
+                  onClick={() => setNotification({ message: "", type: "" })}
+                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400 transition"
+                >
+                  Hủy
+                </button>
+                <button
+                  onClick={handleDeleteConfirmed}
+                  className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition"
+                >
+                  Xác nhận
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => {
+                  setNotification({ message: "", type: "" });
+                  if (notification.type === "success") {
+                    navigate("/my-posts");
+                  }
+                }}
+                className="text-black px-4 py-2 rounded-md hover:bg-gray-500 transition border-2"
+              >
+                Đóng
+              </button>
+
+            )}
           </div>
         </div>
       )}
+
+
 
       <div className="relative bg-white shadow-2xl rounded-2xl px-8 py-10 w-full max-w-3xl z-10">
         <h2 className="text-3xl font-bold text-center text-gray-700 mb-6">Chỉnh Sửa Bài Đăng</h2>
@@ -222,6 +293,23 @@ const EditPost = () => {
             <option value="Đồ nhặt được">Đồ nhặt được</option>
           </select>
 
+          {/* Ngày tạo */}
+          <div className="relative">
+            <input
+              type="date"
+              name="created"
+              value={post.created || ""} // Giá trị gốc từ cơ sở dữ liệu
+              onChange={handleChange}
+              className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              required
+            />
+
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">
+              📅
+            </span>
+          </div>
+
+
           {/* Địa chỉ */}
           <div className="relative">
             <input
@@ -234,6 +322,7 @@ const EditPost = () => {
             />
             <span className="absolute left-4 top-3 text-gray-400">📍</span>
           </div>
+
 
           {/* Bản đồ */}
           <div className="w-full h-[300px] rounded-lg overflow-hidden">

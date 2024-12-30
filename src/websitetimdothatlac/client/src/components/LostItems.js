@@ -20,7 +20,11 @@ const LostItems = () => {
         const response = await fetch('http://localhost:5000/api/posts');
         if (!response.ok) throw new Error('Không thể tải danh sách bài đăng.');
         const data = await response.json();
-        const lostItems = data.filter((post) => post.category === 'Đồ thất lạc');
+
+        const lostItems = data.filter(
+          (post) => post.category === 'Đồ thất lạc' && post.status !== "Đã sở hữu"
+        );
+
         setPosts(lostItems);
         setFilteredPosts(lostItems);
       } catch (error) {
@@ -29,6 +33,7 @@ const LostItems = () => {
     };
     fetchPosts();
   }, []);
+
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -85,8 +90,77 @@ const LostItems = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Slide
+  const slideUrls = [
+    "https://i.pinimg.com/736x/c7/8c/39/c78c39dde40e4c4b5cb8f972cb7dfae1.jpg",
+    "https://i.pinimg.com/736x/94/1f/15/941f1561a78c3f96768282ba235cde09.jpg",
+    "https://i.pinimg.com/736x/b7/14/6b/b7146ba5d6a8a9b6cde3577a4dc28f58.jpg",
+    "https://i.pinimg.com/736x/af/84/5c/af845c3d89d15e49d50054324e3d5ebc.jpg",
+    "https://i.pinimg.com/736x/aa/fe/65/aafe653565c4e0983a6589669f65e570.jpg",
+  ];
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Chuyển slide tự động
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prevSlide) => (prevSlide + 1) % slideUrls.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [slideUrls.length]);
+
+  // Hàm điều chỉnh slide
+  const goToPreviousSlide = () => {
+    setCurrentSlide((prevSlide) => (prevSlide - 1 + slideUrls.length) % slideUrls.length);
+  };
+
+  const goToNextSlide = () => {
+    setCurrentSlide((prevSlide) => (prevSlide + 1) % slideUrls.length);
+  };
+
   return (
     <div className="p-6">
+      <div className="relative w-full max-w-4xl mx-auto mb-6">
+        <div className="overflow-hidden rounded-lg shadow-lg w-full h-64 flex items-center justify-center bg-gray-100 relative">
+          {slideUrls.map((url, index) => (
+            <img
+              key={index}
+              src={url}
+              alt={`Slide ${index + 1}`}
+              className={`absolute w-full h-full object-contain transition-transform duration-700 ease-in-out ${index === currentSlide ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-full'
+                }`}
+              style={{
+                transform: index < currentSlide ? 'translateX(-100%)' : index > currentSlide ? 'translateX(100%)' : 'translateX(0)',
+              }}
+            />
+          ))}
+        </div>
+        {/* Nút điều chỉnh */}
+        <button
+          className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-gray-300 text-white p-2 rounded-full shadow hover:bg-gray-500 transition"
+          onClick={goToPreviousSlide}
+        >
+          ❮
+        </button>
+        <button
+          className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-gray-300 text-white p-2 rounded-full shadow hover:bg-gray-500 transition"
+          onClick={goToNextSlide}
+        >
+          ❯
+        </button>
+        {/* Chấm hiển thị */}
+        <div className="flex justify-center mt-2">
+          {slideUrls.map((_, index) => (
+            <span
+              key={index}
+              className={`mx-1 w-3 h-3 rounded-full ${index === currentSlide ? 'bg-gray-500' : 'bg-gray-300'}`}
+              style={{ cursor: 'pointer' }}
+              onClick={() => setCurrentSlide(index)}
+            ></span>
+          ))}
+        </div>
+      </div>
+
       <h1 className="text-2xl font-bold mb-4 bg-gray-200 text-gray-800 py-4 rounded-md text-center">DANH SÁCH TẤT CẢ BÀI ĐĂNG VỀ ĐỒ THẤT LẠC</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 bg-slate-300 shadow-lg rounded-lg p-6 border-2">
@@ -147,7 +221,11 @@ const LostItems = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-20 my-20">
         {currentPosts.map((post) => (
-          <div key={post.post_id} className="bg-white border-2 p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <div
+            key={post.post_id}
+            className="bg-white border-2 p-4 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col"
+          >
+            {/* Hình ảnh bài đăng */}
             <div
               className="flex justify-center items-center mb-4 cursor-pointer"
               onClick={() => navigate(`/posts/${post.post_id}`)}
@@ -155,26 +233,42 @@ const LostItems = () => {
               <img
                 src={post.image_url}
                 alt={post.title}
-                className="w-full md:w-96 h-auto object-cover rounded-lg shadow-md border border-gray-300"
+                className="w-64 h-48 object-cover rounded-lg shadow-md border border-gray-300"
                 onError={(e) => {
-                  e.target.src = "https://via.placeholder.com/150"; // Hình ảnh mặc định nếu xảy ra lỗi
+                  e.target.src = "https://www.hoteljob.vn/files/Dung/do%20that%20lac.png";
                   e.target.alt = "Hình ảnh không tồn tại";
                 }}
               />
             </div>
-            <h2
-              className="text-2xl font-bold mb-2 text-gray-800 break-words line-clamp-2"
-              dangerouslySetInnerHTML={{
-                __html: highlightMatch(post.title, searchTerm),
-              }}
-            ></h2>
-            <p className="text-gray-600">
-              <strong>Ngày:</strong> {formatDate(post.created)}
-            </p>
-            <p className="text-gray-600">
-              <strong>Địa chỉ:</strong> {post.address}
-            </p>
+            {/* Tiêu đề và danh mục */}
+            <div className="mb-4">
+              {/* Tiêu đề */}
+              <h2
+                className="text-2xl font-bold mb-2 text-gray-800 break-words line-clamp-2"
+                dangerouslySetInnerHTML={{
+                  __html: highlightMatch(post.title, searchTerm),
+                }}
+              ></h2>
+            </div>
 
+            {/* Thông tin chi tiết */}
+            <div className="space-y-3">
+              {/* Ngày đăng */}
+              <div className="flex items-start">
+                <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📅 Ngày:</span>
+                <span className="break-words">{formatDate(post.created)}</span>
+              </div>
+              {/* Địa chỉ */}
+              <div className="flex items-start">
+                <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📍 Địa chỉ:</span>
+                <span className="break-words">{post.address}</span>
+              </div>
+              {/* Mô tả */}
+              <div className="flex items-start">
+                <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📝 Mô tả:</span>
+                <span className="line-clamp-2 break-words">{post.description || "Không có mô tả"}</span>
+              </div>
+            </div>
           </div>
         ))}
       </div>
@@ -184,7 +278,7 @@ const LostItems = () => {
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className={`px-4 py-2 rounded ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+            className={`px-4 py-2 rounded-xl ${currentPage === 1 ? 'bg-gray-300' : 'bg-red-600 text-white hover:bg-red-700'}`}
           >
             Trước
           </button>
@@ -192,7 +286,7 @@ const LostItems = () => {
             <button
               key={index + 1}
               onClick={() => handlePageChange(index + 1)}
-              className={`px-4 py-2 rounded ${currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+              className={`px-4 py-2 rounded-2xl ${currentPage === index + 1 ? 'bg-red-600 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
             >
               {index + 1}
             </button>
@@ -200,7 +294,7 @@ const LostItems = () => {
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className={`px-4 py-2 rounded ${currentPage === totalPages ? 'bg-gray-300' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+            className={`px-4 py-2 rounded-xl ${currentPage === totalPages ? 'bg-gray-300' : 'bg-red-600 text-white hover:bg-red-700'}`}
           >
             Sau
           </button>

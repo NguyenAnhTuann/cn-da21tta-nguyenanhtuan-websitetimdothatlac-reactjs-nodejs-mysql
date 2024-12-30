@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MdRefresh } from "react-icons/md";
 
-const FoundItems = () => {
+const OwnedItems = () => {
   const [posts, setPosts] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,19 +21,16 @@ const FoundItems = () => {
         if (!response.ok) throw new Error('Không thể tải danh sách bài đăng.');
         const data = await response.json();
 
-        const foundItems = data.filter(
-          (post) => post.category === 'Đồ nhặt được' && post.status !== "Đã sở hữu"
-        );
-
-        setPosts(foundItems);
-        setFilteredPosts(foundItems);
+        // Lọc bài đăng: chỉ lấy những bài có status "Đã sở hữu"
+        const ownedItems = data.filter((post) => post.status === 'Đã sở hữu');
+        setPosts(ownedItems);
+        setFilteredPosts(ownedItems);
       } catch (error) {
         setErrorMessage(error.message);
       }
     };
     fetchPosts();
   }, []);
-
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -90,37 +87,36 @@ const FoundItems = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Slide
-  const slideUrls = [
-    "https://i.pinimg.com/736x/c7/8c/39/c78c39dde40e4c4b5cb8f972cb7dfae1.jpg",
-    "https://i.pinimg.com/736x/94/1f/15/941f1561a78c3f96768282ba235cde09.jpg",
-    "https://i.pinimg.com/736x/b7/14/6b/b7146ba5d6a8a9b6cde3577a4dc28f58.jpg",
-    "https://i.pinimg.com/736x/af/84/5c/af845c3d89d15e49d50054324e3d5ebc.jpg",
-    "https://i.pinimg.com/736x/aa/fe/65/aafe653565c4e0983a6589669f65e570.jpg",
-  ];
-
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  // Chuyển slide tự động
-  useEffect(() => {
-    const timer = setInterval(() => {
+    // Slide
+    const slideUrls = [
+      "https://i.pinimg.com/736x/c7/8c/39/c78c39dde40e4c4b5cb8f972cb7dfae1.jpg",
+      "https://i.pinimg.com/736x/94/1f/15/941f1561a78c3f96768282ba235cde09.jpg",
+      "https://i.pinimg.com/736x/b7/14/6b/b7146ba5d6a8a9b6cde3577a4dc28f58.jpg",
+      "https://i.pinimg.com/736x/af/84/5c/af845c3d89d15e49d50054324e3d5ebc.jpg",
+      "https://i.pinimg.com/736x/aa/fe/65/aafe653565c4e0983a6589669f65e570.jpg",
+    ];
+  
+    const [currentSlide, setCurrentSlide] = useState(0);
+  
+    // Chuyển slide tự động
+    useEffect(() => {
+      const timer = setInterval(() => {
+        setCurrentSlide((prevSlide) => (prevSlide + 1) % slideUrls.length);
+      }, 5000);
+      return () => clearInterval(timer);
+    }, [slideUrls.length]);
+  
+    // Hàm điều chỉnh slide
+    const goToPreviousSlide = () => {
+      setCurrentSlide((prevSlide) => (prevSlide - 1 + slideUrls.length) % slideUrls.length);
+    };
+  
+    const goToNextSlide = () => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % slideUrls.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [slideUrls.length]);
-
-  // Hàm điều chỉnh slide
-  const goToPreviousSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide - 1 + slideUrls.length) % slideUrls.length);
-  };
-
-  const goToNextSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide + 1) % slideUrls.length);
-  };
+    };
 
   return (
     <div className="p-6">
-
       <div className="relative w-full max-w-4xl mx-auto mb-6">
         <div className="overflow-hidden rounded-lg shadow-lg w-full h-64 flex items-center justify-center bg-gray-100 relative">
           {slideUrls.map((url, index) => (
@@ -162,7 +158,9 @@ const FoundItems = () => {
         </div>
       </div>
 
-      <h1 className="text-2xl font-bold mb-4 bg-gray-200 text-gray-800 py-4 rounded-md text-center">DANH SÁCH TẤT CẢ BÀI ĐĂNG VỀ ĐỒ NHẶT ĐƯỢC</h1>
+      <h1 className="text-2xl font-bold mb-4 bg-gray-200 text-gray-800 py-4 rounded-md text-center">
+        DANH SÁCH TẤT CẢ BÀI ĐĂNG ĐÃ CÓ CHỦ SỞ HỮU
+      </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 bg-slate-300 shadow-lg rounded-lg p-6 border-2">
         <div className="relative col-span-1">
@@ -216,8 +214,8 @@ const FoundItems = () => {
       </div>
 
       {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
-      {filteredPosts.length === 0 && (
-        <p className="text-gray-500 text-center mt-4">Không tìm thấy bài đăng phù hợp.</p>
+      {filteredPosts.length === 0 && !errorMessage && (
+        <p className="text-gray-500 text-center mt-4">Không có bài đăng nào.</p>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-20 my-20">
@@ -236,21 +234,20 @@ const FoundItems = () => {
                 alt={post.title}
                 className="w-64 h-48 object-cover rounded-lg shadow-md border border-gray-300"
                 onError={(e) => {
-                  e.target.src = "https://www.hoteljob.vn/files/Dung/do%20that%20lac.png";
+                  e.target.src = "https://via.placeholder.com/150"; // Hình ảnh mặc định nếu xảy ra lỗi
                   e.target.alt = "Hình ảnh không tồn tại";
                 }}
               />
             </div>
-            {/* Tiêu đề và danh mục */}
-            <div className="mb-4">
-              {/* Tiêu đề */}
-              <h2
-                className="text-2xl font-bold mb-2 text-gray-800 break-words line-clamp-2"
-                dangerouslySetInnerHTML={{
-                  __html: highlightMatch(post.title, searchTerm),
-                }}
-              ></h2>
-            </div>
+
+            {/* Tiêu đề */}
+            <h2
+              className="text-2xl font-bold mb-4 text-gray-800 break-words line-clamp-2"
+              dangerouslySetInnerHTML={{
+                __html: highlightMatch(post.title, searchTerm),
+              }}
+            ></h2>
+
 
             {/* Thông tin chi tiết */}
             <div className="space-y-3">
@@ -259,20 +256,33 @@ const FoundItems = () => {
                 <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📅 Ngày:</span>
                 <span className="break-words">{formatDate(post.created)}</span>
               </div>
+
               {/* Địa chỉ */}
               <div className="flex items-start">
                 <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📍 Địa chỉ:</span>
                 <span className="break-words">{post.address}</span>
               </div>
+
               {/* Mô tả */}
               <div className="flex items-start">
                 <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📝 Mô tả:</span>
                 <span className="line-clamp-2 break-words">{post.description || "Không có mô tả"}</span>
               </div>
+
+              {/* Lưu ý */}
+              <div>
+                <h4
+                  className="text-nowrap font-bold mb-4 text-red-600 break-words line-clamp-2"
+                >
+                  Lưu ý: Đồ vật này đã có chủ sở hữu !
+                </h4>
+              </div>
             </div>
+
           </div>
         ))}
       </div>
+
 
       {totalPages > 1 && (
         <div className="flex justify-center items-center mt-6 gap-2">
@@ -305,4 +315,4 @@ const FoundItems = () => {
   );
 };
 
-export default FoundItems;
+export default OwnedItems;

@@ -151,15 +151,21 @@ router.get('/:id', (req, res) => {
 // API: Cập nhật bài đăng
 router.put('/update/:id', authenticateToken, (req, res) => {
     const postId = req.params.id;
-    const { title, description, category, address } = req.body;
+    const { title, description, category, address, created } = req.body;
     const userId = req.userId;
 
+    // Kiểm tra giá trị ngày có hợp lệ không
+    if (!created || isNaN(new Date(created))) {
+        return res.status(400).json({ message: 'Ngày tạo không hợp lệ.' });
+    }
+
     const query = `
-      UPDATE Posts SET title = ?, description = ?, category = ?, address = ?
+      UPDATE Posts 
+      SET title = ?, description = ?, category = ?, address = ?, created = ?
       WHERE post_id = ? AND user_id = ?
     `;
 
-    db.query(query, [title, description, category, address, postId, userId], (err) => {
+    db.query(query, [title, description, category, address, created, postId, userId], (err) => {
         if (err) {
             console.error('Lỗi khi cập nhật bài đăng:', err);
             return res.status(500).json({ message: 'Lỗi server khi cập nhật bài đăng.' });
@@ -167,6 +173,10 @@ router.put('/update/:id', authenticateToken, (req, res) => {
         res.status(200).json({ message: 'Cập nhật bài đăng thành công.' });
     });
 });
+
+
+
+
 
 // API: Xóa bài đăng
 router.delete('/delete/:id', authenticateToken, (req, res) => {
@@ -191,6 +201,33 @@ router.delete('/delete/:id', authenticateToken, (req, res) => {
         res.status(200).json({ message: 'Xóa bài đăng thành công.' });
     });
 });
+
+// API: Đánh dấu bài đăng là "Đã sở hữu"
+router.put('/mark-as-owned/:id', authenticateToken, (req, res) => {
+    const postId = req.params.id;
+    const userId = req.userId;
+
+    const query = `
+      UPDATE Posts 
+      SET status = 'Đã sở hữu' 
+      WHERE post_id = ? AND user_id = ?
+    `;
+
+    db.query(query, [postId, userId], (err, result) => {
+        if (err) {
+            console.error('Lỗi khi cập nhật trạng thái bài đăng:', err);
+            return res.status(500).json({ message: 'Lỗi server khi cập nhật bài đăng.' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Bài đăng không tồn tại hoặc bạn không có quyền.' });
+        }
+
+        res.status(200).json({ message: 'Đã đánh dấu bài đăng là đã sở hữu.' });
+    });
+});
+
+
 
 
 module.exports = router;

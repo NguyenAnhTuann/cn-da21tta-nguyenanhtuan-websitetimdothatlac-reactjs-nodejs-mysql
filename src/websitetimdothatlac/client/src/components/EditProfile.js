@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { FaHome, FaUser, FaEnvelope, FaPhone, FaFacebook, FaMobileAlt } from 'react-icons/fa';
+import { FaEnvelope, FaFacebook, FaHome, FaMobileAlt, FaPhone, FaUser } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 const EditProfile = () => {
@@ -43,20 +43,20 @@ const EditProfile = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     setLoading(true); // Bắt đầu trạng thái loading
-  
+
     // Kiểm tra phone và zalo
     if (phone.length !== 10 || !/^\d{10}$/.test(phone)) {
       setNotification({ message: "❌ Số điện thoại phải có đúng 10 số.", type: "error" });
       setLoading(false);
       return;
     }
-  
+
     if (zalo.length !== 0 && (!/^\d{10}$/.test(zalo) || zalo.length !== 10)) {
       setNotification({ message: "❌ Zalo phải có đúng 10 số nếu bạn nhập.", type: "error" });
       setLoading(false);
       return;
     }
-  
+
     setTimeout(async () => {
       try {
         const token = localStorage.getItem("token");
@@ -65,7 +65,7 @@ const EditProfile = () => {
           { name, email, phone, zalo, fbUrl },
           { headers: { Authorization: `Bearer ${token}` } }
         );
-  
+
         setNotification({ message: "Cập nhật thông tin cá nhân thành công!", type: "success" });
       } catch (error) {
         const message =
@@ -76,12 +76,12 @@ const EditProfile = () => {
       }
     }, 2000); // Thêm delay 2 giây
   };
-  
+
 
 
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-50 to-blue-100 relative">
+    <div className="flex justify-center items-center min-h-2.5 bg-gradient-to-r from-blue-50 to-blue-100 relative pb-16">
       {/* Thông báo */}
       {notification.message && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
@@ -116,7 +116,7 @@ const EditProfile = () => {
             {/* Nút đóng thông báo */}
             <button
               onClick={() => setNotification({ message: "", type: "" })}
-              className="mt-2 px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-600 transition"
+              className="mt-2 px-4 py-2 border-2 text-black rounded-2xl hover:bg-gray-400 transition"
             >
               Đóng
             </button>

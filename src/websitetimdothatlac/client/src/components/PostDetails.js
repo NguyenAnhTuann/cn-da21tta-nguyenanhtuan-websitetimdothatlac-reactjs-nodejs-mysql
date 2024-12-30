@@ -57,7 +57,7 @@ const PostDetails = () => {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto bg-white shadow-lg rounded-lg border-2">
+    <div className="p-6 max-w-4xl mx-auto bg-white shadow-lg rounded-lg border-2 my-10">
       <div className="mb-6">
         <button
           onClick={() => navigate(-1)}
@@ -78,7 +78,7 @@ const PostDetails = () => {
               alt={post.title}
               className="w-full md:w-96 h-auto object-cover rounded-lg shadow-md border border-gray-300"
               onError={(e) => {
-                e.target.src = "https://via.placeholder.com/150"; // Hình ảnh mặc định nếu xảy ra lỗi
+                e.target.src = "https://www.hoteljob.vn/files/Dung/do%20that%20lac.png";
                 e.target.alt = "Hình ảnh không tồn tại";
               }}
             />

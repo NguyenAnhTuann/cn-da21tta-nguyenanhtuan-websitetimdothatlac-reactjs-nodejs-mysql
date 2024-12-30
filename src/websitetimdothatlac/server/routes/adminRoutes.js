@@ -116,4 +116,36 @@ router.delete('/posts/:id', authenticateToken, (req, res) => {
   });
 });
 
+// API: Lấy danh sách bài đăng từ bảng owned_posts với phân trang
+router.get('/owned-posts', authenticateToken, (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const offset = (page - 1) * limit;
+
+  // Lấy tổng số bài đăng trong bảng owned_posts
+  db.query('SELECT COUNT(*) AS totalPosts FROM owned_posts', (err, totalResult) => {
+    if (err) {
+      console.error('Lỗi khi lấy tổng số bài đăng:', err);
+      return res.status(500).json({ message: 'Lỗi server khi lấy tổng số bài đăng.' });
+    }
+
+    const totalPosts = totalResult[0].totalPosts;
+
+    // Lấy danh sách bài đăng từ bảng owned_posts
+    db.query('SELECT * FROM owned_posts LIMIT ? OFFSET ?', [limit, offset], (err, posts) => {
+      if (err) {
+        console.error('Lỗi khi lấy danh sách bài đăng:', err);
+        return res.status(500).json({ message: 'Lỗi server khi lấy danh sách bài đăng.' });
+      }
+
+      // Trả về danh sách bài đăng và tổng số bài đăng
+      res.status(200).json({
+        posts,
+        totalPosts,
+      });
+    });
+  });
+});
+
 module.exports = router;
+
