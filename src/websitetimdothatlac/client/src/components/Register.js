@@ -11,6 +11,22 @@ const Register = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState(''); // Nhập lại mật khẩu
+  const [passwordStrength, setPasswordStrength] = useState(''); // Độ mạnh mật khẩu
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+
+  const evaluatePasswordStrength = (password) => {
+    if (password.length < 6) {
+      return 'Yếu'; // Mật khẩu ngắn
+    } else if (password.length < 10) {
+      return 'Trung bình'; // Mật khẩu trung bình
+    } else {
+      return 'Mạnh'; // Mật khẩu dài và mạnh
+    }
+  };
+
 
   useEffect(() => {
     if (successMessage) {
@@ -24,6 +40,31 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrorMessage('');
+
+    // Kiểm tra số điện thoại và Zalo
+    const phoneRegex = /^[0-9]{10}$/; // Đúng 10 chữ số
+    if (!phoneRegex.test(phone)) {
+      setErrorMessage('❌ Số điện thoại phải bao gồm đúng 10 chữ số!');
+      setIsLoading(false);
+      return;
+    }
+
+    if (zalo && !phoneRegex.test(zalo)) {
+      setErrorMessage('❌ Số Zalo phải bao gồm đúng 10 chữ số!');
+      setIsLoading(false);
+      return;
+    }
+
+    // Kiểm tra mật khẩu nhập lại
+    if (password !== confirmPassword) {
+      setErrorMessage('❌ Mật khẩu không khớp. Vui lòng nhập lại!');
+      setIsLoading(false);
+      return;
+    }
+
+    // Chuẩn hóa URL Facebook
+    const formattedFbUrl = fbUrl.startsWith('facebook.com') ? `https://${fbUrl}` : fbUrl;
 
     try {
       await axios.post('http://localhost:5000/api/auth/register', {
@@ -32,7 +73,7 @@ const Register = () => {
         phone,
         password,
         zalo,
-        fbUrl,
+        fbUrl: formattedFbUrl, // Gửi URL đã chuẩn hóa
       });
       setSuccessMessage('🎉 Đăng ký thành công! Đang chuyển hướng...');
     } catch (error) {
@@ -43,8 +84,14 @@ const Register = () => {
     }
   };
 
+
   return (
-    <div className="relative min-h-screen flex justify-center items-center bg-gradient-to-r from-green-400 to-blue-500 p-6">
+    <div
+      className="relative min-h-screen flex justify-center items-center bg-cover bg-center bg-no-repeat p-6"
+      style={{
+        backgroundImage: `url('https://res.cloudinary.com/duk8odqun/image/upload/v1735644020/Logotimdothatlac_1_qdrlei.png')`,
+      }}
+    >
       {/* Loading và thông báo thành công */}
       {successMessage && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex flex-col justify-center items-center z-50">
@@ -112,10 +159,11 @@ const Register = () => {
               type="text"
               placeholder="Số điện thoại"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, ''))} // Chỉ cho phép nhập số
               className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
               required
             />
+
             <span className="absolute left-4 top-3 text-gray-400">📞</span>
           </div>
 
@@ -125,16 +173,17 @@ const Register = () => {
               type="text"
               placeholder="Zalo"
               value={zalo}
-              onChange={(e) => setZalo(e.target.value)}
+              onChange={(e) => setZalo(e.target.value.replace(/[^0-9]/g, ''))} // Chỉ cho phép nhập số
               className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
             />
+
             <span className="absolute left-4 top-3 text-gray-400">💬</span>
           </div>
 
           {/* Facebook URL */}
           <div className="relative">
             <input
-              type="url"
+              type="text"
               placeholder="Facebook URL"
               value={fbUrl}
               onChange={(e) => setFbUrl(e.target.value)}
@@ -146,15 +195,60 @@ const Register = () => {
           {/* Mật khẩu */}
           <div className="relative">
             <input
-              type="password"
-              placeholder="Mật khẩu"
+              type={showPassword ? 'text' : 'password'} // Đổi loại input
+              placeholder="Nhập mật khẩu"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-500 focus:outline-none"
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setPasswordStrength(evaluatePasswordStrength(e.target.value)); // Đánh giá độ mạnh mật khẩu
+              }}
+              className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
               required
             />
             <span className="absolute left-4 top-3 text-gray-400">🔒</span>
+            <span
+              className="absolute right-4 top-3 text-gray-400 cursor-pointer"
+              onMouseEnter={() => setShowPassword(true)} // Hiển thị mật khẩu khi rê chuột vào
+              onMouseLeave={() => setShowPassword(false)} // Ẩn mật khẩu khi rời chuột
+            >
+              👁️
+            </span>
           </div>
+
+          {/* Nhập lại mật khẩu */}
+          <div className="relative">
+            <input
+              type={showConfirmPassword ? 'text' : 'password'} // Đổi loại input
+              placeholder="Nhập lại mật khẩu"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              required
+            />
+            <span className="absolute left-4 top-3 text-gray-400">🔒</span>
+            <span
+              className="absolute right-4 top-3 text-gray-400 cursor-pointer"
+              onMouseEnter={() => setShowConfirmPassword(true)} // Hiển thị mật khẩu khi rê chuột vào
+              onMouseLeave={() => setShowConfirmPassword(false)} // Ẩn mật khẩu khi rời chuột
+            >
+              👁️
+            </span>
+          </div>
+
+
+
+          <div className="w-full h-2 bg-gray-200 rounded mt-2 relative">
+            <div
+              className={`h-full rounded transition-all duration-300 ${passwordStrength === 'Yếu'
+                ? 'bg-red-500 w-1/3' // Yếu: 1/3 thanh
+                : passwordStrength === 'Trung bình'
+                  ? 'bg-yellow-500 w-2/3' // Trung bình: 2/3 thanh
+                  : 'bg-green-500 w-full' // Mạnh: Full thanh
+                }`}
+            ></div>
+          </div>
+
+
 
           <button
             type="submit"
@@ -179,8 +273,6 @@ const Register = () => {
         </div>
       </div>
 
-      {/* Hiệu ứng nền */}
-      <div className="absolute inset-0 bg-gradient-to-br from-green-500 to-blue-500 opacity-30 rounded-3xl filter blur-3xl"></div>
     </div>
   );
 };

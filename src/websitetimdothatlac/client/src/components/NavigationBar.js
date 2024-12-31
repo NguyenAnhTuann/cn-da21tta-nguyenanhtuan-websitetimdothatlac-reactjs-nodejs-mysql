@@ -44,7 +44,7 @@ const NavigationBar = () => {
         <button
           onClick={() => navigate("/owned-items")}
           className={`px-6 py-3 font-medium transition border ${isActive("/owned-items") ? "bg-gray-500 text-white" : "bg-white text-black hover:bg-gray-100 border-gray-300"
-            }`}
+            } rounded-r-md`}
         >
           ĐÃ SỞ HỮU
         </button>

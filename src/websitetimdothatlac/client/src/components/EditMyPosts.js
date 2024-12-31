@@ -4,8 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 const EditMyPosts = () => {
   const [posts, setPosts] = useState([]);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [searchDate, setSearchDate] = useState('');
   const [searchAddress, setSearchAddress] = useState('');
@@ -15,9 +13,21 @@ const EditMyPosts = () => {
   const postsPerPage = 6;
   const [categoryFilter, setCategoryFilter] = useState('Đồ thất lạc');
   const [statusFilter, setStatusFilter] = useState('Chưa sở hữu');
-
-
+  const [notification, setNotification] = useState({ message: '', type: '' });
   const navigate = useNavigate();
+
+  // Hàm để đóng thông báo
+  const closeNotification = () => {
+    setNotification({ message: '', type: '' });
+  };
+
+  // Hàm xác nhận cho thông báo xác nhận (nếu cần)
+  const confirmAction = async () => {
+    if (notification.action === 'delete') {
+      await handleDeleteConfirmed(notification.postId);
+    }
+    closeNotification();
+  };
 
   useEffect(() => {
     const fetchMyPosts = async () => {
@@ -40,7 +50,7 @@ const EditMyPosts = () => {
           )
         );
       } catch (error) {
-        setErrorMessage(error.message || 'Lỗi không xác định.');
+        setNotification({ message: error.message || 'Lỗi không xác định.', type: 'error' });
       }
     };
 
@@ -70,21 +80,31 @@ const EditMyPosts = () => {
           post.post_id === postId ? { ...post, status: newStatus } : post
         )
       );
-      setSuccessMessage(
-        newStatus === 'Đã sở hữu'
-          ? 'Đã đánh dấu bài đăng là "Đã sở hữu".'
-          : 'Đã thay đổi trạng thái bài đăng thành "Chưa sở hữu".'
-      );
-      setTimeout(() => setSuccessMessage(''), 3000);
+
+      setNotification({
+        message:
+          newStatus === 'Đã sở hữu'
+            ? 'Đã đánh dấu bài đăng là "Đã sở hữu".'
+            : 'Đã thay đổi trạng thái bài đăng thành "Chưa sở hữu".',
+        type: 'success',
+      });
     } catch (error) {
-      setErrorMessage(error.message);
+      setNotification({ message: error.message || 'Lỗi không xác định.', type: 'error' });
     }
   };
 
 
-  const handleDelete = async (postId) => {
-    if (!window.confirm('Bạn có chắc chắn muốn xóa bài đăng này không?')) return;
 
+  const handleDelete = async (postId) => {
+    setNotification({
+      message: 'Bạn có chắc chắn muốn xóa bài đăng này không?',
+      type: 'confirm',
+      action: 'delete',
+      postId,
+    });
+  };
+
+  const handleDeleteConfirmed = async (postId) => {
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(`http://localhost:5000/api/posts/delete/${postId}`, {
@@ -94,12 +114,12 @@ const EditMyPosts = () => {
       if (!response.ok) throw new Error('Không thể xóa bài đăng.');
 
       setPosts((prevPosts) => prevPosts.filter((post) => post.post_id !== postId));
-      setSuccessMessage('Xóa bài đăng thành công!');
-      setTimeout(() => setSuccessMessage(''), 3000);
+      setNotification({ message: '🗑 Xóa bài đăng thành công!', type: 'success' });
     } catch (error) {
-      setErrorMessage(error.message);
+      setNotification({ message: `❌ ${error.message}`, type: 'error' });
     }
   };
+
 
   // Hàm định dạng ngày
   const formatDate = (dateString) => {
@@ -185,19 +205,90 @@ const EditMyPosts = () => {
 
   return (
     <div className="p-6">
-      {/* Thông báo lỗi */}
-      {errorMessage && (
-        <div className="mb-4 bg-red-100 text-red-700 p-3 rounded-md shadow-md">
-          {errorMessage}
+      {notification.message && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-2xl text-center max-w-md relative">
+            {/* Icon cho từng loại thông báo */}
+            {notification.type === 'success' && (
+              <div className="flex justify-center mb-4">
+                <div className="bg-green-500 text-white rounded-full h-12 w-12 flex items-center justify-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    className="h-6 w-6"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+              </div>
+            )}
+            {notification.type === 'error' && (
+              <div className="flex justify-center mb-4">
+                <div className="bg-red-500 text-white rounded-full h-12 w-12 flex items-center justify-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    className="h-6 w-6"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </div>
+              </div>
+            )}
+            {notification.type === 'confirm' && (
+              <div className="flex justify-center mb-4">
+                <div className="bg-yellow-500 text-white rounded-full h-12 w-12 flex items-center justify-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    className="h-6 w-6"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </div>
+              </div>
+            )}
+
+            {/* Nội dung thông báo */}
+            <p className="text-lg font-semibold text-gray-800 mb-6">{notification.message}</p>
+
+            {/* Nút hành động */}
+            {notification.type === 'confirm' ? (
+              <div className="flex justify-center gap-4">
+                <button
+                  onClick={closeNotification}
+                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400 transition"
+                >
+                  Hủy
+                </button>
+                <button
+                  onClick={confirmAction}
+                  className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition"
+                >
+                  Xác nhận
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={closeNotification}
+                className="text-black px-4 py-2 rounded-md hover:bg-gray-500 transition border-2"
+              >
+                Đóng
+              </button>
+            )}
+          </div>
         </div>
       )}
 
-      {/* Thông báo thành công */}
-      {successMessage && (
-        <div className="mb-4 bg-green-100 text-green-700 p-3 rounded-md shadow-md">
-          {successMessage}
-        </div>
-      )}
 
       <h1 className="text-2xl font-bold mb-4 bg-gray-200 text-gray-800 py-4 rounded-md text-center">
         DANH SÁCH BÀI ĐĂNG CỦA BẠN
@@ -287,86 +378,59 @@ const EditMyPosts = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-20 my-20">
-  {currentPosts.map((post) => (
-    <div
-      key={post.post_id}
-      className="bg-white border-2 p-6 rounded-lg shadow-lg hover:shadow-transparent transition-shadow duration-300 flex flex-col"
-    >
-      {/* Hình ảnh bài đăng */}
-      <div
-        className="flex justify-center items-center mb-4 cursor-pointer"
-        onClick={() => navigate(`/posts/${post.post_id}`)}
-      >
-        <img
-          src={post.image_url}
-          alt={post.title}
-          className="w-64 h-48 object-cover rounded-lg shadow-md border border-gray-300"
-          onError={(e) => {
-            e.target.src = "https://via.placeholder.com/150"; // Hình ảnh mặc định nếu xảy ra lỗi
-            e.target.alt = "Hình ảnh không tồn tại";
-          }}
-        />
-      </div>
-
-      {/* Tiêu đề */}
-      <div>
-      <h2
-        className="text-3xl font-bold mb-4 text-gray-800 break-words line-clamp-2"
-        dangerouslySetInnerHTML={{
-          __html: highlightMatch(post.title, searchTerm),
-        }}
-      ></h2>
-
-      {/* Loại bài đăng */}
-      <p
-        className={`inline-block ${getCategoryStyle(post.category)} px-3 py-1 rounded-full text-lg font-bold uppercase`}
-      >
-        {post.category}
-      </p>
-      </div>
-
-      {/* Thông tin bài đăng */}
-      <div className="mt-4 space-y-2">
-        <p className="text-gray-600 flex items-center">
-          <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📅 Ngày:</span>
-          <span>{highlightMatch(formatDate(post.created), searchDate)}</span>
-        </p>
-        <p className="text-gray-600 flex items-start">
-          <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📍 Địa chỉ:</span>
-          <span className="break-words">{highlightMatch(post.address, searchAddress)}</span>
-        </p>
-        <p className="text-gray-600 flex items-start">
-          <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📝 Mô tả:</span>
-          <span className="break-words">{post.description || "Không có mô tả"}</span>
-        </p>
-        <p className="text-gray-600 flex items-center">
-          <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">👤 Người đăng:</span>
-          <span className="break-words">{post.name || "Không rõ"}</span>
-        </p>
-        <p className="text-gray-600 flex items-center">
-          <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📞 Điện thoại:</span>
-          <span >{post.phone || "Không có"}</span>
-        </p>
-        <p className="text-gray-600 flex items-center">
-          <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📱 Zalo:</span>
-          <span>{post.zalo || "Không có"}</span>
-        </p>
-        <p className="text-gray-600 flex items-center">
-          <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">🔗 Facebook:</span>
-          {post.fbUrl ? (
-            <a
-              href={post.fbUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 underline"
+        {currentPosts.map((post) => (
+          <div
+            key={post.post_id}
+            className="bg-white border-2 p-6 rounded-lg shadow-lg hoer:shadow-2vxl hover:scale-105 transition-transform duration-300 flex flex-col"
+          >
+            {/* Hình ảnh bài đăng */}
+            <div
+              className="flex justify-center items-center mb-4 cursor-pointer"
+              onClick={() => navigate(`/posts/${post.post_id}`)}
             >
-              {post.fbUrl}
-            </a>
-          ) : (
-            <span>Không có</span>
-          )}
-        </p>
-      </div>
+              <img
+                src={post.image_url}
+                alt={post.title}
+                className="w-64 h-48 object-cover rounded-lg shadow-md border border-gray-300"
+                onError={(e) => {
+                  e.target.src = "https://via.placeholder.com/150"; // Hình ảnh mặc định nếu xảy ra lỗi
+                  e.target.alt = "Hình ảnh không tồn tại";
+                }}
+              />
+            </div>
+
+            {/* Tiêu đề */}
+            <div>
+              <h2
+                className="text-3xl font-bold mb-4 text-gray-800 break-words line-clamp-2"
+                dangerouslySetInnerHTML={{
+                  __html: highlightMatch(post.title, searchTerm),
+                }}
+              ></h2>
+
+              {/* Loại bài đăng */}
+              <p
+                className={`inline-block ${getCategoryStyle(post.category)} px-3 py-1 rounded-full text-lg font-bold uppercase`}
+              >
+                {post.category}
+              </p>
+            </div>
+
+            {/* Thông tin bài đăng */}
+            <div className="mt-4 space-y-2">
+              <p className="text-gray-600 flex items-center">
+                <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📅 Ngày:</span>
+                <span>{highlightMatch(formatDate(post.created), searchDate)}</span>
+              </p>
+              <p className="text-gray-600 flex items-start">
+                <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📍 Địa chỉ:</span>
+                <span className="break-words">{highlightMatch(post.address, searchAddress)}</span>
+              </p>
+              <p className="text-gray-600 flex items-start">
+                <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📝 Mô tả:</span>
+                <span className="break-words">{post.description || "Không có mô tả"}</span>
+              </p>
+            </div>
 
 
             <div className="flex items-center gap-3 mt-4">
@@ -409,7 +473,7 @@ const EditMyPosts = () => {
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className={`px-4 py-2 rounded ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-600 text-white hover:bg-blue-700'
+            className={`px-4 py-2 rounded-2xl ${currentPage === 1 ? 'bg-gray-300' : 'bg-red-600 text-white hover:bg-red-700'
               }`}
           >
             Trước
@@ -418,8 +482,8 @@ const EditMyPosts = () => {
             <button
               key={index + 1}
               onClick={() => handlePageChange(index + 1)}
-              className={`px-4 py-2 rounded ${currentPage === index + 1
-                ? 'bg-blue-600 text-white'
+              className={`px-4 py-2 rounded-xl ${currentPage === index + 1
+                ? 'bg-red-600 text-white'
                 : 'bg-gray-200 hover:bg-gray-300'
                 }`}
             >
@@ -429,9 +493,9 @@ const EditMyPosts = () => {
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className={`px-4 py-2 rounded ${currentPage === totalPages
+            className={`px-4 py-2 rounded-xl ${currentPage === totalPages
               ? 'bg-gray-300'
-              : 'bg-blue-600 text-white hover:bg-blue-700'
+              : 'bg-red-600 text-white hover:bg-red-700'
               }`}
           >
             Sau

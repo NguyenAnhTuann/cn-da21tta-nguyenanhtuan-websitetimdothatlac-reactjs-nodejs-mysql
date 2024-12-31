@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import AdminLayout from './AdminLayout';
 import { useNavigate } from 'react-router-dom';
+import { MdDeleteOutline } from "react-icons/md";
+
 
 const PostManagement = () => {
     const [posts, setPosts] = useState([]);
@@ -207,8 +209,10 @@ const PostManagement = () => {
                                 <td className="p-2 border">
                                     <button
                                         onClick={() => handleDeletePost(post.post_id)}
-                                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                                        className="flex items-center gap-1 border-2 rounded-2xl text-black px-3 py-1 hover:bg-red-600 hover:text-white transition"
+
                                     >
+                                        <MdDeleteOutline size={20} />
                                         Xóa
                                     </button>
                                 </td>
@@ -222,7 +226,7 @@ const PostManagement = () => {
             <div className="flex justify-center mt-4 gap-2">
                 <button
                     onClick={() => handlePageChange(currentPage - 1)}
-                    className={`px-4 py-2 rounded ${currentPage === 1 ? 'bg-gray-300' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+                    className={`px-4 py-2 rounded-xl ${currentPage === 1 ? 'bg-gray-300' : 'bg-red-600 text-white hover:bg-red-700'}`}
                     disabled={currentPage === 1}
                 >
                     Trước
@@ -231,14 +235,14 @@ const PostManagement = () => {
                     <button
                         key={index + 1}
                         onClick={() => handlePageChange(index + 1)}
-                        className={`px-4 py-2 rounded ${currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+                        className={`px-4 py-2 rounded-2xl ${currentPage === index + 1 ? 'bg-red-600 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
                     >
                         {index + 1}
                     </button>
                 ))}
                 <button
                     onClick={() => handlePageChange(currentPage + 1)}
-                    className={`px-4 py-2 rounded ${currentPage === Math.ceil(totalPosts / postsPerPage) ? 'bg-gray-300' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+                    className={`px-4 py-2 rounded-xl ${currentPage === Math.ceil(totalPosts / postsPerPage) ? 'bg-gray-300' : 'bg-red-600 text-white hover:bg-red-700'}`}
                     disabled={currentPage === Math.ceil(totalPosts / postsPerPage)}
                 >
                     Sau

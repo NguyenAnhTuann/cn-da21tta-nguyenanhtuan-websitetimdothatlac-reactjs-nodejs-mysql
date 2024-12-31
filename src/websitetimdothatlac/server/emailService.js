@@ -88,10 +88,11 @@ const sendEmailNotification = async (emails, post) => {
     
                     <!-- Button truy cập -->
                     <div style="text-align: center; margin-top: 20px;">
-                        <a href="http://localhost:3000" target="_blank" 
-                           style="background-color: #1e40af; color: #ffffff; padding: 12px 20px; font-size: 18px; font-weight: bold; text-decoration: none; border-radius: 8px; display: inline-block;">
-                           👉 Xem Chi Tiết Bài Đăng
-                        </a>
+            <a href="http://localhost:3000/posts/${post.post_id}" target="_blank" 
+            style="background-color: #1e40af; color: #ffffff; padding: 12px 20px; font-size: 18px; font-weight: bold; text-decoration: none; border-radius: 8px; display: inline-block;">
+                👉 Xem Chi Tiết Bài Đăng
+            </a>
+
                     </div>
                 </div>
     

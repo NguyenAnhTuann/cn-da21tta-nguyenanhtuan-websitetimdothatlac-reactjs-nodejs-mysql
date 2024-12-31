@@ -7,6 +7,7 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -56,7 +57,14 @@ const Login = () => {
 
 
   return (
-    <div className="relative min-h-screen flex justify-center items-center bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 p-6">
+    <div
+      className="relative min-h-screen flex justify-center items-center bg-cover bg-center bg-no-repeat p-6"
+
+      style={{
+        backgroundImage: `url('https://res.cloudinary.com/duk8odqun/image/upload/v1735644020/Logotimdothatlac_1_qdrlei.png')`,
+      }}
+    >
+
       {/* Loading và thông báo thành công */}
       {successMessage && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex flex-col justify-center items-center z-50">
@@ -113,17 +121,23 @@ const Login = () => {
           {/* Mật khẩu */}
           <div className="relative">
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'} // Đổi loại input
               placeholder="Nhập mật khẩu"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
               required
             />
-            <span className="absolute left-4 top-3 text-gray-400">
-              🔒
+            <span className="absolute left-4 top-3 text-gray-400">🔒</span>
+            <span
+              className="absolute right-4 top-3 text-gray-400 cursor-pointer"
+              onMouseEnter={() => setShowPassword(true)} // Hiển thị mật khẩu khi rê chuột vào
+              onMouseLeave={() => setShowPassword(false)} // Ẩn mật khẩu khi rời chuột
+            >
+              👁️
             </span>
           </div>
+
 
           <button
             type="submit"
@@ -156,8 +170,6 @@ const Login = () => {
         </div>
       </div>
 
-      {/* Hiệu ứng nền */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-700 to-blue-900 opacity-20 rounded-3xl filter blur-3xl"></div>
     </div>
   );
 };

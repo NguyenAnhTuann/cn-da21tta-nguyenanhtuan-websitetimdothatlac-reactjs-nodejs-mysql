@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaUserPlus, FaUserEdit, FaFileAlt, FaSignOutAlt } from 'react-icons/fa';
 import { IoLogInOutline } from "react-icons/io5";
 import { CiEdit } from "react-icons/ci";
-import logo from '../assets/image/logo.png';
+import logo from '../assets/image/logotet.png';
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -29,7 +29,6 @@ const Header = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
     setIsLoggedIn(false);
-    setUserName('');
     navigate('/');
   };
   useEffect(() => {
@@ -79,38 +78,43 @@ const Header = () => {
 
   return (
     <div>
-      <div
-        className="p-4 shadow-md mb-6 flex justify-center items-center space-x-8 bg-blue-400"
-      >
+      <div className="p-4 shadow-md mb-0 flex flex-col justify-center items-center bg-gradient-to-r from-blue-300 to-yellow-200 text-white">
         {loadingWeather ? (
-          <p className="text-center text-sm text-gray-500">Đang tải thông tin thời tiết...</p>
+          <p className="text-center text-sm">Đang tải thông tin thời tiết...</p>
         ) : (
           <>
-            {/* Vị trí */}
-            <div className="flex items-center space-x-2 bg-white p-2 rounded-2xl shadow">
-              <span className="text-2xl">🌍</span>
-              <span className="font-bold text-gray-700 text-sm">{locationn}</span>
+            <div className="flex justify-center items-center space-x-8 mb-4">
+              {/* Vị trí */}
+              <div className="flex items-center space-x-2 bg-white text-black p-2 rounded-2xl shadow">
+                <span className="text-2xl">🌍</span>
+                <span className="font-bold text-sm">{locationn}</span>
+              </div>
+              {/* Thời tiết */}
+              <div className="flex items-center space-x-2 bg-white text-black p-2 rounded-2xl shadow">
+                <span className="text-2xl">🌤️</span>
+                <span className="font-bold text-sm">{weather}</span>
+              </div>
+              {/* Nhiệt độ */}
+              <div className="flex items-center space-x-2 bg-white text-black p-2 rounded-2xl shadow">
+                <span className="text-2xl">🌡️</span>
+                <span className="font-bold text-sm">{temperature}°C</span>
+              </div>
             </div>
-            {/* Thời tiết */}
-            <div className="flex items-center space-x-2 bg-white p-2 rounded-2xl shadow">
-              <span className="text-2xl">🌤️</span>
-              <span className="font-bold text-gray-700 text-sm">{weather}</span>
-            </div>
-            {/* Nhiệt độ */}
-            <div className="flex items-center space-x-2 bg-white p-2 rounded-2xl shadow">
-              <span className="text-2xl">🌡️</span>
-              <span className="font-bold text-gray-700 text-sm">{temperature}°C</span>
+            {/* Dòng chữ bổ sung */}
+            <br></br>
+            <div className="text-center">
+              <p className="text-4xl font-bold text-gray-800 mb-4">TÌM ĐỒ THẤT LẠC NHANH CHÓNG!</p>
+              <p className="text-lg text-gray-700 mb-6">Hãy tham gia cùng cộng đồng ... </p>
             </div>
           </>
         )}
       </div>
 
-
       <header className="flex justify-between items-center bg-white p-4 border-b-2 shadow-sm">
 
         {/* Logo */}
         <div onClick={() => navigate('/')} className="cursor-pointer">
-          <img src={logo} alt="Logo" className="w-[400px] h-auto" />
+          <img src={logo} alt="Logo" className="w-[600px] h-auto" />
         </div>
 
         {/* Nút điều hướng */}
