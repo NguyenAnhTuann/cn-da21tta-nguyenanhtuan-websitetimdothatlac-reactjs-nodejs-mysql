@@ -418,14 +418,22 @@ const EditMyPosts = () => {
 
             {/* Thông tin bài đăng */}
             <div className="mt-4 space-y-2">
+              {/* Ngày đăng */}
               <p className="text-gray-600 flex items-center">
                 <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📅 Ngày:</span>
-                <span>{highlightMatch(formatDate(post.created), searchDate)}</span>
+                <span dangerouslySetInnerHTML={{
+                  __html: highlightMatch(formatDate(post.created), searchDate)
+                }}></span>
               </p>
+
+              {/* Địa chỉ */}
               <p className="text-gray-600 flex items-start">
                 <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📍 Địa chỉ:</span>
-                <span className="break-words">{highlightMatch(post.address, searchAddress)}</span>
+                <span dangerouslySetInnerHTML={{
+                  __html: highlightMatch(post.address, searchAddress)
+                }}></span>
               </p>
+
               <p className="text-gray-600 flex items-start">
                 <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📝 Mô tả:</span>
                 <span className="break-words">{post.description || "Không có mô tả"}</span>

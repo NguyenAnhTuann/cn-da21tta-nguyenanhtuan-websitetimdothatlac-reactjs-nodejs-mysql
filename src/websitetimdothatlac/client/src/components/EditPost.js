@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import { FaHome } from 'react-icons/fa';
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
@@ -246,7 +247,16 @@ const EditPost = () => {
         </div>
       )}
 
-
+      {/* Nút quay về trang chủ */}
+      <div className="mb-6">
+        <button
+          onClick={() => navigate("/my-posts")}
+          className="absolute top-5 left-5 text-black py-2 px-4 rounded-lg bg-gray-300 hover:bg-gray-400 transition flex items-center"
+        >
+          <FaHome className="mr-2" />
+          Quay về trang chủ
+        </button>
+      </div>
 
       <div className="relative bg-white shadow-2xl rounded-2xl px-8 py-10 w-full max-w-3xl z-10">
         <h2 className="text-3xl font-bold text-center text-gray-700 mb-6">Chỉnh Sửa Bài Đăng</h2>

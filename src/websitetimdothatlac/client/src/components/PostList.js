@@ -16,6 +16,7 @@ const PostList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const fetchPosts = async () => {
       try {
         const response = await fetch('http://localhost:5000/api/posts');
@@ -291,13 +292,25 @@ const PostList = () => {
                   {/* Ngày đăng */}
                   <div className="flex items-start">
                     <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📅 Ngày:</span>
-                    <span className="break-words">{formatDate(post.created)}</span>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: highlightMatch(formatDate(post.created), searchDate),
+                      }}
+                      className="break-words"
+                    ></span>
                   </div>
+
                   {/* Địa chỉ */}
                   <div className="flex items-start">
                     <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📍 Địa chỉ:</span>
-                    <span className="break-words">{post.address}</span>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: highlightMatch(post.address, searchAddress),
+                      }}
+                      className="break-words"
+                    ></span>
                   </div>
+
                   {/* Mô tả */}
                   <div className="flex items-start">
                     <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📝 Mô tả:</span>

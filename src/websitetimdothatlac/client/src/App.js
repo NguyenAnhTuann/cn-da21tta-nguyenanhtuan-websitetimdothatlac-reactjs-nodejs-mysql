@@ -32,11 +32,6 @@ const isAdmin = () => {
   return token && role === 'admin';
 };
 
-const isUserLoggedIn = () => {
-  const token = localStorage.getItem('token');
-  const role = localStorage.getItem('role');
-  return token && role === 'user';
-};
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -63,8 +58,8 @@ const App = () => {
           <Route path="/" element={!isAdmin() ? <Layout><PostList /></Layout> : <Navigate to="/admin" />} />
           <Route path="/lost-items" element={!isAdmin() ? <Layout><LostItems /></Layout> : <Navigate to="/admin" />} />
           <Route path="/found-items" element={!isAdmin() ? <Layout><FoundItems /></Layout> : <Navigate to="/admin" />} />
-          <Route path="/login" element={!isAdmin() && !isUserLoggedIn() ? <Layout><Login /></Layout> : <Navigate to="/" />} />
-          <Route path="/register" element={!isAdmin() && !isUserLoggedIn() ? <Layout><Register /></Layout> : <Navigate to="/" />} />
+          <Route path="/login" element={<Layout><Login /></Layout>} />
+          <Route path="/register" element={<Layout><Register /></Layout>} />
           <Route path="/edit-profile" element={<Layout><EditProfile /></Layout>} />
           <Route path="/new-post" element={!isAdmin() ? <Layout><NewPost /></Layout> : <Navigate to="/admin" />} />
           <Route path="/my-posts" element={!isAdmin() ? <Layout><EditMyPosts /></Layout> : <Navigate to="/admin" />} />
