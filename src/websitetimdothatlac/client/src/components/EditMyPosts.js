@@ -30,6 +30,11 @@ const EditMyPosts = () => {
   };
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
     const fetchMyPosts = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -290,11 +295,12 @@ const EditMyPosts = () => {
       )}
 
 
-      <h1 className="text-2xl font-bold mb-4 bg-gray-200 text-gray-800 py-4 rounded-md text-center">
+      <h1 className="max-w-4xl mx-auto text-2xl font-bold mb-4 bg-gray-200 text-gray-800 py-4 rounded-md text-center shadow">
         DANH SÁCH BÀI ĐĂNG CỦA BẠN
       </h1>
+
       {/* Search Filters */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 bg-slate-300 shadow-lg rounded-lg p-6 border-2">
+      <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 bg-slate-300 shadow-lg rounded-lg p-6 border-2">
         <div className="relative">
           <input
             type="text"
@@ -316,7 +322,6 @@ const EditMyPosts = () => {
           />
           <span className="absolute left-4 top-3 text-gray-400 text-xl">📅</span>
         </div>
-
 
         <div className="flex gap-2">
           {/* Ô tìm kiếm địa điểm */}
@@ -340,42 +345,51 @@ const EditMyPosts = () => {
             {resetLoading ? 'Đang tải...' : 'Reset'}
           </button>
         </div>
-
       </div>
+
 
       {/* Button trên thanh điều hướng */}
-      <div className="flex justify-center mb-6">
+      <div className="flex justify-center gap-4 mb-6">
         <button
-          className={`px-6 py-3 font-medium transition border ${categoryFilter === 'Đồ thất lạc' && statusFilter === '' ? 'bg-red-600 text-white' : 'bg-white text-black hover:bg-gray-100 border-gray-300'
-            }`}
+          className={`px-8 py-4 font-semibold flex items-center justify-center gap-2 transition-all duration-300 border-2 ${categoryFilter === "Đồ thất lạc" && statusFilter === ""
+            ? "bg-gradient-to-r from-red-500 to-red-400 text-white shadow-lg scale-105"
+            : "bg-white text-gray-700 hover:bg-gradient-to-r hover:from-red-100 hover:to-red-50 hover:text-black border-gray-300 shadow"
+            } rounded-2xl`}
           onClick={() => {
-            setCategoryFilter('Đồ thất lạc');
-            setStatusFilter(''); // Xóa trạng thái lọc để loại bỏ bài đăng "Đã sở hữu"
+            setCategoryFilter("Đồ thất lạc");
+            setStatusFilter(""); // Xóa trạng thái lọc để loại bỏ bài đăng "Đã sở hữu"
           }}
         >
-          ĐỒ THẤT LẠC
+          📦 ĐỒ THẤT LẠC
         </button>
+
         <button
-          className={`px-6 py-3 font-medium transition border ${categoryFilter === 'Đồ nhặt được' && statusFilter === '' ? 'bg-green-600 text-white' : 'bg-white text-black hover:bg-gray-100 border-gray-300'
-            }`}
+          className={`px-8 py-4 font-semibold flex items-center justify-center gap-2 transition-all duration-300 border-2 ${categoryFilter === "Đồ nhặt được" && statusFilter === ""
+            ? "bg-gradient-to-r from-green-500 to-green-400 text-white shadow-lg scale-105"
+            : "bg-white text-gray-700 hover:bg-gradient-to-r hover:from-green-100 hover:to-green-50 hover:text-black border-gray-300 shadow"
+            } rounded-2xl`}
           onClick={() => {
-            setCategoryFilter('Đồ nhặt được');
-            setStatusFilter(''); // Xóa trạng thái lọc để loại bỏ bài đăng "Đã sở hữu"
+            setCategoryFilter("Đồ nhặt được");
+            setStatusFilter(""); // Xóa trạng thái lọc để loại bỏ bài đăng "Đã sở hữu"
           }}
         >
-          ĐỒ NHẶT ĐƯỢC
+          🎒 ĐỒ NHẶT ĐƯỢC
         </button>
+
         <button
-          className={`px-6 py-3 font-medium transition border ${statusFilter === 'Đã sở hữu' ? 'bg-blue-600 text-white' : 'bg-white text-black hover:bg-gray-100 border-gray-300'
-            }`}
+          className={`px-8 py-4 font-semibold flex items-center justify-center gap-2 transition-all duration-300 border-2 ${statusFilter === "Đã sở hữu"
+            ? "bg-gradient-to-r from-blue-500 to-blue-400 text-white shadow-lg scale-105"
+            : "bg-white text-gray-700 hover:bg-gradient-to-r hover:from-blue-100 hover:to-blue-50 hover:text-black border-gray-300 shadow"
+            } rounded-2xl`}
           onClick={() => {
-            setCategoryFilter(''); // Bỏ lọc theo loại
-            setStatusFilter('Đã sở hữu');
+            setCategoryFilter(""); // Bỏ lọc theo loại
+            setStatusFilter("Đã sở hữu");
           }}
         >
-          ĐỒ VẬT ĐÃ CÓ CHỦ SỞ HỮU
+          🛒 ĐỒ VẬT ĐÃ CÓ CHỦ SỞ HỮU
         </button>
       </div>
+
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mx-20 my-20">
         {currentPosts.map((post) => (
@@ -436,7 +450,7 @@ const EditMyPosts = () => {
 
               <p className="text-gray-600 flex items-start">
                 <span className="text-gray-800 font-semibold flex-shrink-0 mr-2">📝 Mô tả:</span>
-                <span className="break-words">{post.description || "Không có mô tả"}</span>
+                <span className="line-clamp-2 break-words">{post.description || "Không có mô tả"}</span>
               </p>
             </div>
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
-import { FaHome } from 'react-icons/fa';
+import { FaHome, FaWhatsapp, FaPhoneAlt } from 'react-icons/fa';
 import "leaflet/dist/leaflet.css";
 
 const PostDetails = () => {
@@ -138,6 +138,25 @@ const PostDetails = () => {
                       "Không có"
                     )}
                   </p>
+                  {/* Nút liên hệ nhanh */}
+                  <div className="mt-6 flex gap-4">
+                    <a
+                      href={`tel:${post.phone}`}
+                      className="flex items-center gap-2 text-black border-2 py-2 px-4 rounded-2xl hover:bg-green-600 hover:text-white transition"
+                    >
+                      <FaPhoneAlt />
+                      Gọi điện
+                    </a>
+                    <a
+                      href={`https://zalo.me/${post.zalo}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 bg-blue-600 text-white hover:text-white border-2 py-2 px-4 rounded-2xl hover:bg-blue-800 transition"
+                    >
+                      <FaWhatsapp />
+                      Nhắn Zalo
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>

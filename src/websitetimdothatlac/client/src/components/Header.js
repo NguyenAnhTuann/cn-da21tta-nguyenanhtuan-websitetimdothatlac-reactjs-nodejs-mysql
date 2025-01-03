@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FaUserPlus, FaUserEdit, FaFileAlt, FaSignOutAlt } from 'react-icons/fa';
-import { IoLogInOutline } from "react-icons/io5";
+import React, { useEffect, useState, useRef } from 'react';
 import { CiEdit } from "react-icons/ci";
+import { FaFileAlt, FaSignOutAlt, FaUserEdit, FaUserPlus } from 'react-icons/fa';
+import { IoLogInOutline } from "react-icons/io5";
+import { useNavigate } from 'react-router-dom';
 import logo from '../assets/image/logotet.png';
+
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -13,18 +14,37 @@ const Header = () => {
   const [temperature, setTemperature] = useState('');
   const [loadingWeather, setLoadingWeather] = useState(true);
   const navigate = useNavigate();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [avatar, setAvatar] = useState('');
+  const dropdownRef = useRef(null);
+  const defaultAvatarUrl = 'https://scontent.fsgn5-10.fna.fbcdn.net/v/t39.30808-6/454626691_475455135198002_8892504320904839500_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=w7tv1e0va6YQ7kNvgHmENI2&_nc_zt=23&_nc_ht=scontent.fsgn5-10.fna&_nc_gid=A2YC_L5iFrQSzS1iEH690qE&oh=00_AYCOwCeRxnAs0rCCPAeW61xdsL-UGEi8-7f6k49BSYdJnw&oe=677BDD48'; // URL avatar mặc định
 
-  // Kiểm tra trạng thái đăng nhập
+
+  // Đóng menu khi nhấp ra ngoài
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false); // Đóng menu nếu nhấp bên ngoài
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     const name = localStorage.getItem('userName');
+    const avatarUrl = localStorage.getItem('avatar'); // Lấy avatar từ localStorage nếu có
     if (token && name) {
       setIsLoggedIn(true);
       setUserName(name);
+      setAvatar(avatarUrl || ''); // Thiết lập avatar nếu có, hoặc để trống
     }
   }, []);
 
-  // Hàm đăng xuất
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
@@ -37,10 +57,8 @@ const Header = () => {
         navigator.geolocation.getCurrentPosition(async (position) => {
           const { latitude, longitude } = position.coords;
 
-          // Debug vị trí
           console.log('Latitude:', latitude, 'Longitude:', longitude);
 
-          // Lấy thông tin vị trí
           const locationRes = await fetch(
             `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=vi`
           );
@@ -49,7 +67,6 @@ const Header = () => {
 
           setLocationn(locationData.city || locationData.locality || 'Không rõ vị trí');
 
-          // Lấy thông tin thời tiết
           const weatherRes = await fetch(
             `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=1eb2d794501b0bd361102afe1b55fd33&lang=vi`
           );
@@ -110,80 +127,113 @@ const Header = () => {
         )}
       </div>
 
-      <header className="flex justify-between items-center bg-white p-4 border-b-2 shadow-sm">
+      <header className="bg-white px-4 py-4 border-b-2 shadow-sm">
+        <div className="flex items-center justify-between max-w-[1600px] mx-auto">
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <img
+              src={logo}
+              alt="Logo"
+              className="w-[600px] h-auto cursor-pointer hover:scale-110 transition-transform duration-300"
+              onClick={() => navigate('/')}
+            />
+          </div>
 
-        {/* Logo */}
-        <div onClick={() => navigate('/')} className="cursor-pointer">
-          <img src={logo} alt="Logo" className="w-[600px] h-auto" />
-        </div>
+          {/* Spacer để cố định khoảng cách */}
+          <div className="flex-grow"></div>
 
-        {/* Nút điều hướng */}
-        <div className="flex gap-4 items-center">
-          {isLoggedIn ? (
-            <>
-              <span className="text-gray-800 font-medium">Xin chào, {userName}!</span>
+          {/* Nút điều hướng */}
+          <div className="flex items-center space-x-4">
+            {isLoggedIn ? (
+              <>
+                {/* Xin chào tên người dùng */}
+                <span className="text-gray-800 font-semibold">Xin chào, {userName}!</span>
 
-              {/* Chỉnh sửa thông tin */}
-              <button
-                className="flex items-center gap-1 text-black hover:bg-gray-200 hover:rounded-xl px-3 py-2 transition-all duration-300 border-2 rounded-2xl"
-                onClick={() => navigate('/edit-profile')}
-              >
-                <FaUserEdit size={20} />
-                Chỉnh sửa thông tin
-              </button>
+                {/* Avatar và menu thả xuống */}
+                <div className="relative">
+                  <img
+                    src={avatar || defaultAvatarUrl}
+                    alt="Avatar"
+                    className="w-12 h-12 rounded-full cursor-pointer border-2 border-gray-300"
+                    onClick={() => setShowDropdown(!showDropdown)}
+                  />
 
-              {/* Đăng tin mới */}
-              <button
-                className="flex items-center gap-1 text-white bg-blue-500 hover:bg-blue-700 rounded-xl px-3 py-2 transition-all duration-300"
-                onClick={() => navigate('/new-post')}
-              >
-                <FaFileAlt size={20} />
-                Đăng tin
-              </button>
+                  {/* Menu thả xuống */}
+                  {showDropdown && (
+                    <div
+                      ref={dropdownRef}
+                      className="absolute right-0 mt-2 w-56 bg-white border border-gray-300 rounded-2xl z-50 shadow-md"
+                    >
+                      <button
+                        className="flex items-center gap-1 px-4 py-2 w-full text-black hover:bg-gray-100 rounded-2xl transition-all duration-300"
+                        onClick={() => {
+                          setShowDropdown(false);
+                          navigate('/edit-profile');
+                        }}
+                      >
+                        <FaUserEdit size={20} />
+                        Chỉnh sửa thông tin
+                      </button>
 
-              {/* Chỉnh sửa bài đăng */}
-              <button
-                className="flex items-center gap-1 text-black hover:bg-gray-200 hover:rounded-xl px-3 py-2 transition-all duration-300 border-2 rounded-2xl"
-                onClick={() => navigate('/my-posts')}
-              >
-                <CiEdit size={25} />
-                Chỉnh sửa bài đăng
-              </button>
+                      <button
+                        className="flex items-center gap-1 px-4 py-2 w-full text-black hover:bg-gray-100 rounded-2xl transition-all duration-300"
+                        onClick={() => {
+                          setShowDropdown(false);
+                          navigate('/my-posts');
+                        }}
+                      >
+                        <CiEdit size={25} />
+                        Chỉnh sửa bài đăng
+                      </button>
+                    </div>
+                  )}
+                </div>
 
-              {/* Đăng xuất */}
-              <button
-                className="flex items-center gap-1 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700"
-                onClick={handleLogout}
-              >
-                <FaSignOutAlt size={20} />
-                Đăng xuất
-              </button>
-            </>
-          ) : (
-            <>
 
-              {/* Đăng nhập */}
-              <button
-                className="flex items-center gap-1 text-black hover:bg-gray-200 hover:rounded-xl px-3 py-2 transition-all duration-300 border-2 rounded-2xl"
-                onClick={() => navigate('/login')}
-              >
-                <IoLogInOutline size={25} />
-                Đăng nhập
-              </button>
+                {/* Nút Đăng tin */}
+                <button
+                  className="flex items-center gap-1 text-white bg-blue-500 hover:bg-blue-700 rounded-2xl px-3 py-2 transition-all duration-300"
+                  onClick={() => navigate('/new-post')}
+                >
+                  <FaFileAlt size={20} />
+                  Đăng tin
+                </button>
 
-              {/* Đăng ký */}
-              <button
-                className="flex items-center gap-1 text-black hover:bg-gray-200 hover:rounded-xl px-3 py-2 transition-all duration-300 border-2 rounded-2xl"
-                onClick={() => navigate('/register')}
-              >
-                <FaUserPlus size={20} />
-                Đăng ký
-              </button>
-            </>
-          )}
+                {/* Nút Đăng xuất */}
+                <button
+                  className="flex items-center gap-1 bg-red-600 text-white py-2 px-4 rounded-2xl hover:bg-red-700"
+                  onClick={handleLogout}
+                >
+                  <FaSignOutAlt size={20} />
+                  Đăng xuất
+                </button>
+              </>
+            ) : (
+              <>
+                {/* Đăng nhập */}
+                <button
+                  className="flex items-center gap-1 text-black border-2 rounded-2xl px-3 py-2 hover:bg-gray-100 transition-all duration-300"
+                  onClick={() => navigate('/login')}
+                >
+                  <IoLogInOutline size={25} />
+                  Đăng nhập
+                </button>
+
+                {/* Đăng ký */}
+                <button
+                  className="flex items-center gap-1 text-black border-2 rounded-2xl px-3 py-2 hover:bg-gray-100 transition-all duration-300"
+                  onClick={() => navigate('/register')}
+                >
+                  <FaUserPlus size={20} />
+                  Đăng ký
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </header>
-    </div>
+
+    </div >
   );
 };
 

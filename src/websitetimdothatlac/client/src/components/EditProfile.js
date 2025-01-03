@@ -14,6 +14,11 @@ const EditProfile = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
     const fetchUserData = async () => {
       setLoading(true); // Bắt đầu loading
       try {
@@ -42,9 +47,9 @@ const EditProfile = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    setLoading(true); // Bắt đầu trạng thái loading
+    setLoading(true); // Bắt đầu loading
 
-    // Kiểm tra phone và zalo
+    // Kiểm tra số điện thoại và Zalo
     if (phone.length !== 10 || !/^\d{10}$/.test(phone)) {
       setNotification({ message: "❌ Số điện thoại phải có đúng 10 số.", type: "error" });
       setLoading(false);
@@ -57,6 +62,7 @@ const EditProfile = () => {
       return;
     }
 
+    // Delay 2 giây trước khi gửi yêu cầu
     setTimeout(async () => {
       try {
         const token = localStorage.getItem("token");
@@ -72,12 +78,10 @@ const EditProfile = () => {
           error.response?.data?.message || "Cập nhật thất bại. Vui lòng thử lại.";
         setNotification({ message: `❌ ${message}`, type: "error" });
       } finally {
-        setLoading(false); // Kết thúc loading
+        setLoading(false); // Kết thúc loading sau khi hoàn thành
       }
-    }, 2000); // Thêm delay 2 giây
+    }, 2000); // Trì hoãn 2 giây
   };
-
-
 
 
   return (

@@ -27,6 +27,11 @@ const EditPost = () => {
 
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
     const fetchPostDetails = async () => {
       try {
         const token = localStorage.getItem("token");

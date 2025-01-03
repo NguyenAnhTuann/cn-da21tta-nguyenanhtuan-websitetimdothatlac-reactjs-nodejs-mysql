@@ -263,17 +263,37 @@ const getUserProfile = (req, res) => {
 };
 
 // Cập nhật thông tin người dùng
+// Cập nhật thông tin người dùng
 const updateUserProfile = (req, res) => {
   const userId = req.userId;
   const { name, email, phone, zalo, fbUrl } = req.body;
 
-  const query = `UPDATE Users SET name = ?, email = ?, phone = ?, zalo = ?, fbUrl = ? WHERE user_id = ?`;
+  // Kiểm tra trùng lặp số điện thoại hoặc Zalo
+  const checkDuplicateQuery = `
+    SELECT user_id 
+    FROM Users 
+    WHERE (phone = ? OR zalo = ?) AND user_id != ?`;
 
-  db.query(query, [name, email, phone, zalo, fbUrl, userId], (err) => {
-    if (err) return res.status(500).json({ message: 'Lỗi server' });
-    res.status(200).json({ message: 'Cập nhật thông tin thành công!' });
+  db.query(checkDuplicateQuery, [phone, zalo, userId], (err, results) => {
+    if (err) return res.status(500).json({ message: 'Lỗi server khi kiểm tra trùng lặp' });
+
+    if (results.length > 0) {
+      return res.status(400).json({ message: 'Số điện thoại hoặc Zalo đã được sử dụng bởi người dùng khác' });
+    }
+
+    // Nếu không trùng lặp, tiến hành cập nhật
+    const updateQuery = `
+      UPDATE Users 
+      SET name = ?, email = ?, phone = ?, zalo = ?, fbUrl = ? 
+      WHERE user_id = ?`;
+
+    db.query(updateQuery, [name, email, phone, zalo, fbUrl, userId], (err) => {
+      if (err) return res.status(500).json({ message: 'Lỗi server khi cập nhật thông tin' });
+      res.status(200).json({ message: 'Cập nhật thông tin thành công!' });
+    });
   });
 };
+
 
 module.exports = {
   registerUser,

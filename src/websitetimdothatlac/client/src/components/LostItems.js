@@ -15,6 +15,11 @@ const LostItems = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
     const fetchPosts = async () => {
       try {
         const response = await fetch('http://localhost:5000/api/posts');
