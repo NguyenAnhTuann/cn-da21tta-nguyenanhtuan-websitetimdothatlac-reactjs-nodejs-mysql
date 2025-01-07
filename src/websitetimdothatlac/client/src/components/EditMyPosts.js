@@ -10,7 +10,7 @@ const EditMyPosts = () => {
   const [resetLoading, setResetLoading] = useState(false);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 6;
+  const postsPerPage = 10;
   const [categoryFilter, setCategoryFilter] = useState('Đồ thất lạc');
   const [statusFilter, setStatusFilter] = useState('Chưa sở hữu');
   const [notification, setNotification] = useState({ message: '', type: '' });

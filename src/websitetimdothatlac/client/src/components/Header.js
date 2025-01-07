@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { CiEdit } from "react-icons/ci";
-import { FaFileAlt, FaSignOutAlt, FaUserEdit, FaUserPlus } from 'react-icons/fa';
+import { FaRegFileAlt, FaSignOutAlt, FaUserEdit, FaUserPlus } from 'react-icons/fa';
 import { IoLogInOutline } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/image/logotet.png';
@@ -95,24 +95,24 @@ const Header = () => {
 
   return (
     <div>
-      <div className="p-4 shadow-md mb-0 flex flex-col justify-center items-center bg-gradient-to-r from-blue-300 to-yellow-200 text-white">
+      <div className="p-4 shadow-md mb-0 flex flex-col justify-center items-center bg-gradient-to-r from-blue-400 to-blue-300 text-white">
         {loadingWeather ? (
           <p className="text-center text-sm">Đang tải thông tin thời tiết...</p>
         ) : (
           <>
             <div className="flex justify-center items-center space-x-8 mb-4">
               {/* Vị trí */}
-              <div className="flex items-center space-x-2 bg-white text-black p-2 rounded-2xl shadow">
+              <div className="flex items-center space-x-2 bg-white text-black p-2 rounded-full shadow">
                 <span className="text-2xl">🌍</span>
                 <span className="font-bold text-sm">{locationn}</span>
               </div>
               {/* Thời tiết */}
-              <div className="flex items-center space-x-2 bg-white text-black p-2 rounded-2xl shadow">
+              <div className="flex items-center space-x-2 bg-white text-black p-2 rounded-full shadow">
                 <span className="text-2xl">🌤️</span>
                 <span className="font-bold text-sm">{weather}</span>
               </div>
               {/* Nhiệt độ */}
-              <div className="flex items-center space-x-2 bg-white text-black p-2 rounded-2xl shadow">
+              <div className="flex items-center space-x-2 bg-white text-black p-2 rounded-full shadow">
                 <span className="text-2xl">🌡️</span>
                 <span className="font-bold text-sm">{temperature}°C</span>
               </div>
@@ -120,14 +120,14 @@ const Header = () => {
             {/* Dòng chữ bổ sung */}
             <br></br>
             <div className="text-center">
-              <p className="text-4xl font-bold text-gray-800 mb-4">TÌM ĐỒ THẤT LẠC NHANH CHÓNG!</p>
-              <p className="text-lg text-gray-700 mb-6">Hãy tham gia cùng cộng đồng ... </p>
+              <p className="text-4xl font-bold text-white mb-4">TÌM ĐỒ THẤT LẠC NHANH CHÓNG!</p>
+              <p className="text-lg text-white mb-6">Hãy tham gia cùng cộng đồng ... </p>
             </div>
           </>
         )}
       </div>
 
-      <header className="bg-white px-4 py-4 border-b-2 shadow-sm">
+      <header className="bg-white px-4 py-4 shadow-sm">
         <div className="flex items-center justify-between max-w-[1600px] mx-auto">
           {/* Logo */}
           <div className="flex-shrink-0">
@@ -192,16 +192,16 @@ const Header = () => {
 
                 {/* Nút Đăng tin */}
                 <button
-                  className="flex items-center gap-1 text-white bg-blue-500 hover:bg-blue-700 rounded-2xl px-3 py-2 transition-all duration-300"
+                  className="flex items-center gap-1 text-black border-2 hover:bg-gray-300 rounded-full px-5 py-3 transition-all duration-300"
                   onClick={() => navigate('/new-post')}
                 >
-                  <FaFileAlt size={20} />
+                  <FaRegFileAlt size={20} className='text-black' />
                   Đăng tin
                 </button>
 
                 {/* Nút Đăng xuất */}
                 <button
-                  className="flex items-center gap-1 bg-red-600 text-white py-2 px-4 rounded-2xl hover:bg-red-700"
+                  className="flex items-center justify-center gap-1 bg-red-600 text-white px-5 py-3 rounded-full hover:bg-red-700"
                   onClick={handleLogout}
                 >
                   <FaSignOutAlt size={20} />
@@ -212,7 +212,7 @@ const Header = () => {
               <>
                 {/* Đăng nhập */}
                 <button
-                  className="flex items-center gap-1 text-black border-2 rounded-2xl px-3 py-2 hover:bg-gray-100 transition-all duration-300"
+                  className="flex items-center justify-center gap-1 text-black border-2 rounded-full px-5 py-3 hover:scale-110 hover:bg-gray-100 transition-all duration-300"
                   onClick={() => navigate('/login')}
                 >
                   <IoLogInOutline size={25} />
@@ -221,7 +221,7 @@ const Header = () => {
 
                 {/* Đăng ký */}
                 <button
-                  className="flex items-center gap-1 text-black border-2 rounded-2xl px-3 py-2 hover:bg-gray-100 transition-all duration-300"
+                  className="flex items-center justify-center gap-1 text-black border-2 rounded-full px-5 py-3 hover:scale-110 hover:bg-gray-100 transition-all duration-300"
                   onClick={() => navigate('/register')}
                 >
                   <FaUserPlus size={20} />

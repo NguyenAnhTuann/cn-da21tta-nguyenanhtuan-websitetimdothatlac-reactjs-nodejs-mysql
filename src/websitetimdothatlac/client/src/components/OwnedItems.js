@@ -11,7 +11,7 @@ const OwnedItems = () => {
   const [searchAddress, setSearchAddress] = useState('');
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [resetLoading, setResetLoading] = useState(false);
-  const postsPerPage = 6;
+  const postsPerPage = 10;
   const navigate = useNavigate();
 
   useEffect(() => {

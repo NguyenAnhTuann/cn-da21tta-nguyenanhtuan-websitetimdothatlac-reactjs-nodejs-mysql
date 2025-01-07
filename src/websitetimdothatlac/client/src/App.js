@@ -1,7 +1,7 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import "leaflet/dist/leaflet.css";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Header from './components/Header';
 import PostList from './components/PostList';
 import Footer from './components/Footer';
@@ -24,14 +24,13 @@ import OwnedItems from "./components/OwnedItems";
 import OwnedPosts from "./components/OwnedPosts";
 import NotFound from "./components/NotFound";
 import BackgroundMusic from './components/BackgroundMusic';
-
+import FallingFlowers from './components/FallingFlowers';
 
 const isAdmin = () => {
   const role = localStorage.getItem('role');
   const token = localStorage.getItem('token');
   return token && role === 'admin';
 };
-
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -48,11 +47,19 @@ const Layout = ({ children }) => {
   );
 };
 
+const FallingFlowersWrapper = () => {
+  const location = useLocation();
+  return location.pathname === '/' ? <FallingFlowers /> : null; // Chỉ render FallingFlowers khi pathname là '/'
+};
+
 const App = () => {
   return (
     <div>
       <BackgroundMusic />
       <Router>
+        <div id="falling-flowers" className="fixed top-0 left-0 w-full h-full pointer-events-none z-50">
+          <FallingFlowersWrapper />
+        </div>
         <Routes>
           {/* Các Route dành cho người dùng */}
           <Route path="/" element={!isAdmin() ? <Layout><PostList /></Layout> : <Navigate to="/admin" />} />
