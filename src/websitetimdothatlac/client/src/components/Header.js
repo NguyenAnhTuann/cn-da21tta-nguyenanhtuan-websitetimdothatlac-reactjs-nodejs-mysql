@@ -17,6 +17,7 @@ const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [avatar, setAvatar] = useState('');
   const dropdownRef = useRef(null);
+  const [isLoadingLogout, setIsLoadingLogout] = useState(false);
   const defaultAvatarUrl = 'https://scontent.fsgn5-10.fna.fbcdn.net/v/t39.30808-6/454626691_475455135198002_8892504320904839500_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=w7tv1e0va6YQ7kNvgHmENI2&_nc_zt=23&_nc_ht=scontent.fsgn5-10.fna&_nc_gid=A2YC_L5iFrQSzS1iEH690qE&oh=00_AYCOwCeRxnAs0rCCPAeW61xdsL-UGEi8-7f6k49BSYdJnw&oe=677BDD48'; // URL avatar mặc định
 
 
@@ -45,12 +46,17 @@ const Header = () => {
     }
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('userName');
-    setIsLoggedIn(false);
-    navigate('/');
+  const handleLogout = async () => {
+    setIsLoadingLogout(true); // Hiển thị loading
+    setTimeout(() => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('userName');
+      setIsLoggedIn(false);
+      navigate('/'); // Điều hướng về trang chủ
+      setIsLoadingLogout(false); // Tắt loading
+    }, 1500); // Loading giả lập
   };
+
   useEffect(() => {
     const fetchLocationAndWeather = async () => {
       try {
@@ -95,7 +101,7 @@ const Header = () => {
 
   return (
     <div>
-      <div className="p-4 shadow-md mb-0 flex flex-col justify-center items-center bg-gradient-to-r from-blue-400 to-blue-300 text-white">
+      <div className="p-2 shadow-md flex flex-col justify-center items-center bg-gradient-to-r from-blue-400 to-blue-300 text-white">
         {loadingWeather ? (
           <p className="text-center text-sm">Đang tải thông tin thời tiết...</p>
         ) : (
@@ -118,7 +124,6 @@ const Header = () => {
               </div>
             </div>
             {/* Dòng chữ bổ sung */}
-            <br></br>
             <div className="text-center">
               <p className="text-4xl font-bold text-white mb-4">TÌM ĐỒ THẤT LẠC NHANH CHÓNG!</p>
               <p className="text-lg text-white mb-6">Hãy tham gia cùng cộng đồng ... </p>
@@ -127,7 +132,7 @@ const Header = () => {
         )}
       </div>
 
-      <header className="bg-white px-4 py-4 shadow-sm">
+      <header className="bg-white px-4 py-4 shadow-sm border-2">
         <div className="flex items-center justify-between max-w-[1600px] mx-auto">
           {/* Logo */}
           <div className="flex-shrink-0">
@@ -233,6 +238,12 @@ const Header = () => {
         </div>
       </header>
 
+      {/* Hiệu ứng Loading */}
+      {isLoadingLogout && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+          <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-white mb-6"></div>
+        </div>
+      )}
     </div >
   );
 };

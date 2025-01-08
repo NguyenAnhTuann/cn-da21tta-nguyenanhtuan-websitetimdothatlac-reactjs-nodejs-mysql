@@ -165,13 +165,14 @@ const PostDetails = () => {
 
           {/* Bản đồ */}
           {position && (
-            <div className="mt-6">
+            <div className="mt-6 relative z-10">
               <h3 className="text-xl font-bold mb-4">Vị trí trên bản đồ</h3>
-              <div className="w-full h-[400px]">
+              <div className="w-full h-[400px] relative z-0">
                 <MapContainer
                   center={position}
                   zoom={15}
                   style={{ width: "100%", height: "100%" }}
+                  className="relative z-0"
                 >
                   <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -181,6 +182,7 @@ const PostDetails = () => {
                 </MapContainer>
               </div>
             </div>
+
           )}
         </div>
       </div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 30, 2024 at 07:27 AM
+-- Generation Time: Jan 07, 2025 at 07:23 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -161,7 +161,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `name`, `password`, `email`, `phone`, `zalo`, `fbUrl`, `otp`, `otp_expiry`) VALUES
-(1, 'Nguyen Anh Tuan', '$2a$10$Adh8Zzm5OuhpB0qp.JX1ieRRIjEZ9UMwTNzPv5m3e8cN9sDlV6NnO', 'nguyenanhtuan.profile@gmail.com', '0869094929', '0869094929', 'https://www.facebook.com/NguyenAnhTuxn', 952877, '2024-12-20 17:58:00'),
+(1, 'Nguyen Anh Tuan', '$2a$10$Adh8Zzm5OuhpB0qp.JX1ieRRIjEZ9UMwTNzPv5m3e8cN9sDlV6NnO', 'nguyenanhtuan.profile@gmail.com', '0869094929', '0869094929', 'https://www.facebook.com/NguyenAnhTuxn', 939865, '2025-01-02 04:34:05'),
 (2, 'Kim Thị Quế Trân', '$2a$10$DrsdWYuyHBgeGpVXDQFReuS9W/D1WxwnO0rvntkUv79V6QJmtmlgK', 'tranque913@gmail.com', '0385236993', '0385236993', 'https://www.facebook.com/profile.php?id=61558947097197', 519829, '2024-12-19 02:55:53');
 
 --
@@ -217,7 +217,7 @@ ALTER TABLE `owned_posts`
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `post_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `users`

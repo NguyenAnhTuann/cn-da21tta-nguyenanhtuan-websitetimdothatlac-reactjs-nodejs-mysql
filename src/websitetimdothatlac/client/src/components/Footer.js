@@ -81,7 +81,7 @@ const Footer = () => {
               Phone/Zalo: 0869094929
             </a>
             <p className="text-lg text-gray-600 mt-2">
-              Copyright &copy; 2024 Website Tìm Đồ Thất Lạc - Nguyễn Anh Tuấn - 110121123 - DA21TTA - TVU
+              Copyright &copy; 2025 Website Tìm Đồ Thất Lạc - Nguyễn Anh Tuấn - 110121123 - DA21TTA - TVU
             </p>
           </div>
 
@@ -131,6 +131,7 @@ const Footer = () => {
           />
         </div>
       </div>
+      
     </footer>
   );
 };

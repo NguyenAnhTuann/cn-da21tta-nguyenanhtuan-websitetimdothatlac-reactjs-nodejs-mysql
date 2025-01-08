@@ -192,46 +192,43 @@ const PostList = () => {
 
           <h1 className="text-2xl font-bold mb-4 bg-gray-200 text-gray-800 py-4 rounded-md text-center">DANH SÁCH TẤT CẢ BÀI ĐĂNG CÓ TRÊN HỆ THỐNG</h1>
           {/* Ô tìm kiếm */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 bg-slate-300 shadow-lg rounded-lg p-6 border-2">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 bg-white shadow-lg rounded-lg p-6 border border-gray-200">
             {/* Tìm kiếm theo tên */}
             <div className="relative col-span-1">
               <input
                 type="text"
-                placeholder="Tìm kiếm theo tên đồ vật"
+                placeholder="🔍 Tìm kiếm theo tên đồ vật"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
               />
-              <span className="absolute left-4 top-3 text-gray-400 text-xl">🔍</span>
             </div>
 
             {/* Tìm kiếm theo ngày */}
             <div className="relative col-span-1">
               <input
                 type="text"
-                placeholder="Tìm kiếm theo ngày (dd/mm/yyyy)"
+                placeholder="📅 Tìm kiếm theo ngày (dd/mm/yyyy)"
                 value={searchDate}
                 onChange={(e) => setSearchDate(e.target.value)}
-                className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
               />
-              <span className="absolute left-4 top-3 text-gray-400 text-xl">📅</span>
             </div>
 
             {/* Tìm kiếm theo địa điểm và Nút Reset */}
-            <div className="relative flex gap-2 col-span-1">
+            <div className="relative flex gap-3 col-span-1 items-center">
               <div className="relative flex-grow">
                 <input
                   type="text"
-                  placeholder="Tìm kiếm theo địa điểm"
+                  placeholder="📍 Tìm kiếm theo địa điểm"
                   value={searchAddress}
                   onChange={(e) => setSearchAddress(e.target.value)}
-                  className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
                 />
-                <span className="absolute left-4 top-3 text-gray-400 text-xl">📍</span>
               </div>
               <button
                 onClick={handleReset}
-                className="flex items-center justify-center px-6 py-3 bg-red-600 text-white rounded-lg shadow hover:bg-red-700 hover:scale-105 transition min-w-[100px]"
+                className="flex items-center justify-center px-4 py-3 bg-red-500 text-white rounded-lg shadow hover:bg-red-600 hover:scale-105 transition-transform min-w-[100px] font-semibold"
                 disabled={resetLoading}
               >
                 {resetLoading ? (
@@ -245,6 +242,7 @@ const PostList = () => {
               </button>
             </div>
           </div>
+
 
 
 

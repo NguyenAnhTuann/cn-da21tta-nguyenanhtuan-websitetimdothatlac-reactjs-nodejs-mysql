@@ -48,14 +48,13 @@ const FallingFlowers = () => {
 
       container.appendChild(flower);
 
-      // Xóa cánh hoa sau khi hoàn thành
       setTimeout(() => {
         flower.remove();
-      }, (duration + delay) * 1000); // Đảm bảo cánh hoa được xóa sau khi rơi hoàn tất
+      }, (duration + delay) * 1000);
     };
 
     // Tạo cánh hoa liên tục với khoảng cách hợp lý hơn
-    const interval = setInterval(createFlower, 200); // Tăng khoảng thời gian giữa các lần tạo hoa
+    const interval = setInterval(createFlower, 400); // Tăng khoảng thời gian giữa các lần tạo hoa
 
     return () => clearInterval(interval); // Dọn dẹp khi component bị unmount
   }, []);
