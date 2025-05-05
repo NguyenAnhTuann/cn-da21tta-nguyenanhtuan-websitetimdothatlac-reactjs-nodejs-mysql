@@ -96,7 +96,7 @@ const UserManagement = () => {
     const handleDeleteUser = async () => {
         const token = localStorage.getItem('token');
         try {
-            await axios.delete(`http://localhost:5000/api/admin/users/${selectedUser.user_id}`, {
+            await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/admin/users/${selectedUser.user_id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setUsers(users.filter((user) => user.user_id !== selectedUser.user_id));

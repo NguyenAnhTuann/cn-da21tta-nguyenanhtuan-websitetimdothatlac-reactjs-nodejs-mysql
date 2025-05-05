@@ -35,7 +35,7 @@ const EditPost = () => {
     const fetchPostDetails = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`http://localhost:5000/api/posts/${id}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/posts/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -64,7 +64,7 @@ const EditPost = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:5000/api/posts/update/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/posts/update/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -103,7 +103,7 @@ const EditPost = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:5000/api/posts/delete/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/posts/delete/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

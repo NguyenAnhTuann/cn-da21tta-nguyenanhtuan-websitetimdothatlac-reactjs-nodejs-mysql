@@ -23,7 +23,7 @@ const EditProfile = () => {
       setLoading(true); // Bắt đầu loading
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:5000/api/auth/user", {
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/auth/user`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -67,7 +67,7 @@ const EditProfile = () => {
       try {
         const token = localStorage.getItem("token");
         await axios.put(
-          "http://localhost:5000/api/auth/update",
+          `${import.meta.env.VITE_API_BASE_URL}/api/auth/update`,
           { name, email, phone, zalo, fbUrl },
           { headers: { Authorization: `Bearer ${token}` } }
         );

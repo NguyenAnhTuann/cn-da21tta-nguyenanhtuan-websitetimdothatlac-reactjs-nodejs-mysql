@@ -25,7 +25,7 @@ const Login = () => {
 
     try {
       console.log('Dữ liệu gửi đến backend:', { identifier: email, password });
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/login`, {
         identifier: email, // Truyền đúng field này
         password,
       });

@@ -15,7 +15,7 @@ const PostDetails = () => {
     window.scrollTo(0, 0);
     const fetchPostDetails = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/posts/${id}`);
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/posts/${id}`);
         if (!response.ok) throw new Error("Không thể tải chi tiết bài đăng.");
         const data = await response.json();
         setPost(data);

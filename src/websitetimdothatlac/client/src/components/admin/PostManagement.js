@@ -34,7 +34,7 @@ const PostManagement = () => {
             const token = localStorage.getItem('token');
             try {
                 const res = await axios.get(
-                    `http://localhost:5000/api/admin/posts?page=${currentPage}&limit=${postsPerPage}&category=${categoryFilter}`,
+                    `${import.meta.env.VITE_API_BASE_URL}/api/admin/posts?page=${currentPage}&limit=${postsPerPage}&category=${categoryFilter}`,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
                 setPosts(res.data.posts);

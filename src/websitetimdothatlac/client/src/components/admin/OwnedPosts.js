@@ -24,7 +24,7 @@ const OwnedPosts = () => {
             const token = localStorage.getItem('token');
             try {
                 const res = await axios.get(
-                    `http://localhost:5000/api/admin/owned-posts?page=${currentPage}&limit=${postsPerPage}`,
+                    `${import.meta.env.VITE_API_BASE_URL}/api/admin/owned-posts?page=${currentPage}&limit=${postsPerPage}`,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
                 setPosts(res.data.posts);

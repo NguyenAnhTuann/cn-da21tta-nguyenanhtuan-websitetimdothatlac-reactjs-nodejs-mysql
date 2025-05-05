@@ -64,7 +64,7 @@ const Register = () => {
     const formattedFbUrl = fbUrl.startsWith('facebook.com') ? `https://${fbUrl}` : fbUrl;
 
     try {
-      await axios.post('http://localhost:5000/api/auth/register', {
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/register`, {
         name,
         email,
         phone,
