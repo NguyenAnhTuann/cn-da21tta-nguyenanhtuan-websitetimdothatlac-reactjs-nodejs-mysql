@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
-import { FaHome, FaWhatsapp, FaPhoneAlt } from 'react-icons/fa';
 import "leaflet/dist/leaflet.css";
+import React, { useEffect, useState } from "react";
+import { FaHome, FaPhoneAlt, FaWhatsapp } from 'react-icons/fa';
+import { MapContainer, Marker, TileLayer } from "react-leaflet";
+import { useNavigate, useParams } from "react-router-dom";
 
 const PostDetails = () => {
   const { id } = useParams();
@@ -15,7 +15,7 @@ const PostDetails = () => {
     window.scrollTo(0, 0);
     const fetchPostDetails = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/posts/${id}`);
+        const response = await fetch(`${import.meta.env.REACT_APP_API_URL}/api/posts/${id}`);
         if (!response.ok) throw new Error("Không thể tải chi tiết bài đăng.");
         const data = await response.json();
         setPost(data);

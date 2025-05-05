@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { MdRefresh } from "react-icons/md";
+import { useNavigate } from 'react-router-dom';
 
 const OwnedItems = () => {
   const [posts, setPosts] = useState([]);
@@ -22,7 +22,7 @@ const OwnedItems = () => {
     });
     const fetchPosts = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/posts`);
+        const response = await fetch(`${import.meta.env.REACT_APP_API_URL}/api/posts`);
         if (!response.ok) throw new Error('Không thể tải danh sách bài đăng.');
         const data = await response.json();
 

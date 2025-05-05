@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -64,7 +64,7 @@ const Register = () => {
     const formattedFbUrl = fbUrl.startsWith('facebook.com') ? `https://${fbUrl}` : fbUrl;
 
     try {
-      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/register`, {
+      await axios.post(`${import.meta.env.REACT_APP_API_URL}/api/auth/register`, {
         name,
         email,
         phone,

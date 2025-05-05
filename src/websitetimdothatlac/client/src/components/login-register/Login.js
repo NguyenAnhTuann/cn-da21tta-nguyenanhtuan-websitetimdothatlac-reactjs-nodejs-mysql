@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import axios from 'axios';
+import React, { useState } from 'react';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -25,7 +25,7 @@ const Login = () => {
 
     try {
       console.log('Dữ liệu gửi đến backend:', { identifier: email, password });
-      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/login`, {
+      const response = await axios.post(`${import.meta.env.REACT_APP_API_URL}/api/auth/login`, {
         identifier: email, // Truyền đúng field này
         password,
       });

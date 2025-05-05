@@ -62,7 +62,7 @@ const NewPost = () => {
 
     setLoading(true); // Kích hoạt trạng thái loading
 
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/posts`, {
+    fetch(`${import.meta.env.REACT_APP_API_URL}/api/posts`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: formData,

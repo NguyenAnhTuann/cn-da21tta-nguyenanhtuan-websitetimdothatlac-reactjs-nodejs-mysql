@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import { FaHome } from 'react-icons/fa';
-import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet-control-geocoder/dist/Control.Geocoder.css";
+import "leaflet/dist/leaflet.css";
+import React, { useEffect, useState } from "react";
+import { FaHome } from 'react-icons/fa';
+import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
+import { useNavigate, useParams } from "react-router-dom";
 
 // Fix icon issue in Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -35,7 +35,7 @@ const EditPost = () => {
     const fetchPostDetails = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/posts/${id}`, {
+        const response = await fetch(`${import.meta.env.REACT_APP_API_URL}/api/posts/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -64,7 +64,7 @@ const EditPost = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/posts/update/${id}`, {
+      const response = await fetch(`${import.meta.env.REACT_APP_API_URL}/api/posts/update/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -103,7 +103,7 @@ const EditPost = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/posts/delete/${id}`, {
+      const response = await fetch(`${import.meta.env.REACT_APP_API_URL}/api/posts/delete/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

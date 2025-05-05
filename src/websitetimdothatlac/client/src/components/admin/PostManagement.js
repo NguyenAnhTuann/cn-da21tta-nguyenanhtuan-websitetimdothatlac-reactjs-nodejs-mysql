@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import AdminLayout from './AdminLayout';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { MdDeleteOutline } from "react-icons/md";
+import { useNavigate } from 'react-router-dom';
+import AdminLayout from './AdminLayout';
 
 
 const PostManagement = () => {
@@ -34,7 +34,7 @@ const PostManagement = () => {
             const token = localStorage.getItem('token');
             try {
                 const res = await axios.get(
-                    `${import.meta.env.VITE_API_BASE_URL}/api/admin/posts?page=${currentPage}&limit=${postsPerPage}&category=${categoryFilter}`,
+                    `${import.meta.env.REACT_APP_API_URL}/api/admin/posts?page=${currentPage}&limit=${postsPerPage}&category=${categoryFilter}`,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
                 setPosts(res.data.posts);

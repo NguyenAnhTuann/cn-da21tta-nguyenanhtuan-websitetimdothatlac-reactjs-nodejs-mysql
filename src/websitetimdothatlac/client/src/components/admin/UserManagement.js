@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { MdDeleteOutline } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import AdminLayout from './AdminLayout';
-import { MdDeleteOutline } from "react-icons/md";
 
 const UserManagement = () => {
     const [users, setUsers] = useState([]);
@@ -96,7 +96,7 @@ const UserManagement = () => {
     const handleDeleteUser = async () => {
         const token = localStorage.getItem('token');
         try {
-            await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/admin/users/${selectedUser.user_id}`, {
+            await axios.delete(`${import.meta.env.REACT_APP_API_URL}/api/admin/users/${selectedUser.user_id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setUsers(users.filter((user) => user.user_id !== selectedUser.user_id));
