@@ -22,7 +22,7 @@ const FoundItems = () => {
     });
     const fetchPosts = async () => {
       try {
-        const response = await fetch(`${import.meta.env.REACT_APP_API_URL}/api/posts`);
+        const response = await fetch(`https://cn-da21tta-nguyenanhtuan.onrender.com/api/posts`);
         if (!response.ok) throw new Error('Không thể tải danh sách bài đăng.');
         const data = await response.json();
 

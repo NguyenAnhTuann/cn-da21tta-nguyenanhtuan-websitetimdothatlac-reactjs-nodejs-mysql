@@ -17,7 +17,7 @@ const ForgotPassword = () => {
     setIsLoading(true);
 
     try {
-      const res = await axios.post(`${import.meta.env.REACT_APP_API_URL}/api/auth/forgot-password`, { email });
+      const res = await axios.post(`https://cn-da21tta-nguyenanhtuan.onrender.com/api/auth/forgot-password`, { email });
       setMessage(res.data.message);
       setTimeout(() => {
         navigate(`/reset-password?email=${email}`);

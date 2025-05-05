@@ -96,7 +96,7 @@ const UserManagement = () => {
     const handleDeleteUser = async () => {
         const token = localStorage.getItem('token');
         try {
-            await axios.delete(`${import.meta.env.REACT_APP_API_URL}/api/admin/users/${selectedUser.user_id}`, {
+            await axios.delete(`https://cn-da21tta-nguyenanhtuan.onrender.com/api/admin/users/${selectedUser.user_id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setUsers(users.filter((user) => user.user_id !== selectedUser.user_id));

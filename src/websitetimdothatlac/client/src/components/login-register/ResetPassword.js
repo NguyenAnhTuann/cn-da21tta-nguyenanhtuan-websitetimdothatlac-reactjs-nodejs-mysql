@@ -17,7 +17,7 @@ const ResetPassword = () => {
     setError('');
     setIsLoading(true);
     try {
-      const res = await axios.post(`${import.meta.env.REACT_APP_API_URL}/api/auth/reset-password`, {
+      const res = await axios.post(`https://cn-da21tta-nguyenanhtuan.onrender.com/api/auth/reset-password`, {
         email,
         otp,
         newPassword,

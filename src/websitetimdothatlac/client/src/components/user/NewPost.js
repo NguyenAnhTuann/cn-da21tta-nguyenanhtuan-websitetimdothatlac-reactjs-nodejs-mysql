@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
-import { useNavigate } from "react-router-dom";
-import { FaEdit, FaMapMarkerAlt, FaCalendarAlt, FaUpload, FaHome } from "react-icons/fa";
 import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-import "leaflet-control-geocoder/dist/Control.Geocoder.css";
 import "leaflet-control-geocoder";
+import "leaflet-control-geocoder/dist/Control.Geocoder.css";
+import "leaflet/dist/leaflet.css";
+import React, { useState } from "react";
+import { FaCalendarAlt, FaEdit, FaHome, FaMapMarkerAlt, FaUpload } from "react-icons/fa";
+import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
+import { useNavigate } from "react-router-dom";
 
 // Fix icon issue in Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -62,7 +62,7 @@ const NewPost = () => {
 
     setLoading(true); // Kích hoạt trạng thái loading
 
-    fetch(`${import.meta.env.REACT_APP_API_URL}/api/posts`, {
+    fetch(`https://cn-da21tta-nguyenanhtuan.onrender.com/api/posts`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: formData,

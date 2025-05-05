@@ -35,7 +35,7 @@ const EditPost = () => {
     const fetchPostDetails = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch(`${import.meta.env.REACT_APP_API_URL}/api/posts/${id}`, {
+        const response = await fetch(`https://cn-da21tta-nguyenanhtuan.onrender.com/api/posts/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -64,7 +64,7 @@ const EditPost = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${import.meta.env.REACT_APP_API_URL}/api/posts/update/${id}`, {
+      const response = await fetch(`https://cn-da21tta-nguyenanhtuan.onrender.com/api/posts/update/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -103,7 +103,7 @@ const EditPost = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`${import.meta.env.REACT_APP_API_URL}/api/posts/delete/${id}`, {
+      const response = await fetch(`https://cn-da21tta-nguyenanhtuan.onrender.com/api/posts/delete/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

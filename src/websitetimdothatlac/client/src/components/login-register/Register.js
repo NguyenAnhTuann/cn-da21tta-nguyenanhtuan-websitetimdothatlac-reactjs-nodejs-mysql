@@ -64,7 +64,7 @@ const Register = () => {
     const formattedFbUrl = fbUrl.startsWith('facebook.com') ? `https://${fbUrl}` : fbUrl;
 
     try {
-      await axios.post(`${import.meta.env.REACT_APP_API_URL}/api/auth/register`, {
+      await axios.post(`https://cn-da21tta-nguyenanhtuan.onrender.com/api/auth/register`, {
         name,
         email,
         phone,

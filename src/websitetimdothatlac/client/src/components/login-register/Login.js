@@ -25,7 +25,7 @@ const Login = () => {
 
     try {
       console.log('Dữ liệu gửi đến backend:', { identifier: email, password });
-      const response = await axios.post(`${import.meta.env.REACT_APP_API_URL}/api/auth/login`, {
+      const response = await axios.post(`https://cn-da21tta-nguyenanhtuan.onrender.com/api/auth/login`, {
         identifier: email, // Truyền đúng field này
         password,
       });

@@ -38,7 +38,7 @@ const EditMyPosts = () => {
     const fetchMyPosts = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`${import.meta.env.REACT_APP_API_URL}/api/posts/my-posts`, {
+        const response = await fetch(`https://cn-da21tta-nguyenanhtuan.onrender.com/api/posts/my-posts`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -69,7 +69,7 @@ const EditMyPosts = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${import.meta.env.REACT_APP_API_URL}/api/posts/mark-as-owned/${postId}`, {
+      const response = await fetch(`https://cn-da21tta-nguyenanhtuan.onrender.com/api/posts/mark-as-owned/${postId}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -112,7 +112,7 @@ const EditMyPosts = () => {
   const handleDeleteConfirmed = async (postId) => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`${import.meta.env.REACT_APP_API_URL}/api/posts/delete/${postId}`, {
+      const response = await fetch(`https://cn-da21tta-nguyenanhtuan.onrender.com/api/posts/delete/${postId}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });

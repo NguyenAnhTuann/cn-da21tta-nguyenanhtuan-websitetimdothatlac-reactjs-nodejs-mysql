@@ -34,7 +34,7 @@ const PostManagement = () => {
             const token = localStorage.getItem('token');
             try {
                 const res = await axios.get(
-                    `${import.meta.env.REACT_APP_API_URL}/api/admin/posts?page=${currentPage}&limit=${postsPerPage}&category=${categoryFilter}`,
+                    `https://cn-da21tta-nguyenanhtuan.onrender.com/api/admin/posts?page=${currentPage}&limit=${postsPerPage}&category=${categoryFilter}`,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
                 setPosts(res.data.posts);
