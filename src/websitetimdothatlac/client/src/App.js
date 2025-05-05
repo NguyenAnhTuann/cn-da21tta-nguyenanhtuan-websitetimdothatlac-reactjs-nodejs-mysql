@@ -35,21 +35,23 @@ const isAdmin = () => {
 const Layout = ({ children }) => {
   const location = useLocation();
   const isAdminPage = location.pathname.startsWith('/admin');
-  const isLoginOrRegisterPage = location.pathname === '/login' || location.pathname === '/register';
+  const noHeaderFooterPages = ['/login', '/register', '/forgot-password', '/reset-password'];
+
+  const hideHeaderFooter = noHeaderFooterPages.includes(location.pathname);
 
   return (
     <>
-      {!isAdminPage && <Header />}
-      {!isAdminPage && !isLoginOrRegisterPage && <NavigationBar />}
+      {!isAdminPage && !hideHeaderFooter && <Header />}
+      {!isAdminPage && !hideHeaderFooter && <NavigationBar />}
       {children}
-      {!isAdminPage && <Footer />}
+      {!isAdminPage && !hideHeaderFooter && <Footer />}
     </>
   );
 };
 
 const FallingFlowersWrapper = () => {
   const location = useLocation();
-  return location.pathname === '/' ? <FallingFlowers /> : null; // Chỉ render FallingFlowers khi pathname là '/'
+  return location.pathname === '/' ? <FallingFlowers /> : null;
 };
 
 const App = () => {

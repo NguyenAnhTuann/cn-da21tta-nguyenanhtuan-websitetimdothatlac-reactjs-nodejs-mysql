@@ -6,9 +6,9 @@ const FallingFlowers = () => {
 
     // Danh sách 6 hình ảnh hoa
     const flowerImages = [
-      "https://res.cloudinary.com/duk8odqun/image/upload/v1736150478/flower_z0qjdq.png",
-      "https://res.cloudinary.com/duk8odqun/image/upload/v1736151725/image_5-Photoroom_tvs76m.png",
-      "https://res.cloudinary.com/duk8odqun/image/upload/v1736151725/image_1-Photoroom_h3hqv8.png",
+      "https://res.cloudinary.com/duk8odqun/image/upload/v1743126584/Frame_4_d3o30y.png",
+      "https://res.cloudinary.com/duk8odqun/image/upload/v1743126769/image-Photoroom_avirmo.png",
+      "https://res.cloudinary.com/duk8odqun/image/upload/v1743127218/image-Photoroom_1_patgwo.png",
       "https://res.cloudinary.com/duk8odqun/image/upload/v1736151725/image_3-Photoroom_kfm5b4.png",
       "https://res.cloudinary.com/duk8odqun/image/upload/v1736151725/image_2-Photoroom_hv1e5p.png",
       "https://res.cloudinary.com/duk8odqun/image/upload/v1736151725/image_4-Photoroom_nfsvoq.png",
@@ -58,7 +58,7 @@ const FallingFlowers = () => {
     }
 
     // Tạo cánh hoa liên tục sau đó
-    const interval = setInterval(createFlower, 400);
+    const interval = setInterval(createFlower, 1000);
 
     return () => clearInterval(interval); // Dọn dẹp khi component bị unmount
   }, []);

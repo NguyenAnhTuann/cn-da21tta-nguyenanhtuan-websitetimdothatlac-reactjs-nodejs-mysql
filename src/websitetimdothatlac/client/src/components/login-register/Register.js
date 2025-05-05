@@ -12,18 +12,18 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [confirmPassword, setConfirmPassword] = useState(''); // Nhập lại mật khẩu
-  const [passwordStrength, setPasswordStrength] = useState(''); // Độ mạnh mật khẩu
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordStrength, setPasswordStrength] = useState('');
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
 
   const evaluatePasswordStrength = (password) => {
     if (password.length < 6) {
-      return 'Yếu'; // Mật khẩu ngắn
+      return 'Yếu';
     } else if (password.length < 10) {
-      return 'Trung bình'; // Mật khẩu trung bình
+      return 'Trung bình';
     } else {
-      return 'Mạnh'; // Mật khẩu dài và mạnh
+      return 'Mạnh';
     }
   };
 
@@ -42,8 +42,7 @@ const Register = () => {
     setIsLoading(true);
     setErrorMessage('');
 
-    // Kiểm tra số điện thoại và Zalo
-    const phoneRegex = /^[0-9]{10}$/; // Đúng 10 chữ số
+    const phoneRegex = /^[0-9]{10}$/;
     if (!phoneRegex.test(phone)) {
       setErrorMessage('❌ Số điện thoại phải bao gồm đúng 10 chữ số!');
       setIsLoading(false);
@@ -56,14 +55,12 @@ const Register = () => {
       return;
     }
 
-    // Kiểm tra mật khẩu nhập lại
     if (password !== confirmPassword) {
       setErrorMessage('❌ Mật khẩu không khớp. Vui lòng nhập lại!');
       setIsLoading(false);
       return;
     }
 
-    // Chuẩn hóa URL Facebook
     const formattedFbUrl = fbUrl.startsWith('facebook.com') ? `https://${fbUrl}` : fbUrl;
 
     try {
@@ -73,7 +70,7 @@ const Register = () => {
         phone,
         password,
         zalo,
-        fbUrl: formattedFbUrl, // Gửi URL đã chuẩn hóa
+        fbUrl: formattedFbUrl,
       });
       setSuccessMessage('🎉 Đăng ký thành công! Đang chuyển hướng...');
     } catch (error) {

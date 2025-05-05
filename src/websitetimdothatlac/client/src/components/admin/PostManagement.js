@@ -15,14 +15,12 @@ const PostManagement = () => {
     const navigate = useNavigate();
 
 
-    // Thêm hàm chuyển trang
     const handlePageChange = (newPage) => {
         if (newPage < 1 || newPage > Math.ceil(totalPosts / postsPerPage)) return;
         setCurrentPage(newPage);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    // Hàm chuyển đổi định dạng ngày "YYYY-MM-DD" thành "DD/MM/YYYY"
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, '0');
@@ -31,7 +29,6 @@ const PostManagement = () => {
         return `${day}/${month}/${year}`;
     };
 
-    // Cập nhật API để gọi dữ liệu phân trang
     useEffect(() => {
         const fetchPosts = async () => {
             const token = localStorage.getItem('token');
@@ -50,7 +47,6 @@ const PostManagement = () => {
     }, [currentPage, categoryFilter]);
 
 
-    // Hàm xóa bài đăng
     const handleDeletePost = async (postId) => {
         const token = localStorage.getItem('token');
         if (window.confirm('Bạn có chắc chắn muốn xóa bài đăng này không?')) {

@@ -3,7 +3,7 @@ import { CiEdit } from "react-icons/ci";
 import { FaRegFileAlt, FaSignOutAlt, FaUserEdit, FaUserPlus } from 'react-icons/fa';
 import { IoLogInOutline } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
-import logo from '../assets/image/logotet.png';
+import logo from '../assets/image/logotick.png';
 
 
 const Header = () => {
@@ -18,7 +18,7 @@ const Header = () => {
   const [avatar, setAvatar] = useState('');
   const dropdownRef = useRef(null);
   const [isLoadingLogout, setIsLoadingLogout] = useState(false);
-  const defaultAvatarUrl = 'https://scontent.fsgn5-10.fna.fbcdn.net/v/t39.30808-6/454626691_475455135198002_8892504320904839500_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=aa7b47&_nc_ohc=w7tv1e0va6YQ7kNvgHmENI2&_nc_zt=23&_nc_ht=scontent.fsgn5-10.fna&_nc_gid=A2YC_L5iFrQSzS1iEH690qE&oh=00_AYCOwCeRxnAs0rCCPAeW61xdsL-UGEi8-7f6k49BSYdJnw&oe=677BDD48'; // URL avatar mặc định
+  const defaultAvatarUrl = 'https://res.cloudinary.com/duk8odqun/image/upload/v1743125877/476391770_122209043942074558_1767895705772411631_n_npwi6o.jpg';
 
 
   // Đóng menu khi nhấp ra ngoài
@@ -131,7 +131,6 @@ const Header = () => {
           </>
         )}
       </div>
-
       <header className="bg-white px-4 py-4 shadow-sm border-2">
         <div className="flex items-center justify-between max-w-[1600px] mx-auto">
           {/* Logo */}
@@ -139,7 +138,7 @@ const Header = () => {
             <img
               src={logo}
               alt="Logo"
-              className="w-[600px] h-auto cursor-pointer hover:scale-110 transition-transform duration-300"
+              className="w-[450px] h-auto cursor-pointer hover:scale-110 transition-transform duration-300"
               onClick={() => navigate('/')}
             />
           </div>
@@ -152,7 +151,7 @@ const Header = () => {
             {isLoggedIn ? (
               <>
                 {/* Xin chào tên người dùng */}
-                <span className="text-gray-800 font-semibold">Xin chào, {userName}!</span>
+                <span className="text-black font-semibold">Xin chào, {userName}!</span>
 
                 {/* Avatar và menu thả xuống */}
                 <div className="relative">
@@ -197,7 +196,7 @@ const Header = () => {
 
                 {/* Nút Đăng tin */}
                 <button
-                  className="flex items-center gap-1 text-black border-2 hover:bg-gray-300 rounded-full px-5 py-3 transition-all duration-300"
+                  className="flex items-center gap-1 text-black border-2 hover:scale-110 rounded-full px-5 py-3 transition-all duration-300"
                   onClick={() => navigate('/new-post')}
                 >
                   <FaRegFileAlt size={20} className='text-black' />
