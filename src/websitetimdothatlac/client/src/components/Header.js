@@ -74,7 +74,7 @@ const Header = () => {
           setLocationn(locationData.city || locationData.locality || 'Không rõ vị trí');
 
           const weatherRes = await fetch(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=1eb2d794501b0bd361102afe1b55fd33&lang=vi`
+            `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${process.env.REACT_APP_WEATHER_API_KEY}&lang=vi`
           );
           const weatherData = await weatherRes.json();
           console.log('Weather Data:', weatherData);
