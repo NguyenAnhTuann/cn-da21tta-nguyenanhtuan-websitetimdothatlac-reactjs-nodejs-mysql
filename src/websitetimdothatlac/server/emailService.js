@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 const formatDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Tháng tính từ 0-11
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
 };
@@ -14,7 +14,7 @@ const sendEmailNotification = async (emails, post) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'websitetimdothatlac@gmail.com', // Email của bạn
+            user: 'websitetimdothatlac@gmail.com',
             pass: 'yuou gcor rrul vibp' // App Password
         }
     });
