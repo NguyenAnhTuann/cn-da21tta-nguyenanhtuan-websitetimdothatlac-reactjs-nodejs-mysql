@@ -47,7 +47,7 @@ const UserManagement = () => {
         const fetchUsers = async () => {
             const token = localStorage.getItem('token');
             try {
-                const res = await axios.get(`http://localhost:5000/api/admin/users?page=${currentPage}&limit=${usersPerPage}`, {
+                const res = await axios.get(`https://cn-da21tta-nguyenanhtuan.onrender.com/api/admin/users?page=${currentPage}&limit=${usersPerPage}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setUsers(res.data.users);
